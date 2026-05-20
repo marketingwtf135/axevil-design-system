@@ -1,0 +1,8 @@
+{
+  "name": "@axevil/design-system",
+  "version": "1.0.0",
+  "description": "AXEVIL Design System — single source of truth for all projects",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": ["axevil", "tokens", "design-system", "tailwind"]
+}
