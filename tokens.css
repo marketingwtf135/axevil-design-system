@@ -1,0 +1,181 @@
+﻿/* в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+   @axevil/tokens  вЂ”  Three-layer token model
+   в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+   Layer 1 (Primitives): raw values вЂ” white-100вЂ¦black-900,
+             bg-100, font-xsвЂ¦font-h1, spacing-*, border-r-*
+   Layer 2 (Aliases):    semantic names referencing Layer 1
+             вЂ” color-text, color-bg, color-border, etc.
+   Layer 3 (Components): component files reference Layer 2 only
+   в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ */
+
+/* @axevil/tokens вЂ” CSS Custom Properties
+   Import in your project's global CSS.
+   1rem = 16px
+*/
+
+:root {
+  /* в”Ђв”Ђ White scale в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --white-100: #ffffff;
+  --white-200: #e6e6e6;
+  --white-300: #bcbcbc;
+  --white-400: #9b9b9b;
+
+  /* в”Ђв”Ђ Black scale в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --black-100: #000000;
+  --black-200: #060606;
+  --black-300: #111111;
+  --black-400: #151515;
+  --black-500: #1a1a1a;
+  --black-600: #202020;
+  --black-700: #303030;
+  --black-800: #404040;
+  --black-900: #848484;
+
+  /* в”Ђв”Ђ Background в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --bg-100: #080808;
+
+  /* в”Ђв”Ђ Outline в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --outline-100: #151515;
+
+  /* в”Ђв”Ђ Semantic в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --nav-bg:          #0a0a0a;
+  --section-border:  #121212;
+  --border-subtle:   #1b1b1b;
+  --border-card:     #1d1d1d;
+  --nav-border:      #171717;
+  --btn-border:      #c9c9c9;
+  --surface-0:       #141414;
+  --surface-mid:     #1d1f20;
+  --surface-3:       #2a2a2a;
+  --surface-dark:    #484b4e;
+
+  /* в”Ђв”Ђ Status в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --status-open:   #4dba79;
+  --status-closed: #d24346;
+  --status-soon:   #e0b13e;
+  --status-open-bg:     rgba(77,186,121,0.05);
+  --status-open-border: rgba(77,186,121,0.25);
+  --status-closed-bg:     rgba(210,67,70,0.1);
+  --status-closed-border: rgba(210,67,70,0.25);
+  --status-soon-bg:     rgba(224,177,62,0.1);
+  --status-soon-border: rgba(224,177,62,0.25);
+
+  /* в”Ђв”Ђ Accents в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --accent-teal:       #175e6e;
+  --accent-teal-light: #d7ffff;
+  --accent-blue:       #546fef;
+  --accent-blue-bg:     rgba(84,111,239,0.1);
+  --accent-blue-border: rgba(84,111,239,0.25);
+  --lime-accent:       #F5FD5A;
+
+  /* в”Ђв”Ђ Typography (font-size) в”Ђв”Ђ
+     Fixed rem at desktop; smaller rem on tablet/mobile via @media overrides below.
+     Smooth fluid scaling is handled at html { font-size } level (calc) вЂ” every rem
+     in the codebase (typography + layout) inherits the same fluid base. */
+  --font-xs:   0.75rem;   /* 12px desktop, 10px tablet/mobile */
+  --font-s:    0.875rem;  /* 14px desktop, 12px tablet/mobile */
+  --font-m:    1rem;      /* 16px desktop, 14px tablet/mobile */
+  --font-l:    1.125rem;  /* 18px desktop, 16px tablet, 14px mobile (paragraph) */
+  --font-xl:   1.25rem;   /* 20px desktop, 18px tablet/mobile */
+  --font-h4:   1.5rem;    /* 24px desktop, 20px tablet/mobile */
+  --font-h3:   2.25rem;   /* 36px desktop, 27px tablet, 24px mobile */
+  --font-h2:   4rem;      /* 64px desktop, 48px tablet, 36px mobile */
+  --font-h1:   5.5rem;    /* 88px desktop, 64px tablet, 42px mobile вЂ” used by h1-med */
+  --font-h1-semi: 4rem;   /* 64px desktop, 48px tablet, 36px mobile вЂ” used by h1-semi (per 2026-05-27 feedback) */
+  --font-btn:    1rem;    /* 16px desktop/tablet, 14px mobile (per 2026-05-28 feedback) -- used by BtnOwn */
+
+  /* в”Ђв”Ђ Spacing в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --spacing-0_25: 0.25rem;
+  --spacing-0_5:  0.5rem;
+  --spacing-0_75: 0.75rem;
+  --spacing-1:    1rem;
+  --spacing-1_5:  1.5rem;
+  --spacing-2:    2rem;
+  --spacing-2_25: 2.25rem;
+  --spacing-3:    3rem;
+  --spacing-4:    4rem;
+  --spacing-7_5:  7.5rem;
+  --spacing-15:   15rem;
+
+  /* в”Ђв”Ђ Border radius в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --border-r-0_25:   0.25rem;
+  --border-r-0_75:   0.75rem;
+  --border-r-1:      1rem;
+  --border-r-2:      2rem;
+  --border-r-3:      3rem;
+  --border-r-4:      4rem;
+  --border-r-2_625:  2.625rem;
+  --border-r-1_9375: 1.9375rem;
+
+  /* в”Ђв”Ђ Containers в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --container-medium: 90rem;
+  --container-large:  120rem;
+
+  /* в”Ђв”Ђ Gradients в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  --acc-gradient: linear-gradient(94deg, #A2A2A2 8.73%, #FFF 50.65%, #A2A2A2 92.57%);
+  /* Canonical headline gradient вЂ” used by ~21 h1/h2 across blocks/CS/RI/WM.
+     Stops match the recurring pattern; prefer this over inline string for new code. */
+  --gradient-headline: linear-gradient(94deg, #A2A2A2 4.07%, #FFF 49.51%, #A2A2A2 94.94%);
+  /* Narrow variant вЂ” wider grey, narrower white band. Used by KeyStats headings
+     (Block03Cards + RIKeyStats) for a slightly darker overall feel. */
+  --gradient-headline-narrow: linear-gradient(94deg, #A2A2A2 2.09%, #FFF 49.02%, #A2A2A2 95.95%);
+
+  /* в”Ђв”Ђ Chart palette в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+     Used by CSTrackPrice line chart (Anthropic price history) and any
+     future financial visualisation. Single accent-blue with gradient
+     pair + darker fills for data-point + tooltip surfaces. */
+  --chart-accent:        #4EA3BF;
+  --chart-accent-deep:   #2a6e82;
+  --chart-bg:            #101010;
+  --chart-tooltip-bg:    #1d1d1d;
+  --chart-tooltip-text:  #b7b7b7;
+}
+
+/* в”Ђв”Ђ Responsive typography overrides вЂ” Figma 578:4081 в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+   Hard breakpoints at 1023px (tablet) and 767px (mobile) for cases where
+   the design wants a discrete size jump, on top of the fluid html scaling. */
+@media (max-width: 1023px) {
+  :root {
+    --font-h1: 4rem;       /* 64px */
+    --font-h1-semi: 3rem;  /* 48px */
+    --font-h2: 3rem;       /* 48px */
+    --font-h3: 1.6875rem;  /* 27px */
+    --font-h4: 1.25rem;    /* 20px */
+    --font-xl: 1.125rem;   /* 18px */
+    --font-l:  1rem;       /* 16px */
+    --font-m:  0.875rem;   /* 14px */
+    --font-s:  0.75rem;    /* 12px */
+    --font-xs: 0.625rem;   /* 10px */
+  }
+}
+@media (max-width: 767px) {
+  :root {
+    --font-h1: 2.625rem;   /* 42px */
+    --font-h1-semi: 2.625rem; /* 42px вЂ” matched to h1-med per 2026-05-27 feedback */
+    --font-h2: 2.25rem;    /* 36px */
+    --font-h3: 1.5rem;     /* 24px */
+    --font-h4: 1.25rem;    /* 20px */
+    --font-xl: 1rem;       /* 16px (per 2026-05-27 mobile feedback вЂ” was 18px; must be в‰¤ h4) */
+    --font-l:  0.875rem;   /* 14px (paragraph) */
+    --font-m:  0.875rem;   /* 14px */
+    --font-s:  0.75rem;    /* 12px */
+    --font-xs: 0.625rem;   /* 10px */
+    --font-btn: 0.875rem;  /* 14px (per 2026-05-28 feedback вЂ” BtnOwn smaller on mobile) */
+  }
+}
+
+/* в”Ђв”Ђ Gradient text utility в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+.text-acc-gradient {
+  background: var(--acc-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Layer 2 semantic aliases — kept lean: only entries with active usages
+   survive (rest deleted 2026-05-29 per audit). Add new aliases here only
+   when there is a confirmed call site. */
+:root {
+  --color-bg-card:        var(--black-300);
+  --color-border-default: var(--black-500);
+}

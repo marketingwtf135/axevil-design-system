@@ -1,8 +1,44 @@
 {
   "name": "@axevil/design-system",
-  "version": "1.0.0",
-  "description": "AXEVIL Design System — single source of truth for all projects",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "AXEVIL Design System — tokens + React components. Single source of truth for all projects.",
   "license": "MIT",
-  "keywords": ["axevil", "tokens", "design-system", "tailwind"]
+  "type": "commonjs",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.js"
+    },
+    "./css": "./tokens.css",
+    "./tailwind": "./tailwind.config.base.js",
+    "./components": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "tailwind.config.base.js",
+    "tokens.css",
+    "dist",
+    "assets",
+    "assets-manifest.json"
+  ],
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "framer-motion": ">=11"
+  },
+  "keywords": [
+    "axevil",
+    "tokens",
+    "design-system",
+    "tailwind",
+    "react"
+  ]
 }

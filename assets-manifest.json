@@ -1,0 +1,14 @@
+{
+  "note": "Copy these files into the consumer public/ root (same relative paths) if you use components that reference them.",
+  "assets": [
+    "icons/Email.svg",
+    "icons/Key.svg",
+    "icons/True.svg",
+    "icons/True-innactive.svg",
+    "img/logos/footer-logo.svg",
+    "img/block09/bg-speaker-gradient.png",
+    "img/ill/ill-qwiz-01.webp",
+    "img/ill/ill-qwiz-02.webp",
+    "img/ill/ill-qwiz-03.webp"
+  ]
+}
