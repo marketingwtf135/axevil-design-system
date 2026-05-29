@@ -320,7 +320,11 @@ function hasDropdown(label) {
   if (label === "Company") return "company";
   return null;
 }
-function Nav(_props = {}) {
+function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } = {}) {
+  const cta = onCtaClick ?? (() => window.dispatchEvent(new CustomEvent("open-quiz")));
+  const desktopLinks = links ?? NAV_LINKS.map((l) => ({ label: l, href: navHref(l) }));
+  const mobileSections = links ? links.map((l) => ({ label: l.label, href: l.href })) : MOBILE_SECTIONS;
+  const useDropdowns = !links;
   const [menuOpen, setMenuOpen] = useState2(false);
   const [openDropdown, setOpenDropdown] = useState2(null);
   const closeTimer = useRef2(null);
@@ -366,7 +370,7 @@ function Nav(_props = {}) {
             className: "relative mx-auto w-full h-[3.75rem] md:h-[5rem] flex items-center justify-between container-px",
             style: { maxWidth: "90rem" },
             children: [
-              /* @__PURE__ */ jsx5("a", { href: "/", "aria-label": "AXEVIL Capital", className: "shrink-0", children: /* @__PURE__ */ jsx5(
+              /* @__PURE__ */ jsx5("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "shrink-0", children: /* @__PURE__ */ jsx5(
                 "img",
                 {
                   src: "/img/logos/footer-logo.svg",
@@ -374,12 +378,12 @@ function Nav(_props = {}) {
                   className: "w-[7.5rem] h-[1.125rem] lg:w-[9.6875rem] lg:h-6"
                 }
               ) }),
-              /* @__PURE__ */ jsx5("div", { className: "hidden lg:flex items-center gap-1", children: NAV_LINKS.map((label) => {
-                const dropKey = hasDropdown(label);
+              /* @__PURE__ */ jsx5("div", { className: "hidden lg:flex items-center gap-1", children: desktopLinks.map(({ label, href }) => {
+                const dropKey = useDropdowns ? hasDropdown(label) : null;
                 return /* @__PURE__ */ jsx5(
                   "a",
                   {
-                    href: navHref(label),
+                    href,
                     onMouseEnter: () => openWith(dropKey),
                     onMouseLeave: () => {
                       if (dropKey) scheduleClose();
@@ -407,8 +411,8 @@ function Nav(_props = {}) {
                     size: "XS",
                     hideIcon: true,
                     className: "hidden sm:flex",
-                    onClick: () => window.dispatchEvent(new CustomEvent("open-quiz")),
-                    children: "Request access"
+                    onClick: cta,
+                    children: ctaLabel
                   }
                 ),
                 /* @__PURE__ */ jsxs4(
@@ -442,7 +446,7 @@ function Nav(_props = {}) {
             {
               className: "flex flex-col flex-1 overflow-y-auto",
               style: { padding: "2rem 1rem 1rem", gap: "2rem" },
-              children: MOBILE_SECTIONS.map((section) => {
+              children: mobileSections.map((section) => {
                 if (section.items) {
                   return /* @__PURE__ */ jsxs4("div", { className: "flex flex-col items-start", style: { gap: "1rem" }, children: [
                     /* @__PURE__ */ jsx5(
@@ -469,7 +473,7 @@ function Nav(_props = {}) {
                 return /* @__PURE__ */ jsx5(
                   "a",
                   {
-                    href: navHref(section.label),
+                    href: section.href ?? navHref(section.label),
                     onClick: () => setMenuOpen(false),
                     className: "font-inter-tight font-semibold text-h4 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
                     style: { fontSize: "var(--font-h4)", letterSpacing: "-0.02em", lineHeight: 1.2 },
@@ -488,9 +492,9 @@ function Nav(_props = {}) {
               className: "w-full",
               onClick: () => {
                 setMenuOpen(false);
-                window.dispatchEvent(new CustomEvent("open-quiz"));
+                cta();
               },
-              children: "Request Access"
+              children: ctaLabel
             }
           ) })
         ]

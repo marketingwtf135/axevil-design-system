@@ -15,10 +15,24 @@ declare function FadeIn({ children, className }: FadeInProps): react_jsx_runtime
  */
 declare function Footer(): react_jsx_runtime.JSX.Element;
 
+interface NavLinkItem {
+    label: string;
+    href: string;
+}
 interface NavProps {
     active?: string;
+    /** Override the desktop + mobile link list. Each item is a plain link.
+     *  When provided, dropdowns are disabled (simple anchor nav — used by standalone
+     *  pages like axevil-about). Falls back to the canonical main-site nav. */
+    links?: NavLinkItem[];
+    /** Logo link target (default '/'). */
+    logoHref?: string;
+    /** CTA button label (default 'Request access'). */
+    ctaLabel?: string;
+    /** CTA click handler (default dispatches the 'open-quiz' event). */
+    onCtaClick?: () => void;
 }
-declare function Nav(_props?: NavProps): react_jsx_runtime.JSX.Element;
+declare function Nav({ links, logoHref, ctaLabel, onCtaClick }?: NavProps): react_jsx_runtime.JSX.Element;
 
 interface QuizProps {
     onClose: () => void;
