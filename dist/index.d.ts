@@ -131,7 +131,7 @@ declare function CtaFormNewsletter({ buttonLabel, buttonIcon, placeholder, succe
  * Section eyebrow tag — the "1.0  Section Label" line that prefixes most section headings.
  * Used across Home blocks, Company Stock sections, and Retail Investors sections.
  *
- * Token-driven (text-text-l + text-neutral-30) so it scales with the responsive type system.
+ * Token-driven (text-l + text-neutral-30) so it scales with the responsive type system.
  */
 interface DescTagProps {
     /** Numeric prefix like "1.0", "2.0" — rendered with reduced opacity */
@@ -221,7 +221,7 @@ declare function IllCards({ cards, className, objectPosition, cardHeight, titleS
  *   · per-link card: radius 0.5rem, padding 0.75rem, gap-2.5 inside
  *   · vertical divider: 1px white/10
  *   · label: text-xs white-400 (#9b9b9b)
- *   · description: text-text-s-med white-200 (#e6e6e6)
+ *   · description: text-s-med white-200 (#e6e6e6)
  */
 interface DropdownItem {
     label: string;

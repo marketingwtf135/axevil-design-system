@@ -68,22 +68,20 @@ const tokens = {
   },
 
   fontSize: {
-    'text-link':       ['0.8125rem', { lineHeight: 'normal', letterSpacing: '0' }],
-    'text-link-block': ['0.875rem',  { lineHeight: 'normal', letterSpacing: '0' }],
-    // All text-* and h1-h4 use CSS vars so values can be overridden responsively in tokens.css
-    'text-xs':     ['var(--font-xs)', { lineHeight: '1.3',  letterSpacing: '0' }],
-    'text-s-med':  ['var(--font-s)',  { lineHeight: '1.3',  letterSpacing: '0' }],
-    'text-s-semi': ['var(--font-s)',  { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
-    'text-m':      ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: '-0.02em' }],
-    'text-l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],
-    // Key is `paragraph` (NOT `text-paragraph`) so the Tailwind utility resolves to `text-paragraph`
-    // rather than the broken `text-text-paragraph`. Used by ~50 files across the site as the
-    // canonical body-text token. 18px desktop / 16px tablet / 14px mobile via --font-l.
-    'paragraph':   ['var(--font-l)', { lineHeight: '1.35', letterSpacing: '-0.02em' }],
-    // Key is `btn` (NOT `text-btn`) so Tailwind generates the valid `text-btn` utility.
+    // Keys carry NO `text-` prefix — Tailwind generates `text-<key>` (e.g. key `xs` → class `text-xs`).
+    // (Renamed 2026-05-30: dropped the doubled `text-text-*` classes; usages migrated repo-wide.)
+    'link':       ['0.8125rem', { lineHeight: 'normal', letterSpacing: '0' }],
+    'link-block': ['0.875rem',  { lineHeight: 'normal', letterSpacing: '0' }],
+    'xs':     ['var(--font-xs)', { lineHeight: '1.3',  letterSpacing: '0' }],
+    's-med':  ['var(--font-s)',  { lineHeight: '1.3',  letterSpacing: '0' }],
+    's-semi': ['var(--font-s)',  { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
+    'm':      ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: '-0.02em' }],
+    'l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],
+    // Canonical body-text token. 18px desktop / 16px tablet / 14px mobile via --font-l. line-height 145%.
+    'paragraph':   ['var(--font-l)', { lineHeight: '1.45', letterSpacing: '-0.02em' }],
     // Responsive via --font-btn: 1rem desktop/tablet → 0.875rem mobile (per 2026-05-28).
     'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: '0' }],
-    'text-xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
+    'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
     'h4':          ['var(--font-h4)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
     'h3':          ['var(--font-h3)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
     'h2':          ['var(--font-h2)', { lineHeight: '1',    letterSpacing: '-0.02em' }],

@@ -139,7 +139,7 @@ function Footer() {
                       children: col.heading
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
                     "a",
                     {
                       href: item.href,
@@ -249,8 +249,8 @@ function Card({ item, onClose }) {
       className: "flex flex-col w-full rounded-[0.5rem] transition-colors hover:bg-[rgba(48,48,48,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
       style: { padding: "0.75rem", gap: "0.625rem" },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "font-inter-tight font-medium text-text-xs whitespace-nowrap", style: { color: "var(--white-400)" }, children: item.label }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "font-inter-tight font-medium text-text-s-med", style: { color: "var(--white-200)", lineHeight: 1.3 }, children: item.description })
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "font-inter-tight font-medium text-xs whitespace-nowrap", style: { color: "var(--white-400)" }, children: item.label }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "font-inter-tight font-medium text-s-med", style: { color: "var(--white-200)", lineHeight: 1.3 }, children: item.description })
       ]
     }
   );
@@ -431,7 +431,7 @@ function Nav(_props = {}) {
                     onMouseLeave: () => {
                       if (dropKey) scheduleClose();
                     },
-                    className: "flex items-center px-4 py-2 rounded-full font-inter-tight font-medium text-text-s-med text-white opacity-80 hover:opacity-100 hover:bg-white/5 transition-[opacity,background-color] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+                    className: "flex items-center px-4 py-2 rounded-full font-inter-tight font-medium text-s-med text-white opacity-80 hover:opacity-100 hover:bg-white/5 transition-[opacity,background-color] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
                     children: label
                   },
                   label
@@ -495,7 +495,7 @@ function Nav(_props = {}) {
                     /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "span",
                       {
-                        className: "font-inter-tight font-medium text-text-l",
+                        className: "font-inter-tight font-medium text-l",
                         style: { color: "var(--white-400)", letterSpacing: "-0.02em", lineHeight: 1.35 },
                         children: section.label
                       }
@@ -718,7 +718,7 @@ function Quiz({ onClose }) {
                           ),
                           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "shrink-0 flex flex-col gap-1", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
                             cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { className: "font-inter-tight font-semibold text-white text-h4", children: cur.subheading }),
-                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-text-m md:text-h4 whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-text-m md:text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
+                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-m md:text-h4 whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-m md:text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
                         ]
                       }
@@ -732,7 +732,7 @@ function Quiz({ onClose }) {
                   i < slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "h-full w-full bg-white" }),
                   i === slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_framer_motion2.motion.div, { className: "h-full bg-white", initial: { width: "0%" }, animate: { width: `${progress}%` }, transition: { duration: 0.05, ease: "linear" } })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: `font-inter-tight font-medium text-text-xs md:text-s-med hidden md:inline truncate ${i <= slide ? "text-white" : "text-white/30"}`, children: s.label })
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: `font-inter-tight font-medium text-xs md:text-s-med hidden md:inline truncate ${i <= slide ? "text-white" : "text-white/30"}`, children: s.label })
               ] }, s.id)) })
             ] })
           }
@@ -751,7 +751,7 @@ function Quiz({ onClose }) {
                 {
                   type: "button",
                   onClick: onClose,
-                  className: "font-inter-tight font-medium text-text-m text-white/40 hover:text-white transition-colors outline-none",
+                  className: "font-inter-tight font-medium text-m text-white/40 hover:text-white transition-colors outline-none",
                   children: "\u2715 Close"
                 }
               ) }),
@@ -925,10 +925,10 @@ function DescTag({ number, label, className = "" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
     "div",
     {
-      className: `flex gap-2 items-center font-inter-tight font-medium text-text-m text-neutral-30 ${className}`,
+      className: `flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 ${className}`,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "text-text-m opacity-50", children: number }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "text-text-m opacity-80", children: label })
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "text-m opacity-50", children: number }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "text-m opacity-80", children: label })
       ]
     }
   );
@@ -1016,7 +1016,7 @@ function CtaFormNewsletter({
     return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
       "div",
       {
-        className: `flex items-center justify-center font-inter-tight font-medium text-text-l text-status-open w-full max-w-[30rem] lg:max-w-none ${className}`,
+        className: `flex items-center justify-center font-inter-tight font-medium text-l text-status-open w-full max-w-[30rem] lg:max-w-none ${className}`,
         style: {
           height: "3.5rem",
           padding: "0 1.5rem",
@@ -1043,7 +1043,7 @@ function CtaFormNewsletter({
             value: email,
             onChange: (e) => setEmail(e.target.value),
             placeholder,
-            className: "font-inter-tight font-medium text-text-m text-white placeholder:text-white/40 focus:outline-none w-full sm:flex-1 sm:min-w-0 lg:flex-none lg:w-[22.5rem]",
+            className: "font-inter-tight font-medium text-m text-white placeholder:text-white/40 focus:outline-none w-full sm:flex-1 sm:min-w-0 lg:flex-none lg:w-[22.5rem]",
             style: {
               height: "3.5rem",
               padding: "0.625rem 1rem",
@@ -1166,7 +1166,7 @@ function InquiryDropdown({ value, onChange }) {
           /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
             "span",
             {
-              className: "font-inter-tight font-medium text-text-m",
+              className: "font-inter-tight font-medium text-m",
               style: { color: selected ? "var(--white-100)" : "rgba(255,255,255,0.35)" },
               children: selected ? selected.label : "Inquiry type (optional)"
             }
@@ -1207,7 +1207,7 @@ function InquiryDropdown({ value, onChange }) {
               onChange(opt.value);
               setOpen(false);
             },
-            className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-text-m",
+            className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-m",
             style: {
               padding: "0 1rem",
               height: "3.25rem",
@@ -1227,7 +1227,7 @@ function InquiryDropdown({ value, onChange }) {
 function inputClass(hasError) {
   return [
     "w-full bg-transparent font-inter-tight font-medium text-white placeholder:text-[rgba(255,255,255,0.35)]",
-    "text-text-m focus:outline-none transition-colors",
+    "text-m focus:outline-none transition-colors",
     hasError ? "" : ""
   ].join(" ");
 }
@@ -1252,7 +1252,7 @@ function Field({
         children: input ?? children
       }
     ),
-    error && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-text-xs", children: error })
+    error && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-xs", children: error })
   ] });
 }
 function SuccessState() {
@@ -1361,7 +1361,7 @@ Inquiry type: ${inquiryLabel}
           transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex flex-col items-center justify-center w-full", style: { maxWidth: "37.5rem", gap: "1rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex gap-2 items-center font-inter-tight font-medium text-text-m text-neutral-30 whitespace-nowrap", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 whitespace-nowrap", children: [
                 /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "opacity-50", children: number }),
                 /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "opacity-80", children: label })
               ] }),
@@ -1512,7 +1512,7 @@ function HeroEyebrow({ children, className = "" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
     "div",
     {
-      className: `flex items-center font-inter-tight font-medium text-text-s-med text-white ${className}`,
+      className: `flex items-center font-inter-tight font-medium text-s-med text-white ${className}`,
       style: {
         padding: "0.75rem 1rem",
         borderRadius: "6.25rem",
@@ -1570,7 +1570,7 @@ function IllCards({
             /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
               "span",
               {
-                className: "font-inter-tight font-medium text-text-m text-black-800 absolute",
+                className: "font-inter-tight font-medium text-m text-black-800 absolute",
                 style: {
                   left: "1.4375rem",
                   top: "1.4375rem",
@@ -1793,7 +1793,7 @@ function StatusPill({ status, label, className = "" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
     "span",
     {
-      className: `inline-flex items-center justify-center font-inter-tight font-medium text-text-xs whitespace-nowrap ${className}`,
+      className: `inline-flex items-center justify-center font-inter-tight font-medium text-xs whitespace-nowrap ${className}`,
       style: {
         padding: "0.625rem 0.75rem",
         borderRadius: "1.5rem",
@@ -1825,20 +1825,20 @@ function Tag({
   let cls = "font-inter-tight whitespace-nowrap transition-colors duration-200 ";
   let style = {};
   if (variant === "tab") {
-    cls += "font-medium text-text-s-med md:text-text-m ";
+    cls += "font-medium text-s-med md:text-m ";
     cls += "h-10 md:h-[3.25rem] px-3 md:px-5 py-2 md:py-4 ";
     cls += "rounded-xl md:rounded-2xl ";
     cls += "focus-visible:outline focus-visible:outline-2 focus-visible:outline-white ";
     style.background = active ? "var(--white-100)" : "var(--black-400)";
     style.color = active ? "var(--black-100)" : "var(--white-400)";
   } else if (variant === "regulatory") {
-    cls += "inline-flex items-center gap-2 font-medium text-text-s-semi text-white-400 ";
+    cls += "inline-flex items-center gap-2 font-medium text-s-semi text-white-400 ";
     cls += "rounded-full ";
     style.padding = "0.5rem 0.875rem";
     style.background = "var(--black-400)";
     style.border = "1px solid var(--border-subtle)";
   } else {
-    const sizeStyles = size === "sm" ? "text-text-s-med px-3.5 py-1.5" : size === "lg" ? "text-text-m px-6 py-2.5" : "text-text-m px-5 py-2";
+    const sizeStyles = size === "sm" ? "text-s-med px-3.5 py-1.5" : size === "lg" ? "text-m px-6 py-2.5" : "text-m px-5 py-2";
     cls += `font-semibold rounded-full ${sizeStyles} `;
     cls += active ? "bg-white text-black" : "bg-transparent text-white/40 hover:text-white/70";
   }
