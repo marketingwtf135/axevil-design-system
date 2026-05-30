@@ -1,4 +1,5 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
+import * as react from 'react';
 import { ReactNode, CSSProperties } from 'react';
 import { MotionProps } from 'framer-motion';
 
@@ -13,7 +14,19 @@ declare function FadeIn({ children, className }: FadeInProps): react_jsx_runtime
  *  Tablet:  logo top, 5 columns flex-row below (justify-between)
  *  Mobile:  logo top, 2-col grid below
  */
-declare function Footer(): react_jsx_runtime.JSX.Element;
+interface FooterLink {
+    label: string;
+    href: string;
+}
+interface FooterProps {
+    /** Logo link target (default '/'). */
+    logoHref?: string;
+    /** Replace the 5 nav columns with a flat link row (standalone pages, e.g. axevil-about). */
+    links?: FooterLink[];
+    /** Optional compliance/legal line rendered under the logo. */
+    compliance?: react.ReactNode;
+}
+declare function Footer({ logoHref, links, compliance }?: FooterProps): react_jsx_runtime.JSX.Element;
 
 interface NavLinkItem {
     label: string;

@@ -103,7 +103,7 @@ var NAV_COLUMNS = [
     { label: "Contacts", href: "#" }
   ] }
 ];
-function Footer() {
+function Footer({ logoHref = "/", links, compliance } = {}) {
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
     "footer",
     {
@@ -115,40 +115,50 @@ function Footer() {
           className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
           style: { maxWidth: "90rem" },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/", "aria-label": "AXEVIL Capital", className: "shrink-0 inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-              "img",
-              {
-                src: "/img/logos/footer-logo.svg",
-                alt: "AXEVIL",
-                className: "footer-logo",
-                style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
-              }
-            ) }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-              "nav",
-              {
-                className: "\n            grid grid-cols-2 gap-x-6 gap-y-10\n            md:flex md:flex-row md:flex-wrap md:justify-between md:gap-y-10\n            lg:flex-nowrap lg:gap-x-12 lg:w-auto\n            font-inter-tight font-medium text-white\n          ",
-                style: { maxWidth: "44.375rem", width: "100%" },
-                children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                    "a",
-                    {
-                      href: col.href,
-                      className: "text-base text-white hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                      style: { letterSpacing: "-0.02em" },
-                      children: col.heading
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                    "a",
-                    {
-                      href: item.href,
-                      className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                      children: item.label
-                    }
-                  ) }, item.label)) })
-                ] }, col.heading))
-              }
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "1.25rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                "img",
+                {
+                  src: "/img/logos/footer-logo.svg",
+                  alt: "AXEVIL",
+                  className: "footer-logo",
+                  style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
+                }
+              ) }),
+              compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "34rem" }, children: compliance })
+            ] }),
+            links ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
+              /* ── Nav columns ──
+                  mobile: 2-col grid
+                  tablet+: flex-row, justify-between, wraps if needed
+                  desktop: pinned right, max-w 44.375rem (=710px)
+              */
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                "nav",
+                {
+                  className: "\r\n            grid grid-cols-2 gap-x-6 gap-y-10\r\n            md:flex md:flex-row md:flex-wrap md:justify-between md:gap-y-10\r\n            lg:flex-nowrap lg:gap-x-12 lg:w-auto\r\n            font-inter-tight font-medium text-white\r\n          ",
+                  style: { maxWidth: "44.375rem", width: "100%" },
+                  children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                      "a",
+                      {
+                        href: col.href,
+                        className: "text-base text-white hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
+                        style: { letterSpacing: "-0.02em" },
+                        children: col.heading
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                      "a",
+                      {
+                        href: item.href,
+                        className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
+                        children: item.label
+                      }
+                    ) }, item.label)) })
+                  ] }, col.heading))
+                }
+              )
             )
           ]
         }
