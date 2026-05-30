@@ -82,6 +82,8 @@ const tokens = {
     // Responsive via --font-btn: 1rem desktop/tablet → 0.875rem mobile (per 2026-05-28).
     'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: '0' }],
     'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
+    // text-large — 24/22/20px (desktop/tablet/mobile), medium weight. Figma desktop-1920/text-large.
+    'large':  ['var(--font-large)', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
     'h4':          ['var(--font-h4)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
     'h3':          ['var(--font-h3)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
     'h2':          ['var(--font-h2)', { lineHeight: '1',    letterSpacing: '-0.02em' }],

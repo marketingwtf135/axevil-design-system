@@ -77,6 +77,7 @@
   --font-m:    1rem;      /* 16px desktop, 14px tablet/mobile */
   --font-l:    1.125rem;  /* 18px desktop, 16px tablet, 14px mobile (paragraph) */
   --font-xl:   1.25rem;   /* 20px desktop, 18px tablet/mobile */
+  --font-large: 1.5rem;   /* 24px desktop, 22px tablet, 20px mobile — medium weight (text-large) */
   --font-h4:   1.5rem;    /* 24px desktop, 20px tablet/mobile */
   --font-h3:   2.25rem;   /* 36px desktop, 27px tablet, 24px mobile */
   --font-h2:   4rem;      /* 64px desktop, 48px tablet, 36px mobile */
@@ -141,6 +142,7 @@
     --font-h2: 3rem;       /* 48px */
     --font-h3: 1.6875rem;  /* 27px */
     --font-h4: 1.25rem;    /* 20px */
+    --font-large: 1.375rem; /* 22px tablet */
     --font-xl: 1.125rem;   /* 18px */
     --font-l:  1rem;       /* 16px */
     --font-m:  0.875rem;   /* 14px */
@@ -155,6 +157,7 @@
     --font-h2: 2.25rem;    /* 36px */
     --font-h3: 1.5rem;     /* 24px */
     --font-h4: 1.25rem;    /* 20px */
+    --font-large: 1.25rem; /* 20px mobile */
     --font-xl: 1rem;       /* 16px (per 2026-05-27 mobile feedback вЂ” was 18px; must be в‰¤ h4) */
     --font-l:  0.875rem;   /* 14px (paragraph) */
     --font-m:  0.875rem;   /* 14px */
