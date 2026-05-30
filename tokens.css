@@ -186,7 +186,9 @@
 }
 .gradient-text,
 .text-acc-gradient {
-  background-size: 200% auto;
+  /* !important so a later `.text-acc-gradient { background: … }` shorthand
+     can't reset background-size and kill the sweep. */
+  background-size: 200% auto !important;
   animation: axv-headline-shine 6s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
