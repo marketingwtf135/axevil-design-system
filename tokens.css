@@ -175,6 +175,25 @@
   -webkit-text-fill-color: transparent;
 }
 
+/* ── Animated headline shimmer ──────────────────────────────────────────
+   A soft silver→white highlight drifting across gradient headings. Same
+   clip-gradient, just a wider background swaying its position back and forth,
+   seamlessly looped. Applies to all h1/h2 using .gradient-text or
+   .text-acc-gradient. Honors prefers-reduced-motion. */
+@keyframes axv-headline-shine {
+  0%, 100% { background-position: 0% center; }
+  50%      { background-position: 100% center; }
+}
+.gradient-text,
+.text-acc-gradient {
+  background-size: 200% auto;
+  animation: axv-headline-shine 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text,
+  .text-acc-gradient { animation: none; }
+}
+
 /* Layer 2 semantic aliases — kept lean: only entries with active usages
    survive (rest deleted 2026-05-29 per audit). Add new aliases here only
    when there is a confirmed call site. */
