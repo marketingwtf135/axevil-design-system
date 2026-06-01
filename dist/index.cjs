@@ -77,30 +77,13 @@ var import_jsx_runtime2 = require("react/jsx-runtime");
 var NAV_COLUMNS = [
   { heading: "Invest", href: "/retail-investors", items: [
     { label: "Wealth Manager", href: "/wealth-managers" },
-    { label: "Retail Investors", href: "/retail-investors" }
-  ] },
-  { heading: "Company stock", href: "/company-stock", items: [
-    { label: "Overview", href: "/company-stock" },
-    { label: "Track Price", href: "/company-stock" },
-    { label: "Why Invest", href: "/company-stock" },
-    { label: "FAQ", href: "/company-stock" }
-  ] },
-  { heading: "Product", href: "/wealth-managers", items: [
-    { label: "Active Deals", href: "#" },
-    { label: "Portfolio", href: "#" },
-    { label: "CRM", href: "#" },
-    { label: "Market Intelligence", href: "#" },
-    { label: "Secondary", href: "#" }
-  ] },
-  { heading: "Resources", href: "#", items: [
-    { label: "Blog", href: "#" },
-    { label: "Case Studies", href: "#" },
-    { label: "Testimonials", href: "#" }
+    { label: "Retail Investors", href: "/retail-investors" },
+    { label: "Company Stock", href: "/company-stock" }
   ] },
   { heading: "Company", href: "#", items: [
-    { label: "About Us", href: "#" },
-    { label: "Team", href: "#" },
-    { label: "Contacts", href: "#" }
+    { label: "About Us", href: "/about-us" },
+    { label: "Team", href: "/team" },
+    { label: "Contacts", href: "/contacts" }
   ] }
 ];
 function Footer({ logoHref = "/", links, compliance } = {}) {
@@ -136,8 +119,8 @@ function Footer({ logoHref = "/", links, compliance } = {}) {
               /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
                 "nav",
                 {
-                  className: "\r\n            grid grid-cols-2 gap-x-6 gap-y-10\r\n            md:flex md:flex-row md:flex-wrap md:justify-between md:gap-y-10\r\n            lg:flex-nowrap lg:gap-x-12 lg:w-auto\r\n            font-inter-tight font-medium text-white\r\n          ",
-                  style: { maxWidth: "44.375rem", width: "100%" },
+                  className: "flex flex-wrap gap-x-spacing-4 gap-y-10 font-inter-tight font-medium text-white",
+                  "aria-label": "Footer",
                   children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
                     /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
                       "a",

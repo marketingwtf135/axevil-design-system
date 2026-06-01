@@ -10,8 +10,8 @@ interface FadeInProps {
 declare function FadeIn({ children, className }: FadeInProps): react_jsx_runtime.JSX.Element;
 
 /** Footer — Figma 1121:4630 (desktop), 1121:4632 (tablet), 1121:4730 (mobile)
- *  Desktop: logo left + 5 nav columns right, justify-between (max-w 1440)
- *  Tablet:  logo top, 5 columns flex-row below (justify-between)
+ *  Desktop: logo left + 2 nav columns right (Invest · Company), justify-between (max-w 1440)
+ *  Tablet:  logo top, columns flex-row below (justify-between)
  *  Mobile:  logo top, 2-col grid below
  */
 interface FooterLink {
