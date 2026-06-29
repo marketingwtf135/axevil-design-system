@@ -157,12 +157,9 @@ var import_react3 = require("react");
 var import_react2 = require("react");
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var SIZE_STYLES = {
-  L: { height: "3.5rem", padding: "0.8125rem 1.5rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
-  M: { height: "3rem", padding: "0.75rem 1.5rem", borderRadius: "0.75rem", fontSize: "var(--font-btn)", fontWeight: 600 },
-  /* S bumped to 3rem (was 2.5rem) per 2026-05-27 feedback — mobile CTAs across hero blocks */
-  S: { height: "3rem", padding: "0.625rem 1.25rem", borderRadius: "0.75rem", fontSize: "var(--font-btn)", fontWeight: 600 },
-  /* XS — Nav button. 2.5rem height, border-radius 0.75rem (token border-r-0.75) per 2026-05-27 #8. */
-  XS: { height: "2.5rem", padding: "0.5rem 1rem", borderRadius: "0.75rem", fontSize: "0.875rem", fontWeight: 600 }
+  M: { height: "3.625rem", padding: "0.75rem 1.5rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
+  S: { height: "3.125rem", padding: "0.625rem 1.25rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
+  XS: { height: "2.625rem", padding: "0.5rem 1rem", borderRadius: "0.75rem", fontSize: "0.875rem", fontWeight: 600 }
 };
 var BLACK_400 = "var(--black-400, #151515)";
 var BLACK_600 = "var(--black-600, #202020)";
@@ -185,7 +182,7 @@ function BtnOwn({
   const sizeStyle = size ? SIZE_STYLES[size] : {};
   const variantStyle = VARIANT_BASE[variant];
   const iconSrc = icon ?? "/icons/Key.svg";
-  const iconSize = size === "XS" ? "0.875rem" : size === "S" ? "1rem" : size === "M" ? "1.25rem" : "1.5rem";
+  const iconSize = size === "XS" ? "0.875rem" : size === "S" ? "1rem" : "1.25rem";
   const iconFilter = variant === "primary" ? "brightness(0)" : "none";
   const hoverStyle = variant === "secondary" ? { background: hovered ? BLACK_600 : BLACK_400, transition: "background-color 0.5s ease-in-out" } : {};
   const hoverClass = variant === "primary" ? "hover:shadow-[0_0_24px_rgba(255,255,255,0.25)] hover:scale-[1.02]" : "";
@@ -194,8 +191,11 @@ function BtnOwn({
     {
       type,
       onClick: () => {
-        onClick?.();
-        window.dispatchEvent(new CustomEvent("open-quiz"));
+        if (onClick) {
+          onClick();
+          return;
+        }
+        if (type !== "submit") window.dispatchEvent(new CustomEvent("open-quiz"));
       },
       onMouseEnter: () => setHovered(true),
       onMouseLeave: () => setHovered(false),
@@ -203,8 +203,8 @@ function BtnOwn({
       onBlur: () => setHovered(false),
       className: `btn-own flex items-center justify-center gap-2 font-inter-tight font-semibold transition-all duration-300 ease-out ${hoverClass} focus-visible:outline focus-visible:outline-2 focus-visible:outline-white ${className}`,
       style: {
-        height: "3.5rem",
-        padding: "0.8125rem 1.5rem",
+        height: "3.625rem",
+        padding: "0.75rem 1.5rem",
         borderRadius: "1rem",
         fontSize: "var(--font-btn)",
         fontWeight: 600,
@@ -224,7 +224,10 @@ function BtnOwn({
             style: { width: iconSize, height: iconSize, filter: iconFilter }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { className: "btn-own-slide", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "btn-own-slide-text", children }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "btn-own-slide-text", "aria-hidden": "true", children })
+        ] })
       ]
     }
   );
@@ -383,6 +386,39 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+  const [hidden, setHidden] = (0, import_react3.useState)(false);
+  (0, import_react3.useEffect)(() => {
+    let lastY = window.scrollY;
+    let downAccum = 0;
+    let upAccum = 0;
+    const THRESHOLD = 400;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+      if (y < 80) {
+        setHidden(false);
+        downAccum = 0;
+        upAccum = 0;
+        return;
+      }
+      if (delta > 0) {
+        downAccum += delta;
+        upAccum = 0;
+        if (downAccum > THRESHOLD) setHidden(true);
+      } else if (delta < 0) {
+        upAccum -= delta;
+        downAccum = 0;
+        if (upAccum > THRESHOLD) setHidden(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const [mounted, setMounted] = (0, import_react3.useState)(false);
+  (0, import_react3.useEffect)(() => {
+    setMounted(true);
+  }, []);
   function openWith(key) {
     if (closeTimer.current) {
       clearTimeout(closeTimer.current);
@@ -402,7 +438,11 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
         className: "fixed top-0 left-0 w-full z-50 h-[3.75rem] md:h-[5rem]",
         style: {
           background: "var(--black-200, #060606)",
-          borderBottom: "1px solid var(--black-500, #1A1A1A)"
+          borderBottom: "1px solid var(--black-500, #1A1A1A)",
+          transform: hidden && !menuOpen ? "translateY(-100%)" : "translateY(0)",
+          opacity: mounted ? 1 : 0,
+          transition: "transform 0.35s ease, opacity 0.4s ease",
+          willChange: "transform, opacity"
         },
         children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
           "div",
@@ -527,7 +567,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
           /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { padding: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
             BtnOwn,
             {
-              size: "L",
+              size: "M",
               hideIcon: true,
               className: "w-full",
               onClick: () => {
@@ -604,10 +644,10 @@ function AnswerBtn({ opt, selected, onClick }) {
       type: "button",
       onClick,
       whileTap: { scale: 0.99 },
-      className: "flex items-start gap-3 outline-none w-full bg-surface-2 rounded-2xl text-left",
+      className: "flex items-center gap-3 outline-none w-full bg-surface-2 rounded-2xl text-left",
       style: {
-        minHeight: "3.25rem",
-        padding: "0.875rem 1rem",
+        minHeight: "3.75rem",
+        padding: "1rem 1.25rem",
         border: "none",
         flexShrink: 0
       },
@@ -626,7 +666,7 @@ function AnswerBtn({ opt, selected, onClick }) {
             src: selected ? "/icons/True.svg" : "/icons/True-innactive.svg",
             alt: "",
             "aria-hidden": "true",
-            className: "shrink-0 w-5 h-5 md:w-6 md:h-6 mt-0.5",
+            className: "shrink-0 w-5 h-5 md:w-6 md:h-6",
             animate: { scale: selected ? 1.05 : 1 },
             transition: { duration: 0.15, ease: "easeOut" }
           }
@@ -643,11 +683,11 @@ function Quiz({ onClose }) {
   const isBelowLg = useIsBelowLg();
   (0, import_react4.useEffect)(() => {
     setProgress(0);
-    const pInt = setInterval(() => setProgress((p) => Math.min(p + 1, 100)), 50);
+    const pInt = setInterval(() => setProgress((p) => Math.min(p + 0.5, 100)), 50);
     const sInt = setInterval(() => {
       setProgress(0);
       setSlide((s) => (s + 1) % SLIDES.length);
-    }, 5e3);
+    }, 1e4);
     return () => {
       clearInterval(pInt);
       clearInterval(sInt);
@@ -666,9 +706,15 @@ function Quiz({ onClose }) {
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
           "div",
           {
-            className: "flex flex-col items-center bg-page-bg w-full lg:w-1/2 px-5 py-6 md:px-10 md:py-10 lg:p-[3.75rem]",
-            style: { height: isBelowLg ? "auto" : "100%" },
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col w-full h-full lg:overflow-hidden", style: { maxWidth: "47.5rem" }, children: [
+            className: "flex flex-col items-center bg-page-bg w-full lg:w-1/2",
+            style: {
+              height: isBelowLg ? "auto" : "100%",
+              paddingLeft: "clamp(1.25rem, 3.2vw, 3.75rem)",
+              paddingRight: "clamp(1.25rem, 3.2vw, 3.75rem)",
+              paddingTop: "clamp(1.5rem, 3.2vw, 3.75rem)",
+              paddingBottom: "clamp(1.5rem, 3.2vw, 3.75rem)"
+            },
+            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col w-full h-full lg:overflow-hidden lg:justify-center", style: { maxWidth: "47.5rem" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_framer_motion2.AnimatePresence, { mode: "wait", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
                 import_framer_motion2.motion.div,
                 {
@@ -676,22 +722,17 @@ function Quiz({ onClose }) {
                   animate: { opacity: 1, y: 0 },
                   exit: { opacity: 0, y: -20 },
                   transition: { duration: 0.45, ease: [0.4, 0, 0.2, 1] },
-                  className: "flex flex-col flex-1 lg:overflow-hidden",
+                  className: "flex flex-col lg:overflow-hidden",
+                  style: { gap: "clamp(1.5rem, 2.5vw, 1.5rem)" },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col gap-3 md:gap-4 lg:gap-6 shrink-0", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                        "h2",
-                        {
-                          className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text whitespace-pre-line",
-                          style: {
-                            backgroundImage: "linear-gradient(116.928deg, #ffffff 2.5635%, #8f8f8f 99.06%)"
-                          },
-                          children: cur.heading
-                        }
-                      ),
-                      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-paragraph whitespace-pre-line text-neutral-35", children: cur.body })
-                    ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "shrink-0", style: { height: "clamp(1.5rem, 4vw, 4rem)" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1.5rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                      "h2",
+                      {
+                        "data-no-reveal": true,
+                        className: "font-inter-tight font-semibold text-h3 text-white-100 whitespace-pre-line",
+                        children: cur.heading
+                      }
+                    ) }),
                     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
                       "div",
                       {
@@ -715,7 +756,7 @@ function Quiz({ onClose }) {
                           ),
                           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "shrink-0 flex flex-col gap-1", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
                             cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { className: "font-inter-tight font-semibold text-white text-h4", children: cur.subheading }),
-                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-m md:text-h4 whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-m md:text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
+                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-paragraph whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
                         ]
                       }
@@ -724,26 +765,41 @@ function Quiz({ onClose }) {
                 },
                 slide
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex gap-2 md:gap-3 lg:gap-5 mt-6 lg:mt-auto pt-2 lg:pt-8 shrink-0", children: SLIDES.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col gap-2 lg:gap-3 flex-1", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "rounded-full overflow-hidden", style: { height: "0.1875rem", background: "rgba(255,255,255,0.15)" }, children: [
-                  i < slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "h-full w-full bg-white" }),
-                  i === slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_framer_motion2.motion.div, { className: "h-full bg-white", initial: { width: "0%" }, animate: { width: `${progress}%` }, transition: { duration: 0.05, ease: "linear" } })
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: `font-inter-tight font-medium text-xs md:text-s-med hidden md:inline truncate ${i <= slide ? "text-white" : "text-white/30"}`, children: s.label })
-              ] }, s.id)) })
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                "div",
+                {
+                  className: "flex shrink-0",
+                  style: {
+                    gap: "clamp(0.5rem, 1.4vw, 1.25rem)",
+                    marginTop: "1.5rem",
+                    paddingTop: "clamp(0.5rem, 1.6vw, 2rem)"
+                  },
+                  children: SLIDES.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(0.5rem, 1vw, 0.75rem)" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "rounded-full overflow-hidden", style: { height: "0.1875rem", background: "rgba(255,255,255,0.15)" }, children: [
+                      i < slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "h-full w-full bg-white" }),
+                      i === slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_framer_motion2.motion.div, { className: "h-full bg-white", initial: { width: "0%" }, animate: { width: `${progress}%` }, transition: { duration: 0.05, ease: "linear" } })
+                    ] }),
+                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: `font-inter-tight font-medium text-xs md:text-s-med hidden md:inline truncate ${i <= slide ? "text-white" : "text-white/30"}`, children: s.label })
+                  ] }, s.id))
+                }
+              )
             ] })
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
           "div",
           {
-            className: "flex flex-col items-center bg-surface-0 w-full lg:w-1/2 px-5 py-6 md:px-10 md:py-10 lg:px-16 lg:py-10 lg:overflow-y-auto",
+            className: "flex flex-col items-center bg-surface-0 w-full lg:w-1/2 lg:overflow-y-auto",
             style: {
               height: isBelowLg ? "auto" : "100%",
-              justifyContent: "flex-start"
+              justifyContent: "flex-start",
+              paddingLeft: "clamp(1.25rem, 3.4vw, 4rem)",
+              paddingRight: "clamp(1.25rem, 3.4vw, 4rem)",
+              paddingTop: "clamp(1.5rem, 3vw, 2.5rem)",
+              paddingBottom: "clamp(1.5rem, 3vw, 2.5rem)"
             },
             children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col w-full h-full", style: { maxWidth: "47.5rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex justify-end mb-4 md:mb-8 shrink-0", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex justify-end shrink-0", style: { marginBottom: "clamp(1rem, 2.2vw, 2rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
                 "button",
                 {
                   type: "button",
@@ -752,7 +808,7 @@ function Quiz({ onClose }) {
                   children: "\u2715 Close"
                 }
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col flex-1 gap-6 md:gap-10", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(1.5rem, 3vw, 2.5rem)" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
                   "h2",
                   {
@@ -766,8 +822,8 @@ function Quiz({ onClose }) {
                     ]
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0 gap-5 md:gap-8", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col gap-3 md:gap-4 shrink-0", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(1.25rem, 2.4vw, 2rem)" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
                     /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
                       "p",
                       {
@@ -778,7 +834,7 @@ function Quiz({ onClose }) {
                     ),
                     /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex flex-col gap-2", children: Q1.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(AnswerBtn, { opt, selected: q1 === i, onClick: () => setQ1(q1 === i ? null : i) }, i)) })
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col gap-3 md:gap-4 shrink-0", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
                     /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
                       "p",
                       {
@@ -791,19 +847,26 @@ function Quiz({ onClose }) {
                   ] })
                 ] })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex items-center justify-between gap-2 mt-8 lg:mt-auto pt-6 md:pt-8 shrink-0", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: onClose,
-                    className: "flex items-center justify-center font-inter-tight font-semibold text-white outline-none transition-all duration-300 bg-surface-1 hover:bg-surface-mid rounded-2xl text-sm md:text-base h-12 md:h-14 px-5 md:px-6",
-                    children: "Back"
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BtnOwn, { size: "S", hideIcon: true, className: "md:hidden", children: "Next" }),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BtnOwn, { size: "L", hideIcon: true, className: "hidden md:flex", children: "Next" })
-              ] })
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+                "div",
+                {
+                  className: "flex items-center justify-between gap-2 mt-8 lg:mt-auto shrink-0",
+                  style: { paddingTop: "clamp(1.5rem, 2.4vw, 2rem)" },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: onClose,
+                        className: "flex items-center justify-center font-inter-tight font-semibold text-white outline-none transition-all duration-300 bg-surface-1 hover:bg-surface-mid rounded-2xl text-sm md:text-base h-12 md:h-14 px-5 md:px-6",
+                        children: "Back"
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BtnOwn, { size: "S", hideIcon: true, className: "md:hidden", children: "Next" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BtnOwn, { size: "M", hideIcon: true, className: "hidden md:flex", children: "Next" })
+                  ]
+                }
+              )
             ] })
           }
         )
@@ -817,7 +880,7 @@ var import_react5 = require("react");
 var import_framer_motion3 = require("framer-motion");
 var import_jsx_runtime7 = require("react/jsx-runtime");
 function BgFeatures({
-  spotlight = true,
+  spotlight = false,
   spotlightSize = "24rem",
   ambientOpacity = 0.5,
   backgroundPosition = "53% -7.5rem",
@@ -941,6 +1004,8 @@ function CtaForm({
   subtitle,
   primaryLabel,
   secondaryLabel,
+  primarySize,
+  primaryHideIcon = false,
   onPrimaryClick,
   onSecondaryClick,
   className = ""
@@ -978,10 +1043,14 @@ function CtaForm({
             className: "flex flex-col sm:flex-row items-stretch sm:items-center justify-center w-full max-w-[30rem] sm:max-w-none",
             style: { gap: "0.5rem" },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "S", onClick: onPrimaryClick, className: "w-full sm:hidden", children: primaryLabel }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "S", hideIcon: true, variant: "secondary", noBorder: true, onClick: onSecondaryClick, className: "w-full sm:hidden", children: secondaryLabel }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "L", onClick: onPrimaryClick, className: "hidden sm:flex sm:w-auto", children: primaryLabel }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "L", hideIcon: true, variant: "secondary", noBorder: true, onClick: onSecondaryClick, className: "hidden sm:flex sm:w-auto", children: secondaryLabel })
+              primarySize ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: primarySize, hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:w-auto", children: primaryLabel }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_jsx_runtime9.Fragment, { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "S", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:hidden", children: primaryLabel }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "M", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "hidden sm:flex sm:w-auto", children: primaryLabel })
+              ] }),
+              secondaryLabel && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_jsx_runtime9.Fragment, { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "S", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "w-full sm:hidden", children: secondaryLabel }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "M", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "hidden sm:flex sm:w-auto", children: secondaryLabel })
+              ] })
             ]
           }
         )
@@ -1055,7 +1124,7 @@ function CtaFormNewsletter({
           BtnOwn,
           {
             type: "submit",
-            size: "L",
+            size: "M",
             icon: buttonIcon,
             className: "w-full sm:flex-1 lg:flex-none lg:w-[9.1875rem]",
             children: buttonLabel
@@ -1149,15 +1218,28 @@ function InquiryDropdown({ value, onChange }) {
   }, []);
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { ref, className: "relative w-full", children: [
     /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
-      "div",
+      "button",
       {
+        type: "button",
+        "aria-haspopup": "listbox",
+        "aria-expanded": open,
+        "aria-label": "Inquiry type",
         onClick: () => setOpen(!open),
-        className: "flex items-center justify-between cursor-pointer select-none",
+        onKeyDown: (e) => {
+          if (e.key === "Escape") {
+            setOpen(false);
+          } else if ((e.key === "Enter" || e.key === " " || e.key === "ArrowDown") && !open) {
+            e.preventDefault();
+            setOpen(true);
+          }
+        },
+        className: "flex items-center justify-between cursor-pointer select-none w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
         style: {
           background: "var(--black-500)",
           height: "3.75rem",
           borderRadius: "1rem",
-          padding: "0 1rem"
+          padding: "0 1rem",
+          border: "none"
         },
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
@@ -1177,6 +1259,7 @@ function InquiryDropdown({ value, onChange }) {
               height: "20",
               viewBox: "0 0 20 20",
               fill: "none",
+              "aria-hidden": "true",
               style: { flexShrink: 0, display: "block", width: "1.25rem", height: "1.25rem" },
               children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("path", { d: "M5 8L10 13L15 8", stroke: "rgba(255,255,255,0.4)", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
             }
@@ -1187,6 +1270,8 @@ function InquiryDropdown({ value, onChange }) {
     /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_framer_motion5.AnimatePresence, { children: open && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
       import_framer_motion5.motion.div,
       {
+        role: "listbox",
+        "aria-label": "Inquiry type",
         initial: { opacity: 0, y: -6 },
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: -6 },
@@ -1198,16 +1283,23 @@ function InquiryDropdown({ value, onChange }) {
           background: "var(--black-500)"
         },
         children: INQUIRY_OPTIONS.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          "div",
+          "button",
           {
+            type: "button",
+            role: "option",
+            "aria-selected": opt.value === value,
             onClick: () => {
               onChange(opt.value);
               setOpen(false);
             },
-            className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-m",
+            onKeyDown: (e) => {
+              if (e.key === "Escape") setOpen(false);
+            },
+            className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-m w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
             style: {
               padding: "0 1rem",
               height: "3.25rem",
+              background: "transparent",
               borderBottom: i < INQUIRY_OPTIONS.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
               color: "var(--white-400)"
             },
@@ -1275,10 +1367,10 @@ function SuccessState() {
               width: "3.5rem",
               height: "3.5rem",
               borderRadius: "50%",
-              background: "rgba(77,186,121,0.1)",
-              border: "1px solid rgba(77,186,121,0.25)"
+              background: "var(--status-open-bg)",
+              border: "1px solid var(--status-open-border)"
             },
-            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("svg", { width: "20", height: "16", viewBox: "0 0 20 16", fill: "none", style: { width: "1.25rem", height: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("path", { d: "M1.5 8L7 13.5L18.5 1.5", stroke: "#4dba79", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }) })
+            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("svg", { width: "20", height: "16", viewBox: "0 0 20 16", fill: "none", style: { width: "1.25rem", height: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("path", { d: "M1.5 8L7 13.5L18.5 1.5", stroke: "var(--status-open)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }) })
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "0.5rem" }, children: [
@@ -1366,13 +1458,12 @@ Inquiry type: ${inquiryLabel}
                 /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
                   "h2",
                   {
-                    className: "font-inter-tight font-semibold text-transparent bg-clip-text",
+                    className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
                     style: {
-                      fontSize: "clamp(2.25rem, 4.4vw, 4rem)",
-                      lineHeight: 1,
                       letterSpacing: "-0.02em",
                       overflow: "visible",
-                      backgroundImage: "linear-gradient(103.042deg, rgb(162,162,162) 15.766%, rgb(255,255,255) 49.286%, rgb(162,162,162) 82.806%)",
+                      paddingBottom: "0.15em",
+                      backgroundImage: "var(--gradient-headline)",
                       whiteSpace: "pre-line"
                     },
                     children: title
@@ -1402,6 +1493,7 @@ Inquiry type: ${inquiryLabel}
                   required: true,
                   autoComplete: "email",
                   inputMode: "email",
+                  "aria-label": "Email address",
                   placeholder: "your@email.com",
                   value: data.email,
                   onChange: (e) => setData((f) => ({ ...f, email: e.target.value })),
@@ -1414,6 +1506,7 @@ Inquiry type: ${inquiryLabel}
                   type: "text",
                   required: true,
                   autoComplete: "name",
+                  "aria-label": "Full name",
                   placeholder: "Full name",
                   value: data.name,
                   onChange: (e) => setData((f) => ({ ...f, name: e.target.value })),
@@ -1425,6 +1518,7 @@ Inquiry type: ${inquiryLabel}
                 {
                   type: "text",
                   autoComplete: "organization-title",
+                  "aria-label": "Position",
                   placeholder: "Position",
                   value: data.position,
                   onChange: (e) => setData((f) => ({ ...f, position: e.target.value })),
@@ -1437,6 +1531,7 @@ Inquiry type: ${inquiryLabel}
                   {
                     type: "text",
                     autoComplete: "organization",
+                    "aria-label": "Company",
                     placeholder: "Company",
                     value: data.company,
                     onChange: (e) => setData((f) => ({ ...f, company: e.target.value })),
@@ -1592,7 +1687,7 @@ function IllCards({
                     left: 0,
                     width: "100%",
                     height: imageHeight ?? "100%",
-                    objectFit: "contain",
+                    objectFit: card.objectFit ?? "contain",
                     ...card.imgClassName ? {} : { objectPosition }
                   },
                   loading: "lazy"
@@ -1716,7 +1811,7 @@ function SliderCard({ name, role, description, photo, className = "" }) {
     /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
       "div",
       {
-        className: "relative rounded-card w-full overflow-hidden",
+        className: "relative rounded-2 w-full overflow-hidden",
         style: {
           height: "clamp(22.5rem, 40vw, 31.25rem)",
           border: "1px solid rgba(255,255,255,0.08)",
@@ -1729,6 +1824,7 @@ function SliderCard({ name, role, description, photo, className = "" }) {
               src: "/img/block09/bg-speaker-gradient.png",
               alt: "",
               "aria-hidden": "true",
+              loading: "lazy",
               className: "absolute inset-0 w-full h-full pointer-events-none",
               style: { zIndex: 0, objectFit: "cover" }
             }
@@ -1738,7 +1834,7 @@ function SliderCard({ name, role, description, photo, className = "" }) {
             {
               alt: name,
               src: photo,
-              className: "absolute inset-0 w-full h-full object-cover object-bottom rounded-card",
+              className: "absolute inset-0 w-full h-full object-cover object-bottom rounded-2",
               loading: "lazy",
               style: { zIndex: 1 }
             }
@@ -1746,7 +1842,7 @@ function SliderCard({ name, role, description, photo, className = "" }) {
           /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
             "div",
             {
-              className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-2xl",
+              className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-2",
               style: { background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", zIndex: 2 },
               children: [
                 /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
@@ -1766,7 +1862,7 @@ function SliderCard({ name, role, description, photo, className = "" }) {
     ),
     /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "flex flex-col gap-4 items-start px-4 w-full", children: [
       /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
-        "h5",
+        "h4",
         {
           className: "font-inter-tight font-semibold text-white w-full",
           style: { fontSize: "clamp(1.125rem, 1.5vw, 1.5rem)", lineHeight: 1.1, letterSpacing: "-0.02em", margin: 0 },

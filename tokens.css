@@ -1,26 +1,21 @@
-﻿/* в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
-   @axevil/tokens  вЂ”  Three-layer token model
-   в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
-   Layer 1 (Primitives): raw values вЂ” white-100вЂ¦black-900,
-             bg-100, font-xsвЂ¦font-h1, spacing-*, border-r-*
+/* ============================================================
+   @axevil/tokens — token model
+   ------------------------------------------------------------
+   Layer 1 (Primitives): raw values — white-*, black-*, bg-100,
+             font-*, spacing-*, rounded-*, stroke-*
    Layer 2 (Aliases):    semantic names referencing Layer 1
-             вЂ” color-text, color-bg, color-border, etc.
-   Layer 3 (Components): component files reference Layer 2 only
-   в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ */
-
-/* @axevil/tokens вЂ” CSS Custom Properties
-   Import in your project's global CSS.
+   Layer 3 (Components):  component files reference tokens
    1rem = 16px
-*/
+   ============================================================ */
 
 :root {
-  /* в”Ђв”Ђ White scale в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  /* -- White scale -- */
   --white-100: #ffffff;
   --white-200: #e6e6e6;
   --white-300: #bcbcbc;
   --white-400: #9b9b9b;
 
-  /* в”Ђв”Ђ Black scale в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  /* -- Black scale -- */
   --black-100: #000000;
   --black-200: #060606;
   --black-300: #111111;
@@ -31,110 +26,108 @@
   --black-800: #404040;
   --black-900: #848484;
 
-  /* в”Ђв”Ђ Background в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  /* -- Background -- */
   --bg-100: #080808;
 
-  /* в”Ђв”Ђ Outline в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
-  --outline-100: #151515;
+  /* -- Outline -- (same value as black-400; kept as a semantic alias) */
+  --outline-100: var(--black-400);
 
-  /* в”Ђв”Ђ Semantic в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
-  --nav-bg:          #0a0a0a;
-  --section-border:  #121212;
-  --border-subtle:   #1b1b1b;
-  --border-card:     #1d1d1d;
-  --nav-border:      #171717;
-  --btn-border:      #c9c9c9;
-  --surface-0:       #141414;
-  --surface-mid:     #1d1f20;
-  --surface-3:       #2a2a2a;
-  --surface-dark:    #484b4e;
+  /* -- Semantic surfaces -- */
+  --nav-bg:        #0a0a0a;
+  --border-subtle: #1b1b1b;
+  --surface-0:     #141414;
+  --surface-mid:   #1d1f20;
+  --surface-3:     #2a2a2a;
+  --surface-dark:  #484b4e;
 
-  /* в”Ђв”Ђ Status в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  /* -- Status -- */
   --status-open:   #4dba79;
   --status-closed: #d24346;
   --status-soon:   #e0b13e;
-  --status-open-bg:     rgba(77,186,121,0.05);
-  --status-open-border: rgba(77,186,121,0.25);
+  --status-open-bg:       rgba(77,186,121,0.1);
+  --status-open-border:   rgba(77,186,121,0.25);
   --status-closed-bg:     rgba(210,67,70,0.1);
   --status-closed-border: rgba(210,67,70,0.25);
-  --status-soon-bg:     rgba(224,177,62,0.1);
-  --status-soon-border: rgba(224,177,62,0.25);
+  --status-soon-bg:       rgba(224,177,62,0.1);
+  --status-soon-border:   rgba(224,177,62,0.25);
 
-  /* в”Ђв”Ђ Accents в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
-  --accent-teal:       #175e6e;
-  --accent-teal-light: #d7ffff;
-  --accent-blue:       #546fef;
+  /* -- Accents -- */
+  --accent-teal:        #175e6e;
+  --accent-blue:        #546fef;
   --accent-blue-bg:     rgba(84,111,239,0.1);
   --accent-blue-border: rgba(84,111,239,0.25);
-  --lime-accent:       #F5FD5A;
 
-  /* в”Ђв”Ђ Typography (font-size) в”Ђв”Ђ
-     Fixed rem at desktop; smaller rem on tablet/mobile via @media overrides below.
-     Smooth fluid scaling is handled at html { font-size } level (calc) вЂ” every rem
-     in the codebase (typography + layout) inherits the same fluid base. */
+  /* -- Typography (font-size) --
+     Fixed rem at desktop; smaller on tablet/mobile via @media below.
+     Smooth fluid scaling handled at html { font-size } (calc). */
   --font-xs:   0.75rem;   /* 12px desktop, 10px tablet/mobile */
-  --font-s:    0.875rem;  /* 14px desktop, 12px tablet/mobile */
-  --font-m:    1rem;      /* 16px desktop, 14px tablet/mobile */
-  --font-l:    1.125rem;  /* 18px desktop, 16px tablet, 14px mobile (paragraph) */
-  --font-xl:   1.25rem;   /* 20px desktop, 18px tablet/mobile */
-  --font-large: 1.5rem;   /* 24px desktop, 22px tablet, 20px mobile — medium weight (text-large) */
+  --font-s:    0.875rem;  /* 14px */
+  --font-m:    1rem;      /* 16px */
+  --font-l:    1.125rem;  /* 18px (paragraph) */
+  --font-xl:   1.25rem;   /* 20px */
   --font-h4:   1.5rem;    /* 24px desktop, 20px tablet/mobile */
-  --font-h3:   2.25rem;   /* 36px desktop, 27px tablet, 24px mobile */
-  --font-h2:   4rem;      /* 64px desktop, 48px tablet, 36px mobile */
-  --font-h1:   5.5rem;    /* 88px desktop, 64px tablet, 42px mobile вЂ” used by h1-med */
-  --font-h1-semi: 4rem;   /* 64px desktop, 48px tablet, 36px mobile вЂ” used by h1-semi (per 2026-05-27 feedback) */
-  --font-btn:    1rem;    /* 16px desktop/tablet, 14px mobile (per 2026-05-28 feedback) -- used by BtnOwn */
+  --font-h3:   2.25rem;   /* 36px desktop */
+  --font-h2:   4rem;      /* 64px desktop */
+  --font-h1:   5.5rem;    /* 88px desktop — used by h1-med */
+  --font-h1-semi: 4rem;   /* 64px desktop — used by h1-semi */
+  --font-btn:    1rem;    /* 16px desktop/tablet, 14px mobile — BtnOwn */
 
-  /* в”Ђв”Ђ Spacing в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
-  --spacing-0_25: 0.25rem;
-  --spacing-0_5:  0.5rem;
-  --spacing-0_75: 0.75rem;
-  --spacing-1:    1rem;
-  --spacing-1_5:  1.5rem;
-  --spacing-2:    2rem;
-  --spacing-2_25: 2.25rem;
-  --spacing-3:    3rem;
-  --spacing-4:    4rem;
-  --spacing-7_5:  7.5rem;
-  --spacing-15:   15rem;
+  /* -- Spacing -- (Figma gap + paddings; one shared rem scale, 1 = 16px) */
+  --spacing-0:    0;
+  --spacing-0_25: 0.25rem;  /* 4px */
+  --spacing-0_5:  0.5rem;   /* 8px */
+  --spacing-0_75: 0.75rem;  /* 12px */
+  --spacing-1:    1rem;     /* 16px */
+  --spacing-1_25: 1.25rem;  /* 20px */
+  --spacing-1_5:  1.5rem;   /* 24px */
+  --spacing-2:    2rem;     /* 32px */
+  --spacing-2_25: 2.25rem;  /* 36px */
+  --spacing-2_5:  2.5rem;   /* 40px */
+  --spacing-3:    3rem;     /* 48px */
+  --spacing-4:    4rem;     /* 64px */
+  --spacing-5:    5rem;     /* 80px */
+  --spacing-6_25: 6.25rem;  /* 100px */
+  --spacing-7_5:  7.5rem;   /* 120px */
 
-  /* в”Ђв”Ђ Border radius в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
-  --border-r-0_25:   0.25rem;
-  --border-r-0_75:   0.75rem;
-  --border-r-1:      1rem;
-  --border-r-2:      2rem;
-  --border-r-3:      3rem;
-  --border-r-4:      4rem;
-  --border-r-2_625:  2.625rem;
-  --border-r-1_9375: 1.9375rem;
+  /* -- Border radius -- (Figma border-radius collection) */
+  --rounded-0_5:  0.5rem;   /* 8px */
+  --rounded-0_75: 0.75rem;  /* 12px */
+  --rounded-1:    1rem;     /* 16px */
+  --rounded-1_5:  1.5rem;   /* 24px */
+  --rounded-2:    2rem;     /* 32px */
+  --rounded-3:    3rem;     /* 48px */
+  --rounded-full: 9999px;   /* pill */
 
-  /* в”Ђв”Ђ Containers в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+  /* -- Stroke width -- (px is the allowed border exception) */
+  --stroke-1: 1px;
+  --stroke-2: 2px;
+  --stroke-3: 3px;
+
+  /* -- Section paddings -- (responsive tiers; tablet/mobile overridden below) */
+  --padding-global: 1.25rem; /* 20px desktop */
+  --ps-6:  6.25rem;          /* 100px desktop — tier 6 */
+  --ps-12: 12.5rem;          /* 200px desktop — tier 12 */
+
+  /* -- Containers -- */
   --container-medium: 90rem;
-  --container-large:  120rem;
 
-  /* в”Ђв”Ђ Gradients в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
-  --acc-gradient: linear-gradient(94deg, #A2A2A2 8.73%, #FFF 50.65%, #A2A2A2 92.57%);
-  /* Canonical headline gradient вЂ” used by ~21 h1/h2 across blocks/CS/RI/WM.
-     Stops match the recurring pattern; prefer this over inline string for new code. */
-  --gradient-headline: linear-gradient(94deg, #A2A2A2 4.07%, #FFF 49.51%, #A2A2A2 94.94%);
-  /* Narrow variant вЂ” wider grey, narrower white band. Used by KeyStats headings
-     (Block03Cards + RIKeyStats) for a slightly darker overall feel. */
-  --gradient-headline-narrow: linear-gradient(94deg, #A2A2A2 2.09%, #FFF 49.02%, #A2A2A2 95.95%);
+  /* -- Gradients --
+     Single canonical headline gradient (~21 h1/h2 across blocks/CS/RI/WM).
+     `--acc-gradient` is an alias kept for the .text-acc-gradient utility. */
+  --gradient-headline: linear-gradient(94deg, #CBCBCB 4.07%, #FFF 49.51%, #CBCBCB 94.94%);
+  --gradient-headline-narrow: linear-gradient(94deg, #CBCBCB 2.09%, #FFF 49.02%, #CBCBCB 95.95%);
+  --acc-gradient: var(--gradient-headline);
 
-  /* в”Ђв”Ђ Chart palette в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
-     Used by CSTrackPrice line chart (Anthropic price history) and any
-     future financial visualisation. Single accent-blue with gradient
-     pair + darker fills for data-point + tooltip surfaces. */
-  --chart-accent:        #4EA3BF;
-  --chart-accent-deep:   #2a6e82;
-  --chart-bg:            #101010;
-  --chart-tooltip-bg:    #1d1d1d;
-  --chart-tooltip-text:  #b7b7b7;
+  /* -- Chart palette -- (CSTrackPrice line chart) */
+  --chart-accent:       #4EA3BF;
+  --chart-bg:           #101010;
+  --chart-tooltip-bg:   #1d1d1d;
+  --chart-tooltip-text: #b7b7b7;
 }
 
-/* в”Ђв”Ђ Responsive typography overrides вЂ” Figma 578:4081 в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
-   Hard breakpoints at 1023px (tablet) and 767px (mobile) for cases where
-   the design wants a discrete size jump, on top of the fluid html scaling. */
+/* -- Responsive typography overrides --
+   Hard breakpoints at 1023px (tablet) / 767px (mobile) for discrete size jumps
+   on top of the fluid html scaling. */
 @media (max-width: 1023px) {
   :root {
     --font-h1: 4rem;       /* 64px */
@@ -142,7 +135,6 @@
     --font-h2: 3rem;       /* 48px */
     --font-h3: 1.6875rem;  /* 27px */
     --font-h4: 1.25rem;    /* 20px */
-    --font-large: 1.375rem; /* 22px tablet */
     --font-xl: 1.125rem;   /* 18px */
     --font-l:  1rem;       /* 16px */
     --font-m:  0.875rem;   /* 14px */
@@ -153,21 +145,45 @@
 @media (max-width: 767px) {
   :root {
     --font-h1: 2.625rem;   /* 42px */
-    --font-h1-semi: 2.625rem; /* 42px вЂ” matched to h1-med per 2026-05-27 feedback */
+    --font-h1-semi: 2.625rem; /* 42px — matched to h1-med */
     --font-h2: 2.25rem;    /* 36px */
     --font-h3: 1.5rem;     /* 24px */
     --font-h4: 1.25rem;    /* 20px */
-    --font-large: 1.25rem; /* 20px mobile */
-    --font-xl: 1rem;       /* 16px (per 2026-05-27 mobile feedback вЂ” was 18px; must be в‰¤ h4) */
+    --font-xl: 1rem;       /* 16px (must be <= h4) */
     --font-l:  0.875rem;   /* 14px (paragraph) */
     --font-m:  0.875rem;   /* 14px */
     --font-s:  0.75rem;    /* 12px */
     --font-xs: 0.625rem;   /* 10px */
-    --font-btn: 0.875rem;  /* 14px (per 2026-05-28 feedback вЂ” BtnOwn smaller on mobile) */
+    --font-btn: 0.875rem;  /* 14px — BtnOwn smaller on mobile */
   }
 }
 
-/* в”Ђв”Ђ Gradient text utility в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+/* -- Section paddings -- responsive tier overrides */
+@media (max-width: 1023px) {
+  :root {
+    --padding-global: 1rem;  /* 16px */
+    --ps-6:  5rem;           /* 80px */
+    --ps-12: 10rem;          /* 160px */
+  }
+}
+@media (max-width: 767px) {
+  :root {
+    --padding-global: 1rem;  /* 16px */
+    --ps-6:  3rem;           /* 48px */
+    --ps-12: 6rem;           /* 96px */
+  }
+}
+
+/* Figma `size` section-padding utilities (compose from --ps-6 / --ps-12) */
+.ps-t6-b6   { padding-top: var(--ps-6);  padding-bottom: var(--ps-6); }
+.ps-t6-b0   { padding-top: var(--ps-6);  padding-bottom: 0; }
+.ps-t0-b6   { padding-top: 0;            padding-bottom: var(--ps-6); }
+.ps-t12-b12 { padding-top: var(--ps-12); padding-bottom: var(--ps-12); }
+.ps-t6-b12  { padding-top: var(--ps-6);  padding-bottom: var(--ps-12); }
+.ps-t12-b0  { padding-top: var(--ps-12); padding-bottom: 0; }
+.ps-t0-b12  { padding-top: 0;            padding-bottom: var(--ps-12); }
+
+/* -- Gradient text utility -- */
 .text-acc-gradient {
   background: var(--acc-gradient);
   background-clip: text;
@@ -175,18 +191,16 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* ── Animated headline shimmer ──────────────────────────────────────────
-   A soft silver→white highlight drifting across gradient headings. Same
-   clip-gradient, just a wider background swaying its position back and forth,
-   seamlessly looped. Applies to all h1/h2 using .gradient-text or
-   .text-acc-gradient. Honors prefers-reduced-motion. */
+/* -- Animated headline shimmer --
+   A soft silver->white highlight drifting across gradient headings. Applies to
+   all h1/h2 using .gradient-text or .text-acc-gradient. Honors reduced-motion. */
 @keyframes axv-headline-shine {
   0%, 100% { background-position: 0% center; }
   50%      { background-position: 100% center; }
 }
 .gradient-text,
 .text-acc-gradient {
-  /* !important so a later `.text-acc-gradient { background: … }` shorthand
+  /* !important so a later `.text-acc-gradient { background: ... }` shorthand
      can't reset background-size and kill the sweep. */
   background-size: 200% auto !important;
   animation: axv-headline-shine 6s ease-in-out infinite;
@@ -196,9 +210,7 @@
   .text-acc-gradient { animation: none; }
 }
 
-/* Layer 2 semantic aliases — kept lean: only entries with active usages
-   survive (rest deleted 2026-05-29 per audit). Add new aliases here only
-   when there is a confirmed call site. */
+/* Layer 2 semantic aliases — only entries with active call sites. */
 :root {
   --color-bg-card:        var(--black-300);
   --color-border-default: var(--black-500);

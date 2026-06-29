@@ -63,7 +63,8 @@ declare function Quiz({ onClose }: QuizProps): react_jsx_runtime.JSX.Element;
  * Listens to `window.mousemove`; touch devices keep the default centered spotlight.
  */
 interface BgFeaturesProps {
-    /** Disable the cursor spotlight (texture only). Default true. */
+    /** Enable the cursor-tracked spotlight. Default false — internal-page heroes
+     *  use the static texture only (per 2026-06-25 feedback: no bg hover interaction). */
     spotlight?: boolean;
     /** Radius of the cursor spotlight. Default 24rem. */
     spotlightSize?: string;
@@ -92,7 +93,7 @@ interface BtnOwnProps {
     onClick?: () => void;
     hideIcon?: boolean;
     icon?: string;
-    size?: 'L' | 'M' | 'S' | 'XS';
+    size?: 'M' | 'S' | 'XS';
     /** primary: white bg + dark text · secondary: black-400 bg + white text, hover → black-600 */
     variant?: Variant;
     /** Legacy prop — no-op now (secondary is borderless by default). Kept so existing call-sites compile. */
@@ -120,15 +121,20 @@ interface CtaFormProps {
     subtitle?: ReactNode;
     /** Primary CTA label (white bg) */
     primaryLabel: string;
-    /** Secondary CTA label (black-400 bg) */
-    secondaryLabel: string;
+    /** Secondary CTA label (black-400 bg). Omit to render a single primary button. */
+    secondaryLabel?: string;
+    /** Override the primary button size. When set, renders ONE primary button at this
+     *  size (instead of the responsive S/M pair). Default: responsive S (mobile) / M (desktop). */
+    primarySize?: 'M' | 'S';
+    /** Hide the primary button's icon. Default false. */
+    primaryHideIcon?: boolean;
     /** Optional click handlers — both default to dispatching open-quiz */
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     /** Extra className on section */
     className?: string;
 }
-declare function CtaForm({ number, label, title, subtitle, primaryLabel, secondaryLabel, onPrimaryClick, onSecondaryClick, className, }: CtaFormProps): react_jsx_runtime.JSX.Element;
+declare function CtaForm({ number, label, title, subtitle, primaryLabel, secondaryLabel, primarySize, primaryHideIcon, onPrimaryClick, onSecondaryClick, className, }: CtaFormProps): react_jsx_runtime.JSX.Element;
 
 interface CtaFormNewsletterProps {
     /** Submit button label. Default: "Subscribe" */
@@ -214,6 +220,10 @@ interface IllCard {
     body: string;
     border?: CSSProperties;
     imgClassName?: string;
+    /** Per-card object-fit override. Default 'contain' (fits whole illustration).
+     *  Set 'cover' to stretch the image to fill the card full-width (crops to fit) —
+     *  e.g. the company-stock growth chart that should span the card edge-to-edge. */
+    objectFit?: CSSProperties['objectFit'];
 }
 interface IllCardsProps {
     cards: IllCard[];
