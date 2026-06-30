@@ -303,31 +303,13 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 var import_jsx_runtime5 = require("react/jsx-runtime");
 var NAV_LINKS = ["Invest", "Company Stock", "Product", "Compare", "Resources", "Company"];
 function navHref(label) {
-  if (label === "Company Stock") return "/company-stock";
+  if (label === "Company Stock") return "/companies";
   if (label === "Invest") return "/retail-investors";
   if (label === "Product") return "/wealth-managers";
   return "#";
 }
-var INVEST_ITEMS = [
-  {
-    label: "Wealth Managers",
-    description: "Pre-IPO infrastructure for advisors and family offices.",
-    href: "/wealth-managers"
-  },
-  {
-    label: "Retail Investors",
-    description: "Direct access to SpaceX, Anthropic, xAI and others.",
-    href: "/retail-investors"
-  }
-];
 var MOBILE_SECTIONS = [
-  {
-    label: "Invest",
-    items: [
-      { label: "Wealth Managers", href: "/wealth-managers" },
-      { label: "Retail Investors", href: "/retail-investors" }
-    ]
-  },
+  { label: "Invest" },
   { label: "Company Stock" },
   { label: "Product" },
   { label: "Compare" },
@@ -359,7 +341,6 @@ var COMPANY_ITEMS = [
   }
 ];
 function hasDropdown(label) {
-  if (label === "Invest") return "invest";
   if (label === "Company") return "company";
   return null;
 }
@@ -430,7 +411,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
     if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => setOpenDropdown(null), 180);
   }
-  const activeItems = openDropdown === "invest" ? INVEST_ITEMS : openDropdown === "company" ? COMPANY_ITEMS : [];
+  const activeItems = openDropdown === "company" ? COMPANY_ITEMS : [];
   return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
       "nav",
