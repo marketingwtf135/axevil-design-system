@@ -65,6 +65,7 @@
   --font-m:    1rem;      /* 16px */
   --font-l:    1.125rem;  /* 18px (paragraph) */
   --font-xl:   1.25rem;   /* 20px */
+  --font-large: 1.5rem;   /* 24px desktop, 20px tablet/mobile — Figma "text-large" (medium) */
   --font-h4:   1.5rem;    /* 24px desktop, 20px tablet/mobile */
   --font-h3:   2.25rem;   /* 36px desktop */
   --font-h2:   4rem;      /* 64px desktop */
@@ -135,6 +136,7 @@
     --font-h2: 3rem;       /* 48px */
     --font-h3: 1.6875rem;  /* 27px */
     --font-h4: 1.25rem;    /* 20px */
+    --font-large: 1.25rem; /* 20px */
     --font-xl: 1.125rem;   /* 18px */
     --font-l:  1rem;       /* 16px */
     --font-m:  0.875rem;   /* 14px */
@@ -149,6 +151,7 @@
     --font-h2: 2.25rem;    /* 36px */
     --font-h3: 1.5rem;     /* 24px */
     --font-h4: 1.25rem;    /* 20px */
+    --font-large: 1.25rem; /* 20px */
     --font-xl: 1rem;       /* 16px (must be <= h4) */
     --font-l:  0.875rem;   /* 14px (paragraph) */
     --font-m:  0.875rem;   /* 14px */

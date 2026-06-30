@@ -77,6 +77,7 @@ const tokens = {
     's-semi': ['var(--font-s)',  { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
     'm':      ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: '-0.02em' }],
     'l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],
+    'large':  ['var(--font-large)', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
     'paragraph':   ['var(--font-l)', { lineHeight: '1.45', letterSpacing: '-0.02em' }],
     'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: '0' }],
     'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
