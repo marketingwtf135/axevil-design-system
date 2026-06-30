@@ -488,9 +488,19 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                 /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                   BtnOwn,
                   {
+                    size: "S",
+                    hideIcon: true,
+                    className: "hidden sm:flex lg:hidden",
+                    onClick: cta,
+                    children: ctaLabel
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                  BtnOwn,
+                  {
                     size: "XS",
                     hideIcon: true,
-                    className: "hidden sm:flex",
+                    className: "hidden lg:flex",
                     onClick: cta,
                     children: ctaLabel
                   }
