@@ -742,7 +742,7 @@ function Quiz({ onClose }) {
                           ),
                           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "shrink-0 flex flex-col gap-1", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
                             cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { className: "font-inter-tight font-semibold text-white text-h4", children: cur.subheading }),
-                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-medium text-paragraph whitespace-pre-line text-white", children: cur.caption }) : null
+                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
                         ]
                       }
@@ -1016,7 +1016,7 @@ function CtaForm({
             subtitle && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
               "p",
               {
-                className: "font-inter-tight font-medium text-paragraph text-white/60",
+                className: "font-inter-tight font-normal text-paragraph text-white/60",
                 style: { maxWidth: "37.5rem" },
                 children: subtitle
               }
@@ -1694,7 +1694,7 @@ function IllCards({
                       children: card.title
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "font-inter-tight font-medium text-paragraph text-white-400", children: card.body })
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white-400", children: card.body })
                 ]
               }
             )
@@ -1769,7 +1769,7 @@ function SectionHeading({
   const subtitleEl = subtitle && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
     "p",
     {
-      className: "font-inter-tight font-medium text-paragraph text-white/60",
+      className: "font-inter-tight font-normal text-paragraph text-white/60",
       style: subtitleMaxWidth ? { maxWidth: subtitleMaxWidth } : void 0,
       children: subtitle
     }
@@ -1855,7 +1855,7 @@ function SliderCard({ name, role, description, photo, className = "" }) {
           children: name
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "font-inter-tight font-medium text-paragraph text-white/50 w-full", children: description })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
     ] })
   ] });
 }

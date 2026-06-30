@@ -72,6 +72,7 @@
   --font-h1:   5.5rem;    /* 88px desktop — used by h1-med */
   --font-h1-semi: 4rem;   /* 64px desktop — used by h1-semi */
   --font-btn:    1rem;    /* 16px desktop/tablet, 14px mobile — BtnOwn */
+  --lh-paragraph: 1.4;    /* paragraph line-height: 140% desktop / 135% tablet / 140% mobile */
 
   /* -- Spacing -- (Figma gap + paddings; one shared rem scale, 1 = 16px) */
   --spacing-0:    0;
@@ -137,6 +138,7 @@
     --font-h3: 1.6875rem;  /* 27px */
     --font-h4: 1.25rem;    /* 20px */
     --font-large: 1.25rem; /* 20px */
+    --lh-paragraph: 1.35;  /* tablet 135% */
     --font-xl: 1.125rem;   /* 18px */
     --font-l:  1rem;       /* 16px */
     --font-m:  0.875rem;   /* 14px */
@@ -152,6 +154,7 @@
     --font-h3: 1.5rem;     /* 24px */
     --font-h4: 1.25rem;    /* 20px */
     --font-large: 1.25rem; /* 20px */
+    --lh-paragraph: 1.4;   /* mobile 140% */
     --font-xl: 1rem;       /* 16px (must be <= h4) */
     --font-l:  0.875rem;   /* 14px (paragraph) */
     --font-m:  0.875rem;   /* 14px */

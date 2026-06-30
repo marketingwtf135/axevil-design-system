@@ -78,7 +78,7 @@ const tokens = {
     'm':      ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: '-0.02em' }],
     'l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],
     'large':  ['var(--font-large)', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
-    'paragraph':   ['var(--font-l)', { lineHeight: '1.45', letterSpacing: '-0.02em' }],
+    'paragraph':   ['var(--font-l)', { lineHeight: 'var(--lh-paragraph)', letterSpacing: '-0.01em', fontWeight: '400' }],
     'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: '0' }],
     'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
     'h4':          ['var(--font-h4)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
