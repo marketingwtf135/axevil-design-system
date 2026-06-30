@@ -75,10 +75,9 @@ function FadeIn({ children, className = "" }) {
 // design-system/src/components/Footer.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
 var NAV_COLUMNS = [
-  { heading: "Invest", href: "/retail-investors", items: [
-    { label: "Wealth Manager", href: "/wealth-managers" },
-    { label: "Retail Investors", href: "/retail-investors" },
-    { label: "Company Stock", href: "/company-stock" }
+  // Wealth Manager + Retail Investors hidden for v1 (2026-06-30).
+  { heading: "Invest", href: "/companies", items: [
+    { label: "Company Stock", href: "/companies" }
   ] },
   { heading: "Company", href: "#", items: [
     { label: "About Us", href: "/about-us" },
@@ -301,17 +300,13 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 
 // design-system/src/components/Nav.tsx
 var import_jsx_runtime5 = require("react/jsx-runtime");
-var NAV_LINKS = ["Invest", "Company Stock", "Product", "Compare", "Resources", "Company"];
+var NAV_LINKS = ["Company Stock", "Compare", "Resources", "Company"];
 function navHref(label) {
   if (label === "Company Stock") return "/companies";
-  if (label === "Invest") return "/retail-investors";
-  if (label === "Product") return "/wealth-managers";
   return "#";
 }
 var MOBILE_SECTIONS = [
-  { label: "Invest" },
   { label: "Company Stock" },
-  { label: "Product" },
   { label: "Compare" },
   { label: "Resources" },
   {
