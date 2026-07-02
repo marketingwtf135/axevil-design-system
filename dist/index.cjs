@@ -1792,17 +1792,13 @@ function SectionHeading({
 
 // design-system/src/components/slider-card.tsx
 var import_jsx_runtime17 = require("react/jsx-runtime");
-function SliderCard({ name, role, description, photo, className = "" }) {
+function SliderCard({ name, role, description, photo, linkedin, className = "" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
       "div",
       {
-        className: "relative rounded-2 w-full overflow-hidden",
-        style: {
-          height: "clamp(22.5rem, 40vw, 31.25rem)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          background: "var(--surface-0)"
-        },
+        className: "relative rounded-2 w-full overflow-hidden border-2 border-outline-100",
+        style: { height: "25rem" },
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
             "img",
@@ -1820,23 +1816,23 @@ function SliderCard({ name, role, description, photo, className = "" }) {
             {
               alt: name,
               src: photo,
-              className: "absolute inset-0 w-full h-full object-cover object-bottom rounded-2",
+              className: "absolute inset-0 w-full h-full rounded-2",
               loading: "lazy",
-              style: { zIndex: 1 }
+              style: { zIndex: 1, objectFit: "contain", objectPosition: "bottom center" }
             }
           ),
           /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
             "div",
             {
-              className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-2",
-              style: { background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", zIndex: 2 },
+              className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-1",
+              style: { background: "var(--black-600)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", zIndex: 2 },
               children: [
                 /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
                 /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                   "span",
                   {
                     className: "font-inter-tight font-semibold text-white whitespace-nowrap",
-                    style: { fontSize: "0.8125rem", lineHeight: 1.2, letterSpacing: "-0.02em" },
+                    style: { fontSize: "0.875rem", lineHeight: 1.2, letterSpacing: "-0.02em" },
                     children: role
                   }
                 )
@@ -1846,16 +1842,31 @@ function SliderCard({ name, role, description, photo, className = "" }) {
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "flex flex-col gap-4 items-start px-4 w-full", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
-        "h4",
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "flex flex-col items-start px-4 w-full", style: { gap: "1.25rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.75rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          "h4",
+          {
+            className: "font-inter-tight font-semibold text-white w-full",
+            style: { fontSize: "clamp(1.125rem, 1.5vw, 1.5rem)", lineHeight: 1.2, letterSpacing: "-0.02em", margin: 0 },
+            children: name
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+        "a",
         {
-          className: "font-inter-tight font-semibold text-white w-full",
-          style: { fontSize: "clamp(1.125rem, 1.5vw, 1.5rem)", lineHeight: 1.1, letterSpacing: "-0.02em", margin: 0 },
-          children: name
+          href: linkedin || void 0,
+          target: linkedin ? "_blank" : void 0,
+          rel: linkedin ? "noreferrer" : void 0,
+          className: "group flex items-center gap-2 text-white",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", className: "shrink-0", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" }) })
+          ]
         }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
+      )
     ] })
   ] });
 }

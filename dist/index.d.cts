@@ -325,9 +325,11 @@ interface SliderCardProps {
     role: string;
     description: string;
     photo: string;
+    /** LinkedIn profile URL — wired later; the link renders regardless (Figma 797:4193). */
+    linkedin?: string;
     className?: string;
 }
-declare function SliderCard({ name, role, description, photo, className }: SliderCardProps): react_jsx_runtime.JSX.Element;
+declare function SliderCard({ name, role, description, photo, linkedin, className }: SliderCardProps): react_jsx_runtime.JSX.Element;
 
 /**
  * Status pill — small badge with a colored dot + label.
