@@ -239,8 +239,12 @@ interface IllCardsProps {
      *  Use when the image should not fill the entire card (e.g. Block08Section
      *  requests 10rem so the illustration hugs the top edge). */
     imageHeight?: string;
+    /** When true, the card illustration is not rendered — only the number + text
+     *  content remain. Card fill/border/padding/radius stay unchanged.
+     *  Used by CS "Why invest" per client feedback (illustrations removed for now). */
+    hideImages?: boolean;
 }
-declare function IllCards({ cards, className, objectPosition, cardHeight, titleSize, imageHeight, }: IllCardsProps): react_jsx_runtime.JSX.Element;
+declare function IllCards({ cards, className, objectPosition, cardHeight, titleSize, imageHeight, hideImages, }: IllCardsProps): react_jsx_runtime.JSX.Element;
 
 /**
  * Nav dropdown overlay — desktop-only. Hovers under the "Invest" or "Company"
@@ -257,7 +261,7 @@ declare function IllCards({ cards, className, objectPosition, cardHeight, titleS
  *     gap-6 between columns
  *   · per-link card: radius 0.5rem, padding 0.75rem, gap-2.5 inside
  *   · vertical divider: 1px white/10
- *   · label: text-xs white-400 (#9b9b9b)
+ *   · label: text-xs white-400 (#8a8f98)
  *   · description: text-s-med white-200 (#e6e6e6)
  */
 interface DropdownItem {

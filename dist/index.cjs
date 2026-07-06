@@ -1627,7 +1627,8 @@ function IllCards({
   objectPosition = "center",
   cardHeight = "20rem",
   titleSize = "h4",
-  imageHeight
+  imageHeight,
+  hideImages = false
 }) {
   const titleClass = titleSize === "h3" ? "text-h3" : "text-h4";
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
@@ -1658,7 +1659,7 @@ function IllCards({
                 children: card.num
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("picture", { children: [
+            !hideImages && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("picture", { children: [
               card.imgMobile && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("source", { media: "(max-width: 480px)", srcSet: card.imgMobile }),
               /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                 "img",

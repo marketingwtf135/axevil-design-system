@@ -13,7 +13,7 @@ const tokens = {
     'white-100': WHITE,
     'white-200': '#e6e6e6',
     'white-300': '#bcbcbc',
-    'white-400': '#9b9b9b',
+    'white-400': '#8a8f98',
 
     // ── Black scale ──────────────────────────
     'black-100': '#000000',
@@ -50,10 +50,6 @@ const tokens = {
     'accent-blue': '#546fef',
 
     // ── Legacy aliases (backward compat; values collapsed to primitives) ─────
-    'neutral-00': WHITE,
-    'neutral-30': '#b7b7b7',
-    'neutral-35': '#8f8f8f',
-    'neutral-40': '#717171',
     'page-bg':    BG_100,
     'surface-1':  BLACK_400,
     'surface-2':  BLACK_500,
@@ -61,7 +57,9 @@ const tokens = {
     'surface-4':  '#2b2b2b',
     /* Orphan tokens removed 2026-06-29 (0 usages): accent-teal-light, lime-accent,
        neutral-50, tag-active, tag-inactive, section-border, nav-border, btn-border,
-       border-card, phone-bg, card-fill, btn-label, gradient-end. */
+       border-card, phone-bg, card-fill, btn-label, gradient-end.
+       neutral-00/-30/-35/-40 removed 2026-07-06 — entire scale collapsed into white-400
+       per client feedback (single grey token instead of 4 near-duplicate neutral shades). */
   },
 
   fontFamily: {
