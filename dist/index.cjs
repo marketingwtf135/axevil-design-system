@@ -298,13 +298,13 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 
 // design-system/src/components/Nav.tsx
 var import_jsx_runtime5 = require("react/jsx-runtime");
-var NAV_LINKS = ["Company Stock", "About Axevil"];
+var NAV_LINKS = ["Private Companies", "About Axevil"];
 function navHref(label) {
-  if (label === "Company Stock") return "/companies";
+  if (label === "Private Companies") return "/companies";
   return "#";
 }
 var MOBILE_SECTIONS = [
-  { label: "Company Stock" },
+  { label: "Private Companies" },
   {
     label: "About Axevil",
     items: [
