@@ -608,12 +608,12 @@ function QuizOverlay({ children, maxWidth = "23.75rem" }) {
 
 // design-system/src/components/quiz-success-state.tsx
 var import_jsx_runtime7 = require("react/jsx-runtime");
-function QuizSuccessState({ heading, button, onClose }) {
+function QuizSuccessState({ heading, button, onClose, illustration }) {
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
     "div",
     {
-      className: "relative flex flex-col items-center bg-black-400 rounded-1 w-full",
-      style: { gap: "3rem", padding: "1.5rem" },
+      className: `relative flex flex-col md:flex-row items-center bg-black-400 rounded-1 w-full p-[clamp(1rem,3vw,1.5rem)] ${illustration ? "md:w-[45rem] md:h-[20rem] md:items-start md:justify-between md:pl-6 md:pr-16 md:py-6" : ""}`,
+      style: { gap: "2rem" },
       children: [
         onClose && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
           "button",
@@ -621,52 +621,73 @@ function QuizSuccessState({ heading, button, onClose }) {
             type: "button",
             onClick: onClose,
             "aria-label": "Close",
-            className: "absolute flex items-center justify-center outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
-            style: { top: "0.5rem", right: "0.5rem", width: "2rem", height: "2rem" },
-            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "14", height: "14", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M4 4L12 12M12 4L4 12", stroke: "var(--white-400)", strokeWidth: "1.5", strokeLinecap: "round" }) })
+            className: "absolute flex items-center justify-center shrink-0 bg-black-600 rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+            style: { top: "0.5rem", right: "0.5rem", width: "2.75rem", height: "2.75rem" },
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M4 4L12 12M12 4L4 12", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }) })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+          "div",
+          {
+            className: `flex flex-col items-center w-full md:min-w-0 ${illustration ? "md:items-start md:justify-end md:h-full md:flex-1" : "md:flex-1"}`,
+            style: { gap: "1rem" },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                "span",
+                {
+                  className: "font-inter-tight font-medium text-xs",
+                  style: {
+                    color: "var(--status-open)",
+                    background: "var(--status-open-bg)",
+                    height: "1.75rem",
+                    borderRadius: "0.5rem",
+                    padding: "0.625rem 0.75rem",
+                    display: "inline-flex",
+                    alignItems: "center"
+                  },
+                  children: "Successful!"
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+                "div",
+                {
+                  className: `flex flex-col items-center w-full ${illustration ? "md:items-start" : ""}`,
+                  style: { gap: "1.5rem" },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                      "p",
+                      {
+                        className: `font-inter-tight font-medium text-h4 text-white text-center w-full whitespace-pre-wrap ${illustration ? "md:text-left" : ""}`,
+                        children: heading
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                      BtnOwn,
+                      {
+                        size: "S",
+                        className: illustration ? "w-full md:w-auto" : "w-full",
+                        icon: button.icon,
+                        hideIcon: !button.icon,
+                        onClick: button.href ? () => window.open(button.href, "_blank", "noopener,noreferrer") : button.onClick,
+                        children: button.label
+                      }
+                    )
+                  ]
+                }
+              )
+            ]
+          }
+        ),
+        illustration && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
           "img",
           {
-            src: "/icons/Success-State.svg",
+            src: illustration,
             alt: "",
             "aria-hidden": "true",
-            style: { width: "5.6875rem", height: "5.6875rem" }
+            className: "shrink-0",
+            style: { width: "15rem", height: "19.125rem", maxWidth: "100%", borderRadius: "2.7376rem", objectFit: "cover" }
           }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "flex flex-col items-center w-full", style: { gap: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-            "span",
-            {
-              className: "font-inter-tight font-medium text-xs",
-              style: {
-                color: "var(--status-open)",
-                background: "var(--status-open-bg)",
-                height: "1.75rem",
-                borderRadius: "0.5rem",
-                padding: "0.625rem 0.75rem",
-                display: "inline-flex",
-                alignItems: "center"
-              },
-              children: "Successful!"
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "flex flex-col items-center w-full", style: { gap: "2rem" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "font-inter-tight font-medium text-h4 text-white text-center w-full whitespace-pre-wrap", children: heading }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-              BtnOwn,
-              {
-                size: "S",
-                className: "w-full",
-                icon: button.icon,
-                hideIcon: !button.icon,
-                onClick: button.href ? () => window.open(button.href, "_blank", "noopener,noreferrer") : button.onClick,
-                children: button.label
-              }
-            )
-          ] })
-        ] })
+        )
       ]
     }
   );
@@ -873,11 +894,64 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
   );
 }
 
+// design-system/src/lib/submitLead.ts
+function classifySource(utmSource, utmMedium) {
+  const source = utmSource.toLowerCase();
+  const medium = utmMedium.toLowerCase();
+  if (medium === "cpc" || medium === "paid") {
+    const knownPaid = ["google", "meta", "linkedin", "youtube", "telegram"];
+    return { source_l1: "paid", source_l2: knownPaid.includes(source) ? source : source ? "other" : void 0 };
+  }
+  if (medium === "email") return { source_l1: "content", source_l2: "email" };
+  if (!source && !medium) return { source_l1: "organic", source_l2: "direct" };
+  const knownOrganic = ["seo", "telegram", "youtube", "linkedin"];
+  return { source_l1: "organic", source_l2: knownOrganic.includes(source) ? source : void 0 };
+}
+function readUtm() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    source: params.get("utm_source") ?? "",
+    medium: params.get("utm_medium") ?? "",
+    campaign: params.get("utm_campaign") ?? "",
+    term: params.get("utm_term") ?? "",
+    content: params.get("utm_content") ?? ""
+  };
+}
+async function submitLead(input) {
+  const utm = readUtm();
+  const { source_l1, source_l2 } = classifySource(utm.source, utm.medium);
+  const payload = {
+    name: input.name,
+    email: input.email || void 0,
+    phone: input.phone || void 0,
+    lead_type: "partner",
+    source_l1,
+    source_l2,
+    source_l3: utm.campaign || void 0,
+    utm,
+    page_path: window.location.pathname,
+    referrer: document.referrer || ""
+  };
+  try {
+    const res = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: data.error ?? `http_${res.status}` };
+    return { ok: true, action: data.action };
+  } catch {
+    return { ok: false, error: "network_error" };
+  }
+}
+
 // design-system/src/components/quiz-lead-form.tsx
 var import_jsx_runtime10 = require("react/jsx-runtime");
 function QuizLeadForm({ onClose, onSubmit }) {
   const [data, setData] = (0, import_react5.useState)({ name: "", email: "", phone: "", countryCode: "us" });
   const [errors, setErrors] = (0, import_react5.useState)({});
+  const [submitting, setSubmitting] = (0, import_react5.useState)(false);
   function validate() {
     const e = {};
     if (!data.name.trim()) e.name = "Required";
@@ -886,7 +960,7 @@ function QuizLeadForm({ onClose, onSubmit }) {
     if (!data.phone.trim()) e.phone = "Required";
     return e;
   }
-  function handleSubmit(ev) {
+  async function handleSubmit(ev) {
     ev.preventDefault();
     const e = validate();
     if (Object.keys(e).length) {
@@ -894,11 +968,19 @@ function QuizLeadForm({ onClose, onSubmit }) {
       return;
     }
     setErrors({});
+    setSubmitting(true);
+    const dial = COUNTRIES.find((c) => c.code === data.countryCode)?.dial ?? "";
+    const result = await submitLead({ name: data.name, email: data.email, phone: `${dial}${data.phone}` });
+    setSubmitting(false);
+    if (!result.ok) {
+      setErrors({ submit: "Couldn't send \u2014 please try again." });
+      return;
+    }
     onSubmit();
   }
   return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex flex-col items-start bg-black-400 rounded-1 w-full", style: { gap: "1.5rem", padding: "1.5rem" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center justify-between w-full", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-h4 text-white", children: "Fill in the details." }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-h4 text-white whitespace-pre-line", children: "Fill in the form to get the access\nto private markets" }),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
         "button",
         {
@@ -963,7 +1045,8 @@ function QuizLeadForm({ onClose, onSubmit }) {
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "M", className: "w-full", icon: "/icons/Notes.svg", type: "submit", children: "Send form" })
+      errors.submit && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-xs", children: errors.submit }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "M", className: "w-full", hideIcon: true, type: "submit", disabled: submitting, children: submitting ? "Sending\u2026" : "Send form" })
     ] })
   ] });
 }
@@ -1144,7 +1227,7 @@ function Quiz({ onClose }) {
                           ),
                           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
                             cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "font-inter-tight font-medium text-white text-h4", children: cur.subheading }),
-                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-normal text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
+                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-medium text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
                         ]
                       }
@@ -1260,19 +1343,21 @@ function Quiz({ onClose }) {
         ),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_framer_motion4.AnimatePresence, { children: [
           step === "form" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { maxWidth: "37.5rem", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizLeadForm, { onClose: () => setStep("questions"), onSubmit: () => setStep("success-thanks") }) }, "form"),
-          step === "success-app" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          step === "success-app" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { maxWidth: "45rem", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
             QuizSuccessState,
             {
               heading: "Get Pre-IPO Directly\nInto Your Pocket",
               button: { label: "Download Axevil App", icon: "/icons/Download.svg", href: "https://axevil.app.link/web?~campaign=new_main" },
-              onClose
+              onClose,
+              illustration: "/img/ill/quiz-success-app-devices.png"
             }
           ) }, "success-app"),
           step === "success-thanks" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
             QuizSuccessState,
             {
               heading: "Thank you, will contact\nyou shortly",
-              button: { label: "Back to home", onClick: onClose }
+              button: { label: "Back to home", onClick: onClose },
+              onClose
             }
           ) }, "success-thanks")
         ] })
