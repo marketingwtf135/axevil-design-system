@@ -98,8 +98,9 @@ interface BtnOwnProps {
     variant?: Variant;
     /** Legacy prop — no-op now (secondary is borderless by default). Kept so existing call-sites compile. */
     noBorder?: boolean;
+    disabled?: boolean;
 }
-declare function BtnOwn({ children, className, style, type, onClick, hideIcon, icon, size, variant, }: BtnOwnProps): react_jsx_runtime.JSX.Element;
+declare function BtnOwn({ children, className, style, type, onClick, hideIcon, icon, size, variant, disabled, }: BtnOwnProps): react_jsx_runtime.JSX.Element;
 
 /**
  * <CtaForm> — Section CTA block from Figma 1225:5717 (Wealth Managers final block).

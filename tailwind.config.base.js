@@ -79,7 +79,7 @@ const tokens = {
     'paragraph':   ['var(--font-l)', { lineHeight: 'var(--lh-paragraph)', letterSpacing: '-0.01em', fontWeight: '400' }],
     'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: '0' }],
     'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
-    'h4':          ['var(--font-h4)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
+    'h4':          ['var(--font-h4)', { lineHeight: '1.1',  letterSpacing: '-0.02em', fontWeight: '500' }],
     'h3':          ['var(--font-h3)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
     'h2':          ['var(--font-h2)', { lineHeight: '1',    letterSpacing: '-0.02em' }],
     'h1-med':      ['var(--font-h1)', { lineHeight: '1',    letterSpacing: '-0.02em' }],

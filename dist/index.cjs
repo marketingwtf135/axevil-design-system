@@ -155,7 +155,7 @@ var import_react2 = require("react");
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var SIZE_STYLES = {
   M: { height: "3.625rem", padding: "0.75rem 1.5rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
-  S: { height: "3.125rem", padding: "0.625rem 1.25rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
+  S: { height: "3.125rem", padding: "0.625rem 1.25rem", borderRadius: "0.75rem", fontSize: "var(--font-btn)", fontWeight: 600 },
   XS: { height: "2.625rem", padding: "0.5rem 1rem", borderRadius: "0.75rem", fontSize: "0.875rem", fontWeight: 600 }
 };
 var BLACK_400 = "var(--black-400, #151515)";
@@ -173,7 +173,8 @@ function BtnOwn({
   hideIcon = false,
   icon,
   size,
-  variant = "primary"
+  variant = "primary",
+  disabled = false
 }) {
   const [hovered, setHovered] = (0, import_react2.useState)(false);
   const sizeStyle = size ? SIZE_STYLES[size] : {};
@@ -187,6 +188,7 @@ function BtnOwn({
     "button",
     {
       type,
+      disabled,
       onClick: () => {
         if (onClick) {
           onClick();
@@ -198,7 +200,7 @@ function BtnOwn({
       onMouseLeave: () => setHovered(false),
       onFocus: () => setHovered(true),
       onBlur: () => setHovered(false),
-      className: `btn-own flex items-center justify-center gap-2 font-inter-tight font-semibold transition-all duration-300 ease-out ${hoverClass} focus-visible:outline focus-visible:outline-2 focus-visible:outline-white ${className}`,
+      className: `btn-own flex items-center justify-center gap-2 font-inter-tight font-semibold transition-all duration-300 ease-out ${hoverClass} focus-visible:outline focus-visible:outline-2 focus-visible:outline-white disabled:opacity-40 disabled:pointer-events-none ${className}`,
       style: {
         height: "3.625rem",
         padding: "0.75rem 1.5rem",
@@ -524,8 +526,8 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                       {
                         href: item.href,
                         onClick: () => setMenuOpen(false),
-                        className: "font-inter-tight font-semibold text-h4 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
-                        style: { fontSize: "var(--font-h4)", letterSpacing: "-0.02em", lineHeight: 1.2 },
+                        className: "font-inter-tight font-medium text-h4 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+                        style: { fontSize: "var(--font-h4)", letterSpacing: "-0.02em", lineHeight: 1.1 },
                         children: item.label
                       },
                       item.label
@@ -537,8 +539,8 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                   {
                     href: section.href ?? navHref(section.label),
                     onClick: () => setMenuOpen(false),
-                    className: "font-inter-tight font-semibold text-h4 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
-                    style: { fontSize: "var(--font-h4)", letterSpacing: "-0.02em", lineHeight: 1.2 },
+                    className: "font-inter-tight font-medium text-h4 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+                    style: { fontSize: "var(--font-h4)", letterSpacing: "-0.02em", lineHeight: 1.1 },
                     children: section.label
                   },
                   section.label
@@ -566,12 +568,411 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
 }
 
 // design-system/src/components/Quiz.tsx
-var import_react4 = require("react");
+var import_react6 = require("react");
+var import_framer_motion4 = require("framer-motion");
+
+// design-system/src/components/quiz-overlay.tsx
 var import_framer_motion2 = require("framer-motion");
 var import_jsx_runtime6 = require("react/jsx-runtime");
-function useIsBelowLg() {
-  const [below, setBelow] = (0, import_react4.useState)(() => window.innerWidth < 1024);
+function QuizOverlay({ children, maxWidth = "23.75rem" }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+    import_framer_motion2.motion.div,
+    {
+      className: "absolute inset-0 z-20 flex items-center justify-center",
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+      transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+      style: {
+        background: "rgba(0,0,0,0.5)",
+        backdropFilter: "blur(0.75rem)",
+        WebkitBackdropFilter: "blur(0.75rem)",
+        paddingLeft: "clamp(1.25rem, 4vw, 2rem)",
+        paddingRight: "clamp(1.25rem, 4vw, 2rem)"
+      },
+      children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        import_framer_motion2.motion.div,
+        {
+          className: "w-full",
+          style: { maxWidth },
+          initial: { opacity: 0, y: 16, scale: 0.98 },
+          animate: { opacity: 1, y: 0, scale: 1 },
+          exit: { opacity: 0, y: 16, scale: 0.98 },
+          transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+          children
+        }
+      )
+    }
+  );
+}
+
+// design-system/src/components/quiz-success-state.tsx
+var import_jsx_runtime7 = require("react/jsx-runtime");
+function QuizSuccessState({ heading, button, onClose }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+    "div",
+    {
+      className: "relative flex flex-col items-center bg-black-400 rounded-1 w-full",
+      style: { gap: "3rem", padding: "1.5rem" },
+      children: [
+        onClose && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            "aria-label": "Close",
+            className: "absolute flex items-center justify-center outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+            style: { top: "0.5rem", right: "0.5rem", width: "2rem", height: "2rem" },
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "14", height: "14", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M4 4L12 12M12 4L4 12", stroke: "var(--white-400)", strokeWidth: "1.5", strokeLinecap: "round" }) })
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          "img",
+          {
+            src: "/icons/Success-State.svg",
+            alt: "",
+            "aria-hidden": "true",
+            style: { width: "5.6875rem", height: "5.6875rem" }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "flex flex-col items-center w-full", style: { gap: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            "span",
+            {
+              className: "font-inter-tight font-medium text-xs",
+              style: {
+                color: "var(--status-open)",
+                background: "var(--status-open-bg)",
+                height: "1.75rem",
+                borderRadius: "0.5rem",
+                padding: "0.625rem 0.75rem",
+                display: "inline-flex",
+                alignItems: "center"
+              },
+              children: "Successful!"
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "flex flex-col items-center w-full", style: { gap: "2rem" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "font-inter-tight font-medium text-h4 text-white text-center w-full whitespace-pre-wrap", children: heading }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              BtnOwn,
+              {
+                size: "S",
+                className: "w-full",
+                icon: button.icon,
+                hideIcon: !button.icon,
+                onClick: button.href ? () => window.open(button.href, "_blank", "noopener,noreferrer") : button.onClick,
+                children: button.label
+              }
+            )
+          ] })
+        ] })
+      ]
+    }
+  );
+}
+
+// design-system/src/components/quiz-lead-form.tsx
+var import_react5 = require("react");
+
+// design-system/src/components/form-field.tsx
+var import_jsx_runtime8 = require("react/jsx-runtime");
+function inputClass(hasError) {
+  return [
+    "w-full bg-transparent font-inter-tight font-medium text-white placeholder:text-[rgba(255,255,255,0.35)]",
+    "text-m focus:outline-none transition-colors",
+    hasError ? "" : ""
+  ].join(" ");
+}
+function Field({
+  input,
+  error,
+  className,
+  height = "3.75rem",
+  children
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: `flex flex-col w-full ${className ?? ""}`, style: { gap: "0.375rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+      "div",
+      {
+        className: "flex items-center w-full",
+        style: {
+          background: "var(--black-500)",
+          height,
+          borderRadius: "1rem",
+          padding: "0 1rem",
+          border: error ? "1px solid rgba(239,68,68,0.5)" : "none"
+        },
+        children: input ?? children
+      }
+    ),
+    error && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-xs", children: error })
+  ] });
+}
+
+// design-system/src/components/phone-field.tsx
+var import_react4 = require("react");
+var import_framer_motion3 = require("framer-motion");
+var import_jsx_runtime9 = require("react/jsx-runtime");
+var COUNTRIES = [
+  { code: "us", dial: "+1", name: "United States" },
+  { code: "gb", dial: "+44", name: "United Kingdom" },
+  { code: "ae", dial: "+971", name: "UAE" },
+  { code: "ch", dial: "+41", name: "Switzerland" },
+  { code: "sg", dial: "+65", name: "Singapore" },
+  { code: "hk", dial: "+852", name: "Hong Kong" },
+  { code: "de", dial: "+49", name: "Germany" },
+  { code: "fr", dial: "+33", name: "France" },
+  { code: "ca", dial: "+1", name: "Canada" },
+  { code: "au", dial: "+61", name: "Australia" },
+  { code: "jp", dial: "+81", name: "Japan" },
+  { code: "kr", dial: "+82", name: "South Korea" },
+  { code: "il", dial: "+972", name: "Israel" },
+  { code: "in", dial: "+91", name: "India" },
+  { code: "br", dial: "+55", name: "Brazil" }
+];
+function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
+  const [open, setOpen] = (0, import_react4.useState)(false);
+  const ref = (0, import_react4.useRef)(null);
+  const selected = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
   (0, import_react4.useEffect)(() => {
+    function onClickOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+    Field,
+    {
+      height: "3.5rem",
+      error,
+      input: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "flex items-center w-full", style: { gap: "0.5rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { ref, className: "relative shrink-0", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            "button",
+            {
+              type: "button",
+              "aria-haspopup": "listbox",
+              "aria-expanded": open,
+              "aria-label": "Country code",
+              onClick: () => setOpen((o) => !o),
+              onKeyDown: (e) => {
+                if (e.key === "Escape") setOpen(false);
+                else if ((e.key === "Enter" || e.key === " " || e.key === "ArrowDown") && !open) {
+                  e.preventDefault();
+                  setOpen(true);
+                }
+              },
+              className: "flex items-center cursor-pointer select-none outline-none",
+              style: { gap: "0.375rem" },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  "img",
+                  {
+                    src: `https://flagcdn.com/${selected.code}.svg`,
+                    alt: "",
+                    "aria-hidden": "true",
+                    className: "rounded-full object-cover shrink-0",
+                    style: { width: "1.125rem", height: "1.125rem" }
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "font-inter-tight font-medium text-m text-white whitespace-nowrap", children: selected.dial }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  import_framer_motion3.motion.svg,
+                  {
+                    animate: { rotate: open ? 180 : 0 },
+                    transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+                    width: "14",
+                    height: "14",
+                    viewBox: "0 0 20 20",
+                    fill: "none",
+                    "aria-hidden": "true",
+                    style: { flexShrink: 0, display: "block" },
+                    children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "M5 8L10 13L15 8", stroke: "rgba(255,255,255,0.4)", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
+                  }
+                )
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_framer_motion3.AnimatePresence, { children: open && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            import_framer_motion3.motion.div,
+            {
+              role: "listbox",
+              "aria-label": "Country code",
+              initial: { opacity: 0, y: -6 },
+              animate: { opacity: 1, y: 0 },
+              exit: { opacity: 0, y: -6 },
+              transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] },
+              className: "absolute left-0 z-[1000] overflow-y-auto",
+              style: {
+                top: "calc(100% + 0.5rem)",
+                marginLeft: "-0.75rem",
+                width: "12.5rem",
+                maxHeight: "15rem",
+                borderRadius: "1rem",
+                background: "var(--black-500)"
+              },
+              children: COUNTRIES.map((c, i) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                "button",
+                {
+                  type: "button",
+                  role: "option",
+                  "aria-selected": c.code === selected.code,
+                  onClick: () => {
+                    onCountryChange(c.code);
+                    setOpen(false);
+                  },
+                  className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-m w-full text-left outline-none",
+                  style: {
+                    gap: "0.5rem",
+                    padding: "0 1rem",
+                    height: "2.75rem",
+                    background: "transparent",
+                    borderBottom: i < COUNTRIES.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                    color: "var(--white-400)"
+                  },
+                  onMouseEnter: (e) => e.currentTarget.style.color = "var(--white-100)",
+                  onMouseLeave: (e) => e.currentTarget.style.color = "var(--white-400)",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      "img",
+                      {
+                        src: `https://flagcdn.com/${c.code}.svg`,
+                        alt: "",
+                        "aria-hidden": "true",
+                        className: "rounded-full object-cover shrink-0",
+                        style: { width: "1.125rem", height: "1.125rem" }
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "truncate", children: c.name }),
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "shrink-0", style: { marginLeft: "auto" }, children: c.dial })
+                  ]
+                },
+                c.code
+              ))
+            }
+          ) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "shrink-0", style: { width: "1px", height: "1.25rem", background: "rgba(255,255,255,0.1)" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          "input",
+          {
+            type: "tel",
+            inputMode: "tel",
+            autoComplete: "tel-national",
+            "aria-label": "Phone number",
+            placeholder: "Phone Number",
+            value,
+            onChange: (e) => onChange(e.target.value),
+            className: inputClass(!!error)
+          }
+        )
+      ] })
+    }
+  );
+}
+
+// design-system/src/components/quiz-lead-form.tsx
+var import_jsx_runtime10 = require("react/jsx-runtime");
+function QuizLeadForm({ onClose, onSubmit }) {
+  const [data, setData] = (0, import_react5.useState)({ name: "", email: "", phone: "", countryCode: "us" });
+  const [errors, setErrors] = (0, import_react5.useState)({});
+  function validate() {
+    const e = {};
+    if (!data.name.trim()) e.name = "Required";
+    if (!data.email.trim()) e.email = "Required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Invalid email";
+    if (!data.phone.trim()) e.phone = "Required";
+    return e;
+  }
+  function handleSubmit(ev) {
+    ev.preventDefault();
+    const e = validate();
+    if (Object.keys(e).length) {
+      setErrors(e);
+      return;
+    }
+    setErrors({});
+    onSubmit();
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex flex-col items-start bg-black-400 rounded-1 w-full", style: { gap: "1.5rem", padding: "1.5rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center justify-between w-full", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-h4 text-white", children: "Fill in the details." }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          "aria-label": "Close",
+          className: "flex items-center justify-center shrink-0 bg-black-600 rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+          style: { width: "2.75rem", height: "2.75rem" },
+          children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "M4 4L12 12M12 4L4 12", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }) })
+        }
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("form", { className: "flex flex-col items-start w-full", style: { gap: "1rem" }, onSubmit: handleSubmit, noValidate: true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.5rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          Field,
+          {
+            height: "3.5rem",
+            error: errors.name,
+            input: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+              "input",
+              {
+                type: "text",
+                autoComplete: "name",
+                "aria-label": "Name",
+                placeholder: "Name",
+                value: data.name,
+                onChange: (e) => setData((d) => ({ ...d, name: e.target.value })),
+                className: inputClass(!!errors.name)
+              }
+            )
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          Field,
+          {
+            height: "3.5rem",
+            error: errors.email,
+            input: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+              "input",
+              {
+                type: "email",
+                autoComplete: "email",
+                inputMode: "email",
+                "aria-label": "Email",
+                placeholder: "Email",
+                value: data.email,
+                onChange: (e) => setData((d) => ({ ...d, email: e.target.value })),
+                className: inputClass(!!errors.email)
+              }
+            )
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          PhoneField,
+          {
+            value: data.phone,
+            onChange: (v) => setData((d) => ({ ...d, phone: v })),
+            countryCode: data.countryCode,
+            onCountryChange: (countryCode) => setData((d) => ({ ...d, countryCode })),
+            error: errors.phone
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "M", className: "w-full", icon: "/icons/Notes.svg", type: "submit", children: "Send form" })
+    ] })
+  ] });
+}
+
+// design-system/src/components/Quiz.tsx
+var import_jsx_runtime11 = require("react/jsx-runtime");
+function useIsBelowLg() {
+  const [below, setBelow] = (0, import_react6.useState)(() => window.innerWidth < 1024);
+  (0, import_react6.useEffect)(() => {
     const handler = () => setBelow(window.innerWidth < 1024);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
@@ -620,8 +1021,8 @@ var Q2 = [
   "Not yet \u2014 exploring (Early interest, gathering information)"
 ];
 function AnswerBtn({ opt, selected, onClick }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-    import_framer_motion2.motion.button,
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    import_framer_motion4.motion.button,
     {
       type: "button",
       onClick,
@@ -634,7 +1035,7 @@ function AnswerBtn({ opt, selected, onClick }) {
         flexShrink: 0
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
           "span",
           {
             className: "font-inter-tight font-medium text-sm md:text-base flex-1",
@@ -642,8 +1043,8 @@ function AnswerBtn({ opt, selected, onClick }) {
             children: opt
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          import_framer_motion2.motion.img,
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          import_framer_motion4.motion.img,
           {
             src: selected ? "/icons/True.svg" : "/icons/True-innactive.svg",
             alt: "",
@@ -657,14 +1058,16 @@ function AnswerBtn({ opt, selected, onClick }) {
     }
   );
 }
+var Q1_PRINCIPAL_INDEX = 0;
 function Quiz({ onClose }) {
-  const [slide, setSlide] = (0, import_react4.useState)(0);
-  const [progress, setProgress] = (0, import_react4.useState)(0);
-  const [q1, setQ1] = (0, import_react4.useState)(null);
-  const [q2, setQ2] = (0, import_react4.useState)(null);
+  const [slide, setSlide] = (0, import_react6.useState)(0);
+  const [progress, setProgress] = (0, import_react6.useState)(0);
+  const [q1, setQ1] = (0, import_react6.useState)(null);
+  const [q2, setQ2] = (0, import_react6.useState)(null);
+  const [step, setStep] = (0, import_react6.useState)("questions");
   const isBelowLg = useIsBelowLg();
-  (0, import_react4.useEffect)(() => {
-    setProgress(0);
+  (0, import_react6.useEffect)(() => {
+    if (step !== "questions") return;
     const pInt = setInterval(() => setProgress((p) => Math.min(p + 0.5, 100)), 50);
     const sInt = setInterval(() => {
       setProgress(0);
@@ -674,10 +1077,13 @@ function Quiz({ onClose }) {
       clearInterval(pInt);
       clearInterval(sInt);
     };
-  }, [slide]);
+  }, [slide, step]);
+  function handleConfirm() {
+    setStep(q1 === Q1_PRINCIPAL_INDEX ? "success-app" : "form");
+  }
   const cur = SLIDES[slide];
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-    import_framer_motion2.motion.div,
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    import_framer_motion4.motion.div,
     {
       className: "fixed inset-0 z-[100] flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden bg-page-bg",
       initial: { opacity: 0 },
@@ -685,7 +1091,7 @@ function Quiz({ onClose }) {
       exit: { opacity: 0 },
       style: { minHeight: "100svh" },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
           "div",
           {
             className: "flex flex-col items-center bg-page-bg w-full lg:w-1/2",
@@ -696,9 +1102,9 @@ function Quiz({ onClose }) {
               paddingTop: "clamp(1.5rem, 3.2vw, 3.75rem)",
               paddingBottom: "clamp(1.5rem, 3.2vw, 3.75rem)"
             },
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col w-full h-full lg:overflow-hidden lg:justify-center", style: { maxWidth: "47.5rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_framer_motion2.AnimatePresence, { mode: "wait", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-                import_framer_motion2.motion.div,
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col w-full h-full lg:overflow-hidden lg:justify-center", style: { maxWidth: "47.5rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_framer_motion4.AnimatePresence, { mode: "wait", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+                import_framer_motion4.motion.div,
                 {
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
@@ -707,7 +1113,7 @@ function Quiz({ onClose }) {
                   className: "flex flex-col lg:overflow-hidden",
                   style: { gap: "clamp(1.5rem, 2.5vw, 1.5rem)" },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1.5rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1.5rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                       "h2",
                       {
                         "data-no-reveal": true,
@@ -715,30 +1121,30 @@ function Quiz({ onClose }) {
                         children: cur.heading
                       }
                     ) }),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
                       "div",
                       {
                         className: "flex flex-col rounded-3xl shrink-0 overflow-hidden w-full bg-surface-0",
                         style: { height: cur.id === 2 ? "25rem" : "18.75rem" },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                             "div",
                             {
                               className: "flex items-center justify-center flex-1",
                               style: { overflow: "hidden", minHeight: 0 },
-                              children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                              children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                                 "img",
                                 {
                                   src: cur.img,
                                   alt: "",
-                                  style: { maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }
+                                  style: cur.id === 2 ? { maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" } : { flexShrink: 0, display: "block", margin: "auto" }
                                 }
                               )
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
-                            cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { className: "font-inter-tight font-semibold text-white text-h4", children: cur.subheading }),
-                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : cur.id === 1 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-normal text-h4 whitespace-pre-line text-white", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white", children: cur.caption }) : null
+                          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
+                            cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "font-inter-tight font-medium text-white text-h4", children: cur.subheading }),
+                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-normal text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
                         ]
                       }
@@ -747,7 +1153,7 @@ function Quiz({ onClose }) {
                 },
                 slide
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                 "div",
                 {
                   className: "flex shrink-0",
@@ -756,19 +1162,19 @@ function Quiz({ onClose }) {
                     marginTop: "1.5rem",
                     paddingTop: "clamp(0.5rem, 1.6vw, 2rem)"
                   },
-                  children: SLIDES.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(0.5rem, 1vw, 0.75rem)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "rounded-full overflow-hidden", style: { height: "0.1875rem", background: "rgba(255,255,255,0.15)" }, children: [
-                      i < slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "h-full w-full bg-white" }),
-                      i === slide && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_framer_motion2.motion.div, { className: "h-full bg-white", initial: { width: "0%" }, animate: { width: `${progress}%` }, transition: { duration: 0.05, ease: "linear" } })
+                  children: SLIDES.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(0.5rem, 1vw, 0.75rem)" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "rounded-full overflow-hidden", style: { height: "0.1875rem", background: "rgba(255,255,255,0.15)" }, children: [
+                      i < slide && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "h-full w-full bg-white" }),
+                      i === slide && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_framer_motion4.motion.div, { className: "h-full bg-white", initial: { width: "0%" }, animate: { width: `${progress}%` }, transition: { duration: 0.05, ease: "linear" } })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: `font-inter-tight font-medium text-xs md:text-s-med hidden md:inline truncate ${i <= slide ? "text-white" : "text-white/30"}`, children: s.label })
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: `font-inter-tight font-medium text-xs md:text-s-med hidden md:inline truncate ${i <= slide ? "text-white" : "text-white/30"}`, children: s.label })
                   ] }, s.id))
                 }
               )
             ] })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
           "div",
           {
             className: "flex flex-col items-center bg-surface-0 w-full lg:w-1/2 lg:overflow-y-auto",
@@ -780,8 +1186,8 @@ function Quiz({ onClose }) {
               paddingTop: "clamp(1.5rem, 3vw, 2.5rem)",
               paddingBottom: "clamp(1.5rem, 3vw, 2.5rem)"
             },
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col w-full h-full", style: { maxWidth: "47.5rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex justify-end shrink-0", style: { marginBottom: "clamp(1rem, 2.2vw, 2rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col w-full h-full", style: { maxWidth: "47.5rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex justify-end shrink-0", style: { marginBottom: "clamp(1rem, 2.2vw, 2rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                 "button",
                 {
                   type: "button",
@@ -790,8 +1196,8 @@ function Quiz({ onClose }) {
                   children: "\u2715 Close"
                 }
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(1.5rem, 3vw, 2.5rem)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(1.5rem, 3vw, 2.5rem)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
                   "h2",
                   {
                     className: "font-inter-tight font-semibold text-h3 md:text-h2 text-white shrink-0",
@@ -799,14 +1205,14 @@ function Quiz({ onClose }) {
                     children: [
                       "Get an Access",
                       " ",
-                      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("br", { className: "hidden md:block" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", { className: "hidden md:block" }),
                       "to pre-IPO Infrastructure"
                     ]
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(1.25rem, 2.4vw, 2rem)" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(1.25rem, 2.4vw, 2rem)" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                       "p",
                       {
                         className: "font-inter-tight font-medium text-h4 shrink-0",
@@ -814,10 +1220,10 @@ function Quiz({ onClose }) {
                         children: "What best describes your role?"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex flex-col gap-2", children: Q1.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(AnswerBtn, { opt, selected: q1 === i, onClick: () => setQ1(q1 === i ? null : i) }, i)) })
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col gap-2", children: Q1.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AnswerBtn, { opt, selected: q1 === i, onClick: () => setQ1(q1 === i ? null : i) }, i)) })
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                       "p",
                       {
                         className: "font-inter-tight font-medium text-h4 shrink-0",
@@ -825,17 +1231,17 @@ function Quiz({ onClose }) {
                         children: "Have you participated in private markets before?"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "flex flex-col gap-2", children: Q2.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(AnswerBtn, { opt, selected: q2 === i, onClick: () => setQ2(q2 === i ? null : i) }, i)) })
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col gap-2", children: Q2.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AnswerBtn, { opt, selected: q2 === i, onClick: () => setQ2(q2 === i ? null : i) }, i)) })
                   ] })
                 ] })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
                 "div",
                 {
                   className: "flex items-center justify-between gap-2 mt-8 lg:mt-auto shrink-0",
                   style: { paddingTop: "clamp(1.5rem, 2.4vw, 2rem)" },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                       "button",
                       {
                         type: "button",
@@ -844,23 +1250,41 @@ function Quiz({ onClose }) {
                         children: "Back"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BtnOwn, { size: "S", hideIcon: true, className: "md:hidden", children: "Next" }),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BtnOwn, { size: "M", hideIcon: true, className: "hidden md:flex", children: "Next" })
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BtnOwn, { size: "S", hideIcon: true, className: "md:hidden", disabled: q1 === null || q2 === null, onClick: handleConfirm, children: "Confirm" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BtnOwn, { size: "M", hideIcon: true, className: "hidden md:flex", disabled: q1 === null || q2 === null, onClick: handleConfirm, children: "Confirm" })
                   ]
                 }
               )
             ] })
           }
-        )
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_framer_motion4.AnimatePresence, { children: [
+          step === "form" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { maxWidth: "37.5rem", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizLeadForm, { onClose: () => setStep("questions"), onSubmit: () => setStep("success-thanks") }) }, "form"),
+          step === "success-app" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            QuizSuccessState,
+            {
+              heading: "Get Pre-IPO Directly\nInto Your Pocket",
+              button: { label: "Download Axevil App", icon: "/icons/Download.svg", href: "https://axevil.app.link/web?~campaign=new_main" },
+              onClose
+            }
+          ) }, "success-app"),
+          step === "success-thanks" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(QuizOverlay, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            QuizSuccessState,
+            {
+              heading: "Thank you, will contact\nyou shortly",
+              button: { label: "Back to home", onClick: onClose }
+            }
+          ) }, "success-thanks")
+        ] })
       ]
     }
   );
 }
 
 // design-system/src/components/bg-features.tsx
-var import_react5 = require("react");
-var import_framer_motion3 = require("framer-motion");
-var import_jsx_runtime7 = require("react/jsx-runtime");
+var import_react7 = require("react");
+var import_framer_motion5 = require("framer-motion");
+var import_jsx_runtime12 = require("react/jsx-runtime");
 function BgFeatures({
   spotlight = false,
   spotlightSize = "24rem",
@@ -870,8 +1294,8 @@ function BgFeatures({
   animated = false,
   animationDuration = 30
 } = {}) {
-  const ref = (0, import_react5.useRef)(null);
-  (0, import_react5.useEffect)(() => {
+  const ref = (0, import_react7.useRef)(null);
+  (0, import_react7.useEffect)(() => {
     if (!spotlight) return;
     const el = ref.current;
     if (!el) return;
@@ -885,7 +1309,7 @@ function BgFeatures({
   }, [spotlight]);
   const bgImage = "url(/img/about/bg-features.png)";
   const spotlightMask = `radial-gradient(circle ${spotlightSize} at var(--mx, 50%) var(--my, 50%), black 0%, transparent 70%)`;
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
     "div",
     {
       ref,
@@ -893,8 +1317,8 @@ function BgFeatures({
       className: "absolute inset-0 pointer-events-none overflow-hidden",
       style: { zIndex: 0 },
       children: [
-        animated ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-          import_framer_motion3.motion.div,
+        animated ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          import_framer_motion5.motion.div,
           {
             className: "absolute inset-0",
             style: {
@@ -917,7 +1341,7 @@ function BgFeatures({
               repeat: Infinity
             }
           }
-        ) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        ) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
           "div",
           {
             className: "absolute inset-0",
@@ -931,7 +1355,7 @@ function BgFeatures({
             }
           }
         ),
-        spotlight && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        spotlight && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
           "div",
           {
             className: "absolute inset-0",
@@ -946,7 +1370,7 @@ function BgFeatures({
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
           "div",
           {
             className: "absolute inset-x-0 bottom-0",
@@ -962,22 +1386,22 @@ function BgFeatures({
 }
 
 // design-system/src/components/desc-tag.tsx
-var import_jsx_runtime8 = require("react/jsx-runtime");
+var import_jsx_runtime13 = require("react/jsx-runtime");
 function DescTag({ number, label, className = "" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
     "div",
     {
       className: `flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 ${className}`,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "text-m opacity-50", children: number }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "text-m opacity-80", children: label })
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "text-m opacity-50", children: number }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "text-m opacity-80", children: label })
       ]
     }
   );
 }
 
 // design-system/src/components/cta-form.tsx
-var import_jsx_runtime9 = require("react/jsx-runtime");
+var import_jsx_runtime14 = require("react/jsx-runtime");
 var GRADIENT = "var(--gradient-headline)";
 function CtaForm({
   number,
@@ -992,16 +1416,16 @@ function CtaForm({
   onSecondaryClick,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("section", { className: `relative w-full bg-page-bg padding-section-t6-b12 ${className}`, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("section", { className: `relative w-full bg-page-bg padding-section-t6-b12 ${className}`, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
     "div",
     {
       className: "mx-auto w-full max-w-content container-px flex flex-col items-center text-center",
       style: { gap: "2rem" },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "2rem", maxWidth: "50rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(DescTag, { number, label }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "1rem" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "2rem", maxWidth: "50rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(DescTag, { number, label }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "1rem" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
               "h2",
               {
                 className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
@@ -1009,7 +1433,7 @@ function CtaForm({
                 children: title
               }
             ),
-            subtitle && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            subtitle && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
               "p",
               {
                 className: "font-inter-tight font-normal text-paragraph text-white/60",
@@ -1019,19 +1443,19 @@ function CtaForm({
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
           "div",
           {
             className: "flex flex-col sm:flex-row items-stretch sm:items-center justify-center w-full max-w-[30rem] sm:max-w-none",
             style: { gap: "0.5rem" },
             children: [
-              primarySize ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: primarySize, hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:w-auto", children: primaryLabel }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_jsx_runtime9.Fragment, { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "S", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:hidden", children: primaryLabel }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "M", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "hidden sm:flex sm:w-auto", children: primaryLabel })
+              primarySize ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BtnOwn, { size: primarySize, hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:w-auto", children: primaryLabel }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BtnOwn, { size: "S", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:hidden", children: primaryLabel }),
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BtnOwn, { size: "M", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "hidden sm:flex sm:w-auto", children: primaryLabel })
               ] }),
-              secondaryLabel && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_jsx_runtime9.Fragment, { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "S", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "w-full sm:hidden", children: secondaryLabel }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BtnOwn, { size: "M", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "hidden sm:flex sm:w-auto", children: secondaryLabel })
+              secondaryLabel && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BtnOwn, { size: "S", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "w-full sm:hidden", children: secondaryLabel }),
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BtnOwn, { size: "M", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "hidden sm:flex sm:w-auto", children: secondaryLabel })
               ] })
             ]
           }
@@ -1042,8 +1466,8 @@ function CtaForm({
 }
 
 // design-system/src/components/cta-form-newsletter.tsx
-var import_react6 = require("react");
-var import_jsx_runtime10 = require("react/jsx-runtime");
+var import_react8 = require("react");
+var import_jsx_runtime15 = require("react/jsx-runtime");
 function CtaFormNewsletter({
   buttonLabel = "Subscribe",
   buttonIcon = "/icons/Email.svg",
@@ -1052,8 +1476,8 @@ function CtaFormNewsletter({
   onSubmit,
   className = ""
 }) {
-  const [email, setEmail] = (0, import_react6.useState)("");
-  const [submitted, setSubmitted] = (0, import_react6.useState)(false);
+  const [email, setEmail] = (0, import_react8.useState)("");
+  const [submitted, setSubmitted] = (0, import_react8.useState)(false);
   function handleSubmit(e) {
     e.preventDefault();
     if (!email.trim()) return;
@@ -1061,7 +1485,7 @@ function CtaFormNewsletter({
     onSubmit?.(email);
   }
   if (submitted) {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
       "div",
       {
         className: `flex items-center justify-center font-inter-tight font-medium text-l text-status-open w-full max-w-[30rem] lg:max-w-none ${className}`,
@@ -1076,14 +1500,14 @@ function CtaFormNewsletter({
       }
     );
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
     "form",
     {
       onSubmit: handleSubmit,
       className: `flex flex-row items-center w-full max-w-[30rem] lg:max-w-none lg:w-auto ${className}`,
       style: { gap: "0.5rem" },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
           "input",
           {
             type: "email",
@@ -1102,23 +1526,23 @@ function CtaFormNewsletter({
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { type: "submit", size: "S", icon: buttonIcon, className: "shrink-0 sm:hidden", children: buttonLabel }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { type: "submit", size: "M", icon: buttonIcon, className: "hidden shrink-0 sm:flex lg:w-[9.1875rem]", children: buttonLabel })
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(BtnOwn, { type: "submit", size: "S", icon: buttonIcon, className: "shrink-0 sm:hidden", children: buttonLabel }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(BtnOwn, { type: "submit", size: "M", icon: buttonIcon, className: "hidden shrink-0 sm:flex lg:w-[9.1875rem]", children: buttonLabel })
       ]
     }
   );
 }
 
 // design-system/src/components/faq.tsx
-var import_react7 = require("react");
-var import_framer_motion4 = require("framer-motion");
-var import_jsx_runtime11 = require("react/jsx-runtime");
+var import_react9 = require("react");
+var import_framer_motion6 = require("framer-motion");
+var import_jsx_runtime16 = require("react/jsx-runtime");
 function FAQ({ items, className = "" }) {
-  const [open, setOpen] = (0, import_react7.useState)(null);
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: `w-full flex flex-col ${className}`, children: items.map((item, i) => {
+  const [open, setOpen] = (0, import_react9.useState)(null);
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: `w-full flex flex-col ${className}`, children: items.map((item, i) => {
     const isOpen = open === i;
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { borderBottom: "1px solid rgba(255,255,255,0.1)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { borderBottom: "1px solid rgba(255,255,255,0.1)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
         "button",
         {
           type: "button",
@@ -1127,9 +1551,9 @@ function FAQ({ items, className = "" }) {
           className: "w-full flex items-center justify-between gap-4 text-left outline-none",
           style: { paddingTop: "clamp(1.25rem, 3vw, 1.75rem)", paddingBottom: "1.5rem", minHeight: "3.5rem" },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "font-inter-tight font-medium text-[0.875rem] md:text-xl", style: { color: "var(--white-300)" }, children: item.q }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-              import_framer_motion4.motion.div,
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "font-inter-tight font-medium text-[0.875rem] md:text-xl", style: { color: "var(--white-300)" }, children: item.q }),
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+              import_framer_motion6.motion.div,
               {
                 animate: { rotate: isOpen ? 45 : 0 },
                 transition: { duration: 0.3, ease: "easeInOut" },
@@ -1141,21 +1565,21 @@ function FAQ({ items, className = "" }) {
                   borderRadius: "50%",
                   flexShrink: 0
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M6 1v10M1 6h10", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }) })
+                children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("path", { d: "M6 1v10M1 6h10", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }) })
               }
             )
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_framer_motion4.AnimatePresence, { initial: false, children: isOpen && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-        import_framer_motion4.motion.div,
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_framer_motion6.AnimatePresence, { initial: false, children: isOpen && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+        import_framer_motion6.motion.div,
         {
           initial: { height: 0, opacity: 0 },
           animate: { height: "auto", opacity: 1 },
           exit: { height: 0, opacity: 0 },
           transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
           style: { overflow: "hidden" },
-          children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { paddingBottom: "clamp(1.25rem, 3vw, 1.75rem)", paddingRight: "clamp(0rem, 8vw, 5rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { paddingBottom: "clamp(1.25rem, 3vw, 1.75rem)", paddingRight: "clamp(0rem, 8vw, 5rem)" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
             "p",
             {
               className: "font-inter-tight font-medium text-white/60",
@@ -1170,9 +1594,30 @@ function FAQ({ items, className = "" }) {
 }
 
 // design-system/src/components/form.tsx
-var import_framer_motion5 = require("framer-motion");
-var import_react8 = require("react");
-var import_jsx_runtime12 = require("react/jsx-runtime");
+var import_framer_motion7 = require("framer-motion");
+var import_react10 = require("react");
+
+// design-system/src/components/success-icon.tsx
+var import_jsx_runtime17 = require("react/jsx-runtime");
+function SuccessIcon() {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    "div",
+    {
+      className: "flex items-center justify-center shrink-0",
+      style: {
+        width: "3.5rem",
+        height: "3.5rem",
+        borderRadius: "50%",
+        background: "var(--status-open-bg)",
+        border: "1px solid var(--status-open-border)"
+      },
+      children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("svg", { width: "20", height: "16", viewBox: "0 0 20 16", fill: "none", style: { width: "1.25rem", height: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("path", { d: "M1.5 8L7 13.5L18.5 1.5", stroke: "var(--status-open)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }) })
+    }
+  );
+}
+
+// design-system/src/components/form.tsx
+var import_jsx_runtime18 = require("react/jsx-runtime");
 var INQUIRY_OPTIONS = [
   { value: "press", label: "Press inquiry" },
   { value: "partnership", label: "Partnership" },
@@ -1180,18 +1625,18 @@ var INQUIRY_OPTIONS = [
   { value: "general", label: "General" }
 ];
 function InquiryDropdown({ value, onChange }) {
-  const [open, setOpen] = (0, import_react8.useState)(false);
-  const ref = (0, import_react8.useRef)(null);
+  const [open, setOpen] = (0, import_react10.useState)(false);
+  const ref = (0, import_react10.useRef)(null);
   const selected = INQUIRY_OPTIONS.find((o) => o.value === value);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     function onClickOutside(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { ref, className: "relative w-full", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { ref, className: "relative w-full", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
       "button",
       {
         type: "button",
@@ -1216,7 +1661,7 @@ function InquiryDropdown({ value, onChange }) {
           border: "none"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "span",
             {
               className: "font-inter-tight font-medium text-m",
@@ -1224,8 +1669,8 @@ function InquiryDropdown({ value, onChange }) {
               children: selected ? selected.label : "Inquiry type (optional)"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-            import_framer_motion5.motion.svg,
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+            import_framer_motion7.motion.svg,
             {
               animate: { rotate: open ? 180 : 0 },
               transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
@@ -1235,14 +1680,14 @@ function InquiryDropdown({ value, onChange }) {
               fill: "none",
               "aria-hidden": "true",
               style: { flexShrink: 0, display: "block", width: "1.25rem", height: "1.25rem" },
-              children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("path", { d: "M5 8L10 13L15 8", stroke: "rgba(255,255,255,0.4)", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
+              children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("path", { d: "M5 8L10 13L15 8", stroke: "rgba(255,255,255,0.4)", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
             }
           )
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_framer_motion5.AnimatePresence, { children: open && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-      import_framer_motion5.motion.div,
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_framer_motion7.AnimatePresence, { children: open && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+      import_framer_motion7.motion.div,
       {
         role: "listbox",
         "aria-label": "Inquiry type",
@@ -1256,7 +1701,7 @@ function InquiryDropdown({ value, onChange }) {
           borderRadius: "1rem",
           background: "var(--black-500)"
         },
-        children: INQUIRY_OPTIONS.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+        children: INQUIRY_OPTIONS.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
           "button",
           {
             type: "button",
@@ -1287,40 +1732,9 @@ function InquiryDropdown({ value, onChange }) {
     ) })
   ] });
 }
-function inputClass(hasError) {
-  return [
-    "w-full bg-transparent font-inter-tight font-medium text-white placeholder:text-[rgba(255,255,255,0.35)]",
-    "text-m focus:outline-none transition-colors",
-    hasError ? "" : ""
-  ].join(" ");
-}
-function Field({
-  input,
-  error,
-  className,
-  children
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: `flex flex-col ${className ?? ""}`, style: { gap: "0.375rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-      "div",
-      {
-        className: "flex items-center w-full",
-        style: {
-          background: "var(--black-500)",
-          height: "3.75rem",
-          borderRadius: "1rem",
-          padding: "0 1rem",
-          border: error ? "1px solid rgba(239,68,68,0.5)" : "none"
-        },
-        children: input ?? children
-      }
-    ),
-    error && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-xs", children: error })
-  ] });
-}
 function SuccessState() {
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
-    import_framer_motion5.motion.div,
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+    import_framer_motion7.motion.div,
     {
       className: "flex flex-col items-center justify-center w-full",
       initial: { opacity: 0, y: 16 },
@@ -1333,22 +1747,9 @@ function SuccessState() {
         padding: "3rem 1.5rem"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          "div",
-          {
-            className: "flex items-center justify-center",
-            style: {
-              width: "3.5rem",
-              height: "3.5rem",
-              borderRadius: "50%",
-              background: "var(--status-open-bg)",
-              border: "1px solid var(--status-open-border)"
-            },
-            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("svg", { width: "20", height: "16", viewBox: "0 0 20 16", fill: "none", style: { width: "1.25rem", height: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("path", { d: "M1.5 8L7 13.5L18.5 1.5", stroke: "var(--status-open)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }) })
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "0.5rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SuccessIcon, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "0.5rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "h3",
             {
               className: "font-inter-tight font-semibold text-white",
@@ -1356,7 +1757,7 @@ function SuccessState() {
               children: "Thank you \u2014 we received your request."
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "p",
             {
               className: "font-inter-tight font-medium",
@@ -1377,9 +1778,9 @@ function Form({
   recipient = "info@axevil.com",
   paddingClass = "padding-section-t6-b12"
 } = {}) {
-  const [data, setData] = (0, import_react8.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
-  const [errors, setErrors] = (0, import_react8.useState)({});
-  const [submitted, setSubmitted] = (0, import_react8.useState)(false);
+  const [data, setData] = (0, import_react10.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
+  const [errors, setErrors] = (0, import_react10.useState)({});
+  const [submitted, setSubmitted] = (0, import_react10.useState)(false);
   function validate() {
     const e = {};
     if (!data.email.trim()) e.email = "Required";
@@ -1408,13 +1809,13 @@ Inquiry type: ${inquiryLabel}
     window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
     setSubmitted(true);
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
     "section",
     {
       id: "contact-form",
       className: `relative w-full bg-page-bg flex flex-col items-center ${paddingClass}`,
-      children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
-        import_framer_motion5.motion.div,
+      children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+        import_framer_motion7.motion.div,
         {
           className: "relative w-full max-w-content container-px mx-auto flex flex-col items-center",
           style: { gap: "2rem" },
@@ -1423,13 +1824,13 @@ Inquiry type: ${inquiryLabel}
           viewport: { once: true, amount: 0.2 },
           transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex flex-col items-center justify-center w-full", style: { maxWidth: "37.5rem", gap: "1rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 whitespace-nowrap", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "opacity-50", children: number }),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "opacity-80", children: label })
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "flex flex-col items-center justify-center w-full", style: { maxWidth: "37.5rem", gap: "1rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 whitespace-nowrap", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "opacity-50", children: number }),
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "opacity-80", children: label })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "1rem" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "flex flex-col items-center text-center", style: { gap: "1rem" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   "h2",
                   {
                     className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
@@ -1443,7 +1844,7 @@ Inquiry type: ${inquiryLabel}
                     children: title
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   "p",
                   {
                     className: "font-inter-tight font-medium",
@@ -1459,8 +1860,8 @@ Inquiry type: ${inquiryLabel}
                 )
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SuccessState, {}) : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("form", { onSubmit: handleSubmit, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Field, { error: errors.email, input: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SuccessState, {}) : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { onSubmit: handleSubmit, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Field, { error: errors.email, input: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                 "input",
                 {
                   type: "email",
@@ -1474,7 +1875,7 @@ Inquiry type: ${inquiryLabel}
                   className: inputClass(!!errors.email)
                 }
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Field, { error: errors.name, input: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Field, { error: errors.name, input: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                 "input",
                 {
                   type: "text",
@@ -1487,7 +1888,7 @@ Inquiry type: ${inquiryLabel}
                   className: inputClass(!!errors.name)
                 }
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Field, { input: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Field, { input: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                 "input",
                 {
                   type: "text",
@@ -1499,8 +1900,8 @@ Inquiry type: ${inquiryLabel}
                   className: inputClass(false)
                 }
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "flex flex-col sm:flex-row w-full", style: { gap: "0.5rem" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Field, { className: "flex-1", input: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "flex flex-col sm:flex-row w-full", style: { gap: "0.5rem" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Field, { className: "flex-1", input: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   "input",
                   {
                     type: "text",
@@ -1512,7 +1913,7 @@ Inquiry type: ${inquiryLabel}
                     className: inputClass(false)
                   }
                 ) }),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "flex-1", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "flex-1", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   InquiryDropdown,
                   {
                     value: data.inquiry,
@@ -1520,7 +1921,7 @@ Inquiry type: ${inquiryLabel}
                   }
                 ) })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
                 "button",
                 {
                   type: "submit",
@@ -1538,7 +1939,7 @@ Inquiry type: ${inquiryLabel}
                     marginTop: "0.5rem"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                       "img",
                       {
                         src: "/icons/Email.svg",
@@ -1551,7 +1952,7 @@ Inquiry type: ${inquiryLabel}
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                 "p",
                 {
                   className: "font-inter-tight font-medium text-center w-full",
@@ -1573,9 +1974,9 @@ Inquiry type: ${inquiryLabel}
 }
 
 // design-system/src/components/hero-eyebrow.tsx
-var import_jsx_runtime13 = require("react/jsx-runtime");
+var import_jsx_runtime19 = require("react/jsx-runtime");
 function HeroEyebrow({ children, className = "" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(
     "div",
     {
       className: `flex items-center font-inter-tight font-medium text-s-med text-white ${className}`,
@@ -1588,7 +1989,7 @@ function HeroEyebrow({ children, className = "" }) {
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.25)"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
           "span",
           {
             className: "block ri-online-dot",
@@ -1608,7 +2009,7 @@ function HeroEyebrow({ children, className = "" }) {
 }
 
 // design-system/src/components/ill-cards.tsx
-var import_jsx_runtime14 = require("react/jsx-runtime");
+var import_jsx_runtime20 = require("react/jsx-runtime");
 function IllCards({
   cards,
   className = "",
@@ -1619,12 +2020,12 @@ function IllCards({
   hideImages = false
 }) {
   const titleClass = titleSize === "h3" ? "text-h3" : "text-h4";
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
     "div",
     {
       className: `grid grid-cols-1 md:grid-cols-2 w-full ${className}`,
       style: { gap: 0 },
-      children: cards.map((card) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+      children: cards.map((card) => /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
         "div",
         {
           className: "ill-card relative overflow-hidden",
@@ -1634,7 +2035,7 @@ function IllCards({
             ...card.border ?? { border: "1px solid var(--black-500, #1A1A1A)" }
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
               "span",
               {
                 className: "font-inter-tight font-medium text-m text-black-800 absolute",
@@ -1647,9 +2048,9 @@ function IllCards({
                 children: card.num
               }
             ),
-            !hideImages && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("picture", { children: [
-              card.imgMobile && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("source", { media: "(max-width: 480px)", srcSet: card.imgMobile }),
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+            !hideImages && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("picture", { children: [
+              card.imgMobile && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("source", { media: "(max-width: 480px)", srcSet: card.imgMobile }),
+              /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
                 "img",
                 {
                   src: card.img,
@@ -1669,13 +2070,13 @@ function IllCards({
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
               "div",
               {
                 className: "absolute flex flex-col gap-3",
                 style: { left: "1.5rem", right: "1.5rem", bottom: "1.5rem", zIndex: 5 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
                     "h3",
                     {
                       className: `font-inter-tight font-medium text-white ${titleClass}`,
@@ -1683,7 +2084,7 @@ function IllCards({
                       children: card.title
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white-400", children: card.body })
+                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white-400", children: card.body })
                 ]
               }
             )
@@ -1696,8 +2097,8 @@ function IllCards({
 }
 
 // design-system/src/components/page-entry.tsx
-var import_framer_motion6 = require("framer-motion");
-var import_jsx_runtime15 = require("react/jsx-runtime");
+var import_framer_motion8 = require("framer-motion");
+var import_jsx_runtime21 = require("react/jsx-runtime");
 function PageEntry({
   children,
   className = "",
@@ -1707,8 +2108,8 @@ function PageEntry({
   transition = { duration: 1.5, ease: [0.4, 0, 0.2, 1] },
   ...rest
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-    import_framer_motion6.motion.main,
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+    import_framer_motion8.motion.main,
     {
       className,
       style,
@@ -1722,7 +2123,7 @@ function PageEntry({
 }
 
 // design-system/src/components/section-heading.tsx
-var import_jsx_runtime16 = require("react/jsx-runtime");
+var import_jsx_runtime22 = require("react/jsx-runtime");
 var DEFAULT_GRADIENT = "var(--gradient-headline)";
 function SectionHeading({
   number,
@@ -1738,7 +2139,7 @@ function SectionHeading({
   className = ""
 }) {
   const alignClass = align === "center" ? "items-center text-center" : "items-start";
-  const headingEl = /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+  const headingEl = /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
     "h2",
     {
       className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
@@ -1755,7 +2156,7 @@ function SectionHeading({
       children: title
     }
   );
-  const subtitleEl = subtitle && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+  const subtitleEl = subtitle && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
     "p",
     {
       className: "font-inter-tight font-normal text-paragraph text-white/60",
@@ -1763,14 +2164,14 @@ function SectionHeading({
       children: subtitle
     }
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
     "div",
     {
       className: `flex flex-col w-full ${alignClass} ${className}`,
       style: { gap, overflow: "visible" },
       children: [
-        number !== void 0 && label && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(DescTag, { number, label }),
-        subtitle ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: `flex flex-col w-full ${alignClass}`, style: { gap: innerGap }, children: [
+        number !== void 0 && label && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(DescTag, { number, label }),
+        subtitle ? /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: `flex flex-col w-full ${alignClass}`, style: { gap: innerGap }, children: [
           headingEl,
           subtitleEl
         ] }) : headingEl
@@ -1780,16 +2181,16 @@ function SectionHeading({
 }
 
 // design-system/src/components/slider-card.tsx
-var import_jsx_runtime17 = require("react/jsx-runtime");
+var import_jsx_runtime23 = require("react/jsx-runtime");
 function SliderCard({ name, role, description, photo, linkedin, className = "" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
       "div",
       {
         className: "relative rounded-2 w-full overflow-hidden border-2 border-outline-100",
         style: { height: "25rem" },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "img",
             {
               src: "/img/block09/bg-speaker-gradient.png",
@@ -1800,7 +2201,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
               style: { zIndex: 0, objectFit: "cover" }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "img",
             {
               alt: name,
@@ -1810,14 +2211,14 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
               style: { zIndex: 1, objectFit: "contain", objectPosition: "bottom center" }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "div",
             {
               className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-1",
               style: { background: "var(--black-600)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", zIndex: 2 },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
-                /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "span",
                   {
                     className: "font-inter-tight font-semibold text-white whitespace-nowrap",
@@ -1831,9 +2232,9 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "flex flex-col items-start px-4 w-full", style: { gap: "1.25rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.75rem" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: "flex flex-col items-start px-4 w-full", style: { gap: "1.25rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.75rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
           "h4",
           {
             className: "font-inter-tight font-semibold text-white w-full",
@@ -1841,9 +2242,9 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
             children: name
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
         "a",
         {
           href: linkedin || void 0,
@@ -1851,8 +2252,8 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           rel: linkedin ? "noreferrer" : void 0,
           className: "flex items-center gap-2 text-white",
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "svg",
               {
                 width: "12",
@@ -1861,7 +2262,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
                 fill: "none",
                 "aria-hidden": "true",
                 className: "shrink-0 transition-transform duration-700 ease-in-out group-hover:rotate-180",
-                children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
+                children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
               }
             )
           ]
@@ -1872,7 +2273,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
 }
 
 // design-system/src/components/status-pill.tsx
-var import_jsx_runtime18 = require("react/jsx-runtime");
+var import_jsx_runtime24 = require("react/jsx-runtime");
 var COLORS = {
   open: { dot: "var(--status-open)", bg: "var(--status-open-bg)", border: "var(--status-open-border)", text: "var(--status-open)" },
   closed: { dot: "var(--status-closed)", bg: "var(--status-closed-bg)", border: "var(--status-closed-border)", text: "var(--status-closed)" },
@@ -1880,7 +2281,7 @@ var COLORS = {
 };
 function StatusPill({ status, label, className = "" }) {
   const c = COLORS[status];
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
     "span",
     {
       className: `inline-flex items-center justify-center font-inter-tight font-medium text-xs whitespace-nowrap ${className}`,
@@ -1893,7 +2294,7 @@ function StatusPill({ status, label, className = "" }) {
         gap: status === "soon" ? "0.5rem" : "0.375rem"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "block rounded-full", style: { width: "0.4375rem", height: "0.4375rem", background: c.dot } }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "block rounded-full", style: { width: "0.4375rem", height: "0.4375rem", background: c.dot } }),
         label
       ]
     }
@@ -1901,7 +2302,7 @@ function StatusPill({ status, label, className = "" }) {
 }
 
 // design-system/src/components/tag.tsx
-var import_jsx_runtime19 = require("react/jsx-runtime");
+var import_jsx_runtime25 = require("react/jsx-runtime");
 function Tag({
   label,
   variant = "tab",
@@ -1933,17 +2334,17 @@ function Tag({
     cls += active ? "bg-white text-black" : "bg-transparent text-white/40 hover:text-white/70";
   }
   cls += className;
-  const content = /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+  const content = /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
     leading,
     label
   ] });
   if (onClick) {
-    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("button", { type: "button", onClick, className: cls, style, children: content });
+    return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("button", { type: "button", onClick, className: cls, style, children: content });
   }
   if (href) {
-    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("a", { href, className: cls, style, children: content });
+    return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("a", { href, className: cls, style, children: content });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: cls, style, children: content });
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: cls, style, children: content });
 }
 
 // design-system/src/components/preload-devices.tsx
