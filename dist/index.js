@@ -1813,7 +1813,18 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           className: "group flex items-center gap-2 text-white",
           children: [
             /* @__PURE__ */ jsx17("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
-            /* @__PURE__ */ jsx17("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", className: "shrink-0", children: /* @__PURE__ */ jsx17("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" }) })
+            /* @__PURE__ */ jsx17(
+              "svg",
+              {
+                width: "12",
+                height: "12",
+                viewBox: "0 0 12 12",
+                fill: "none",
+                "aria-hidden": "true",
+                className: "shrink-0 transition-transform duration-700 ease-in-out group-hover:rotate-180",
+                children: /* @__PURE__ */ jsx17("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
+              }
+            )
           ]
         }
       )
