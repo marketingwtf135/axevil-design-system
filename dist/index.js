@@ -251,7 +251,7 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 
 // design-system/src/components/Nav.tsx
 import { Fragment as Fragment2, jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
-var NAV_LINKS = ["Company Stock", "Company"];
+var NAV_LINKS = ["Company Stock", "About Axevil"];
 function navHref(label) {
   if (label === "Company Stock") return "/companies";
   return "#";
@@ -259,7 +259,7 @@ function navHref(label) {
 var MOBILE_SECTIONS = [
   { label: "Company Stock" },
   {
-    label: "Company",
+    label: "About Axevil",
     items: [
       { label: "About Us", href: "/about-us" },
       { label: "Team", href: "/team" },
@@ -285,7 +285,7 @@ var COMPANY_ITEMS = [
   }
 ];
 function hasDropdown(label) {
-  if (label === "Company") return "company";
+  if (label === "About Axevil") return "company";
   return null;
 }
 function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } = {}) {
@@ -672,7 +672,7 @@ function Quiz({ onClose }) {
                       "div",
                       {
                         className: "flex flex-col rounded-3xl shrink-0 overflow-hidden w-full bg-surface-0",
-                        style: { height: "clamp(18rem, 45vw, 25rem)" },
+                        style: { height: cur.id === 2 ? "25rem" : "18.75rem" },
                         children: [
                           /* @__PURE__ */ jsx6(
                             "div",
@@ -689,9 +689,9 @@ function Quiz({ onClose }) {
                               )
                             }
                           ),
-                          /* @__PURE__ */ jsxs5("div", { className: "shrink-0 flex flex-col gap-1", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
+                          /* @__PURE__ */ jsxs5("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
                             cur.subheading && /* @__PURE__ */ jsx6("h3", { className: "font-inter-tight font-semibold text-white text-h4", children: cur.subheading }),
-                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ jsx6("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ jsx6("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white", children: cur.caption }) : null
+                            cur.caption ? cur.id === 2 ? /* @__PURE__ */ jsx6("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : cur.id === 1 ? /* @__PURE__ */ jsx6("p", { className: "font-inter-tight font-normal text-h4 whitespace-pre-line text-white", children: cur.caption }) : /* @__PURE__ */ jsx6("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
                         ]
                       }
