@@ -151,9 +151,10 @@ interface CtaFormNewsletterProps {
     className?: string;
 }
 /**
- * Newsletter signup form — email input + submit button.
- * Mobile (<sm):   stacked, w-full max-w 30rem
- * Tablet (sm-lg): side-by-side flex-1 split, max-w 30rem
+ * Newsletter signup form — email input + submit button, always a single horizontal row
+ * (client feedback 2026-07-08 — was stacking on mobile).
+ * Mobile (<sm):   input flex-1 + compact size-S button, max-w 30rem
+ * Tablet (sm-lg): input flex-1 + size-M button, max-w 30rem
  * Desktop (lg+):  input 22.5rem + gap 1rem + button 9.1875rem = 32.6875rem total
  *
  * Used on: CompanyStock "Get Updates" section.

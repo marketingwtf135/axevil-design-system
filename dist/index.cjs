@@ -1080,7 +1080,7 @@ function CtaFormNewsletter({
     "form",
     {
       onSubmit: handleSubmit,
-      className: `flex flex-col sm:flex-row items-stretch sm:items-center w-full max-w-[30rem] lg:max-w-none lg:w-auto ${className}`,
+      className: `flex flex-row items-center w-full max-w-[30rem] lg:max-w-none lg:w-auto ${className}`,
       style: { gap: "0.5rem" },
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
@@ -1091,7 +1091,7 @@ function CtaFormNewsletter({
             value: email,
             onChange: (e) => setEmail(e.target.value),
             placeholder,
-            className: "font-inter-tight font-medium text-m text-white placeholder:text-white/40 focus:outline-none w-full sm:flex-1 sm:min-w-0 lg:flex-none lg:w-[22.5rem]",
+            className: "font-inter-tight font-medium text-m text-white placeholder:text-white/40 focus:outline-none min-w-0 flex-1 lg:flex-none lg:w-[22.5rem]",
             style: {
               height: "3.5rem",
               padding: "0.625rem 1rem",
@@ -1102,16 +1102,8 @@ function CtaFormNewsletter({
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-          BtnOwn,
-          {
-            type: "submit",
-            size: "M",
-            icon: buttonIcon,
-            className: "w-full sm:flex-1 lg:flex-none lg:w-[9.1875rem]",
-            children: buttonLabel
-          }
-        )
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { type: "submit", size: "S", icon: buttonIcon, className: "shrink-0 sm:hidden", children: buttonLabel }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { type: "submit", size: "M", icon: buttonIcon, className: "hidden shrink-0 sm:flex lg:w-[9.1875rem]", children: buttonLabel })
       ]
     }
   );
