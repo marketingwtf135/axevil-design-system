@@ -1743,7 +1743,7 @@ function SectionHeading({
 // design-system/src/components/slider-card.tsx
 import { jsx as jsx17, jsxs as jsxs15 } from "react/jsx-runtime";
 function SliderCard({ name, role, description, photo, linkedin, className = "" }) {
-  return /* @__PURE__ */ jsxs15("div", { className: `flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
+  return /* @__PURE__ */ jsxs15("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
     /* @__PURE__ */ jsxs15(
       "div",
       {
@@ -1810,7 +1810,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           href: linkedin || void 0,
           target: linkedin ? "_blank" : void 0,
           rel: linkedin ? "noreferrer" : void 0,
-          className: "group flex items-center gap-2 text-white",
+          className: "flex items-center gap-2 text-white",
           children: [
             /* @__PURE__ */ jsx17("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
             /* @__PURE__ */ jsx17(

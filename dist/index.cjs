@@ -1790,7 +1790,7 @@ function SectionHeading({
 // design-system/src/components/slider-card.tsx
 var import_jsx_runtime17 = require("react/jsx-runtime");
 function SliderCard({ name, role, description, photo, linkedin, className = "" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
       "div",
       {
@@ -1857,7 +1857,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           href: linkedin || void 0,
           target: linkedin ? "_blank" : void 0,
           rel: linkedin ? "noreferrer" : void 0,
-          className: "group flex items-center gap-2 text-white",
+          className: "flex items-center gap-2 text-white",
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
             /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
