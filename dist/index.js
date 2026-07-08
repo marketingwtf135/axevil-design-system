@@ -29,9 +29,7 @@ function FadeIn({ children, className = "" }) {
 import { jsx as jsx2, jsxs } from "react/jsx-runtime";
 var NAV_COLUMNS = [
   // Wealth Manager + Retail Investors hidden for v1 (2026-06-30).
-  { heading: "Invest", href: "/companies", items: [
-    { label: "Company Stock", href: "/companies" }
-  ] },
+  // Invest column removed per client feedback 2026-07-08.
   { heading: "Company", href: "#", items: [
     { label: "About Us", href: "/about-us" },
     { label: "Team", href: "/team" },
@@ -253,15 +251,13 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 
 // design-system/src/components/Nav.tsx
 import { Fragment as Fragment2, jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
-var NAV_LINKS = ["Company Stock", "Compare", "Resources", "Company"];
+var NAV_LINKS = ["Company Stock", "Company"];
 function navHref(label) {
   if (label === "Company Stock") return "/companies";
   return "#";
 }
 var MOBILE_SECTIONS = [
   { label: "Company Stock" },
-  { label: "Compare" },
-  { label: "Resources" },
   {
     label: "Company",
     items: [
@@ -768,7 +764,7 @@ function Quiz({ onClose }) {
                       {
                         className: "font-inter-tight font-medium text-h4 shrink-0",
                         style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
-                        children: "Question 1: What best describes your role?"
+                        children: "What best describes your role?"
                       }
                     ),
                     /* @__PURE__ */ jsx6("div", { className: "flex flex-col gap-2", children: Q1.map((opt, i) => /* @__PURE__ */ jsx6(AnswerBtn, { opt, selected: q1 === i, onClick: () => setQ1(q1 === i ? null : i) }, i)) })
@@ -779,7 +775,7 @@ function Quiz({ onClose }) {
                       {
                         className: "font-inter-tight font-medium text-h4 shrink-0",
                         style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
-                        children: "Question 2: Have you participated in private markets before?"
+                        children: "Have you participated in private markets before?"
                       }
                     ),
                     /* @__PURE__ */ jsx6("div", { className: "flex flex-col gap-2", children: Q2.map((opt, i) => /* @__PURE__ */ jsx6(AnswerBtn, { opt, selected: q2 === i, onClick: () => setQ2(q2 === i ? null : i) }, i)) })
