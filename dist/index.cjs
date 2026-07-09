@@ -127,18 +127,15 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
             className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
             style: { maxWidth: "90rem" },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "1.25rem" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                  "img",
-                  {
-                    src: "/img/logos/footer-logo.svg",
-                    alt: "AXEVIL",
-                    className: "footer-logo",
-                    style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
-                  }
-                ) }),
-                compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "34rem" }, children: compliance })
-              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex flex-col shrink-0", style: { gap: "1.25rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                "img",
+                {
+                  src: "/img/logos/footer-logo.svg",
+                  alt: "AXEVIL",
+                  className: "footer-logo",
+                  style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
+                }
+              ) }) }),
               links ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
                 /* ── Nav columns ──
                     mobile: 2-col grid
@@ -183,12 +180,15 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
           "div",
           {
-            className: "mx-auto w-full container-px",
+            className: "mx-auto w-full container-px flex flex-col gap-6",
             style: { maxWidth: "90rem", borderTop: "1px solid var(--color-border-default, #1a1a1a)", padding: "1.5rem 0" },
-            children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", children: "\xA9 2021\u20132026 Axevil Capital, LLC. All rights reserved." })
+            children: [
+              compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "52rem" }, children: compliance }),
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", children: "\xA9 2021\u20132026 Axevil Capital, LLC. All rights reserved." })
+            ]
           }
         )
       ]
@@ -1138,7 +1138,7 @@ var SLIDES = [
     subheading: null,
     body: "Every deal is structured through a dedicated SPV under SEC regulation \u2014\nfully transparent, with annual reporting.",
     img: "/img/ill/ill-qwiz-02.webp",
-    caption: "You receive equity documented to the same standards as leading\nventure capital funds \u2014 institutional-grade ownership.",
+    caption: "You receive equity documented to the same standards as leading venture capital funds \u2014 institutional-grade ownership.",
     label: "Capital secured"
   },
   {
@@ -1267,7 +1267,7 @@ function Quiz({ onClose }) {
                     /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
                       "div",
                       {
-                        className: "flex flex-col rounded-3xl shrink-0 overflow-hidden w-full bg-surface-0",
+                        className: "flex flex-col rounded-3xl shrink-0 overflow-hidden w-full bg-surface-0 gap-spacing-0.75 p-spacing-1 md:p-spacing-1.5",
                         style: { height: cur.id === 2 ? "25rem" : "18.75rem" },
                         children: [
                           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
@@ -1285,7 +1285,7 @@ function Quiz({ onClose }) {
                               )
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", style: { padding: "clamp(1rem, 2vw, 1.5rem)", paddingTop: 0 }, children: [
+                          (cur.subheading || cur.caption) && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", children: [
                             cur.subheading && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "font-inter-tight font-medium text-white text-h4", children: cur.subheading }),
                             cur.caption ? cur.id === 2 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-normal text-paragraph whitespace-pre-line text-white-400", children: cur.caption }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "font-inter-tight font-medium text-h4 whitespace-pre-line text-white", children: cur.caption }) : null
                           ] })
@@ -1335,49 +1335,36 @@ function Quiz({ onClose }) {
                 {
                   type: "button",
                   onClick: onClose,
-                  className: "font-inter-tight font-medium text-m text-white/40 hover:text-white transition-colors outline-none",
-                  children: "\u2715 Close"
+                  "aria-label": "Close",
+                  className: "flex items-center justify-center shrink-0 bg-black-600 rounded-full outline-none transition-colors hover:bg-black-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+                  style: { width: "2.75rem", height: "2.75rem" },
+                  children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M4 4L12 12M12 4L4 12", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }) })
                 }
               ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(1.5rem, 3vw, 2.5rem)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
-                  "h2",
-                  {
-                    className: "font-inter-tight font-semibold text-h3 md:text-h2 text-white shrink-0",
-                    style: { letterSpacing: "0" },
-                    children: [
-                      "Get an Access",
-                      " ",
-                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", { className: "hidden md:block" }),
-                      "to pre-IPO Infrastructure"
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(1.25rem, 2.4vw, 2rem)" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-                      "p",
-                      {
-                        className: "font-inter-tight font-medium text-h4 shrink-0",
-                        style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
-                        children: "What best describes your role?"
-                      }
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col gap-2", children: Q1.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AnswerBtn, { opt, selected: q1 === i, onClick: () => setQ1(q1 === i ? null : i) }, i)) })
-                  ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-                      "p",
-                      {
-                        className: "font-inter-tight font-medium text-h4 shrink-0",
-                        style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
-                        children: "Have you participated in private markets before?"
-                      }
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col gap-2", children: Q2.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AnswerBtn, { opt, selected: q2 === i, onClick: () => setQ2(q2 === i ? null : i) }, i)) })
-                  ] })
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col flex-1", style: { gap: "clamp(1.5rem, 3vw, 2.5rem)", justifyContent: "flex-start" }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(1.25rem, 2.4vw, 2rem)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+                    "p",
+                    {
+                      className: "font-inter-tight font-medium text-h4 shrink-0",
+                      style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
+                      children: "What best describes your role?"
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col gap-2", children: Q1.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AnswerBtn, { opt, selected: q1 === i, onClick: () => setQ1(q1 === i ? null : i) }, i)) })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "clamp(0.75rem, 1.6vw, 1rem)" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+                    "p",
+                    {
+                      className: "font-inter-tight font-medium text-h4 shrink-0",
+                      style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
+                      children: "Have you participated in private markets before?"
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "flex flex-col gap-2", children: Q2.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AnswerBtn, { opt, selected: q2 === i, onClick: () => setQ2(q2 === i ? null : i) }, i)) })
                 ] })
-              ] }),
+              ] }) }),
               /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
                 "div",
                 {
