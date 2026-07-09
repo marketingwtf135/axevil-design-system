@@ -23,7 +23,8 @@ interface FooterProps {
     logoHref?: string;
     /** Replace the 5 nav columns with a flat link row (standalone pages, e.g. axevil-about). */
     links?: FooterLink[];
-    /** Optional compliance/legal line rendered under the logo. */
+    /** Compliance/legal line rendered under the logo — defaults to the standard disclaimer
+     *  (Legal disclaimer, Jurisdictional notices.docx, Part A). Pass `null` to omit it. */
     compliance?: react.ReactNode;
 }
 declare function Footer({ logoHref, links, compliance }?: FooterProps): react_jsx_runtime.JSX.Element;

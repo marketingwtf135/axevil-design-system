@@ -81,68 +81,117 @@ var NAV_COLUMNS = [
     { label: "About Us", href: "/about-us" },
     { label: "Team", href: "/team" },
     { label: "Contacts", href: "/contacts" }
+  ] },
+  // Legal column added 2026-07-09 per client's legal-pages brief (Popups banners and
+  // Consent texts.docx, placement matrix). "Cookie Settings" and "Your Privacy Choices"
+  // reopen the CookieConsent settings modal via the same open/close-by-event convention
+  // Quiz.tsx uses ('open-quiz') — reverted from standalone pages per client feedback
+  // 2026-07-09 (tried pages first, client asked to go back to the modal).
+  { heading: "Legal", href: "#", items: [
+    { label: "Terms of Use", href: "/terms" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Cookie Policy", href: "/cookies" },
+    { label: "Legal Disclosures", href: "/disclosures" },
+    { label: "Cookie Settings", onClick: () => window.dispatchEvent(new CustomEvent("open-cookie-settings")) },
+    { label: "Your Privacy Choices", onClick: () => window.dispatchEvent(new CustomEvent("open-cookie-settings")) }
   ] }
 ];
-function Footer({ logoHref = "/", links, compliance } = {}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+var DEFAULT_COMPLIANCE = /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+  "Axevil Capital, LLC is a Delaware limited liability company (No. 6832739), 548 Market St, San Francisco, California 94104, United States. Dubai office: The One Tower, 23rd Floor, Office 13, Dubai, UAE. Axevil Capital, LLC has filed with the U.S. Securities and Exchange Commission as an Exempt Reporting Adviser (SEC file No. 802-126907; CRD No. 323970). Exempt Reporting Adviser status does not constitute registration with, or approval or endorsement by, the SEC.",
+  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
+  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
+  "The information on this website is provided for general informational purposes only and does not constitute an offer to sell, or a solicitation of an offer to buy, any security, nor investment, legal or tax advice. Any offering of securities is made exclusively through private placements under Rule 506(b) of Regulation D to eligible investors with whom Axevil has a substantive pre-existing relationship, and only pursuant to definitive offering documents. Investments in private companies are speculative, illiquid and involve a high degree of risk, including possible loss of the entire investment. Past performance is not indicative of future results. References to portfolio companies are for informational purposes only; those companies are not affiliated with Axevil and do not sponsor or endorse Axevil or any offering. See our full",
+  " ",
+  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/disclosures", className: "underline hover:text-white transition-colors", children: "Legal Disclosures" }),
+  ",",
+  " ",
+  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/terms", className: "underline hover:text-white transition-colors", children: "Terms of Use" }),
+  ",",
+  " ",
+  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
+  " and",
+  " ",
+  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/cookies", className: "underline hover:text-white transition-colors", children: "Cookie Policy" }),
+  "."
+] });
+function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
     "footer",
     {
       className: "w-full bg-page-bg",
       style: { borderTop: "1px solid var(--color-border-default, #1a1a1a)" },
-      children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-        "div",
-        {
-          className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
-          style: { maxWidth: "90rem" },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "1.25rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                "img",
-                {
-                  src: "/img/logos/footer-logo.svg",
-                  alt: "AXEVIL",
-                  className: "footer-logo",
-                  style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
-                }
-              ) }),
-              compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "34rem" }, children: compliance })
-            ] }),
-            links ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
-              /* ── Nav columns ──
-                  mobile: 2-col grid
-                  tablet+: flex-row, justify-between, wraps if needed
-                  desktop: pinned right, max-w 44.375rem (=710px)
-              */
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                "nav",
-                {
-                  className: "flex flex-wrap gap-x-spacing-4 gap-y-10 font-inter-tight font-medium text-white",
-                  "aria-label": "Footer",
-                  children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                      "a",
-                      {
-                        href: col.href,
-                        className: "text-base text-white hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                        style: { letterSpacing: "-0.02em" },
-                        children: col.heading
-                      }
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                      "a",
-                      {
-                        href: item.href,
-                        className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                        children: item.label
-                      }
-                    ) }, item.label)) })
-                  ] }, col.heading))
-                }
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+          "div",
+          {
+            className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
+            style: { maxWidth: "90rem" },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "1.25rem" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                  "img",
+                  {
+                    src: "/img/logos/footer-logo.svg",
+                    alt: "AXEVIL",
+                    className: "footer-logo",
+                    style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
+                  }
+                ) }),
+                compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "34rem" }, children: compliance })
+              ] }),
+              links ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
+                /* ── Nav columns ──
+                    mobile: 2-col grid
+                    tablet+: flex-row, justify-between, wraps if needed
+                    desktop: pinned right, max-w 44.375rem (=710px)
+                */
+                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                  "nav",
+                  {
+                    className: "flex flex-wrap gap-x-spacing-4 gap-y-10 font-inter-tight font-medium text-white",
+                    "aria-label": "Footer",
+                    children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                        "a",
+                        {
+                          href: col.href,
+                          className: "text-base text-white hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
+                          style: { letterSpacing: "-0.02em" },
+                          children: col.heading
+                        }
+                      ),
+                      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: "onClick" in item ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                        "button",
+                        {
+                          type: "button",
+                          onClick: item.onClick,
+                          className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap text-left",
+                          children: item.label
+                        }
+                      ) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                        "a",
+                        {
+                          href: item.href,
+                          className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
+                          children: item.label
+                        }
+                      ) }, item.label)) })
+                    ] }, col.heading))
+                  }
+                )
               )
-            )
-          ]
-        }
-      )
+            ]
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          "div",
+          {
+            className: "mx-auto w-full container-px",
+            style: { maxWidth: "90rem", borderTop: "1px solid var(--color-border-default, #1a1a1a)", padding: "1.5rem 0" },
+            children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", children: "\xA9 2021\u20132026 Axevil Capital, LLC. All rights reserved." })
+          }
+        )
+      ]
     }
   );
 }
@@ -612,7 +661,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
     "div",
     {
-      className: `relative flex flex-col md:flex-row items-center bg-black-400 rounded-1 w-full p-[clamp(1rem,3vw,1.5rem)] ${illustration ? "md:w-[45rem] md:h-[20rem] md:items-start md:justify-between md:pl-6 md:pr-16 md:py-6" : ""}`,
+      className: `relative flex flex-col md:flex-row items-center overflow-hidden bg-black-400 rounded-1 w-full p-[clamp(1rem,3vw,1.5rem)] ${illustration ? "md:w-[45rem] md:h-[20rem] md:items-start md:justify-between md:pl-6 md:pr-16 md:py-6" : ""}`,
       style: { gap: "2rem" },
       children: [
         onClose && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
@@ -622,7 +671,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
             onClick: onClose,
             "aria-label": "Close",
             className: "absolute flex items-center justify-center shrink-0 bg-black-600 rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
-            style: { top: "0.5rem", right: "0.5rem", width: "2.75rem", height: "2.75rem" },
+            style: { top: "1rem", right: "1rem", width: "2.75rem", height: "2.75rem" },
             children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M4 4L12 12M12 4L4 12", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }) })
           }
         ),
@@ -664,7 +713,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
                     /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
                       BtnOwn,
                       {
-                        size: "S",
+                        size: "XS",
                         className: illustration ? "w-full md:w-auto" : "w-full",
                         icon: button.icon,
                         hideIcon: !button.icon,
@@ -895,6 +944,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
 }
 
 // design-system/src/lib/submitLead.ts
+var QUIZ_MANAGER_ID = 999;
 function classifySource(utmSource, utmMedium) {
   const source = utmSource.toLowerCase();
   const medium = utmMedium.toLowerCase();
@@ -925,9 +975,13 @@ async function submitLead(input) {
     email: input.email || void 0,
     phone: input.phone || void 0,
     lead_type: "partner",
+    manager_id: QUIZ_MANAGER_ID,
     source_l1,
     source_l2,
-    source_l3: utm.campaign || void 0,
+    // Real ad campaigns keep their utm_campaign value; anything without one (organic/direct
+    // visits, which is most quiz traffic) is tagged "site-quiz" instead of left blank, so these
+    // leads are identifiable as quiz submissions in the CRM regardless of channel.
+    source_l3: utm.campaign || "site-quiz",
     utm,
     page_path: window.location.pathname,
     referrer: document.referrer || ""
@@ -1046,7 +1100,13 @@ function QuizLeadForm({ onClose, onSubmit }) {
         )
       ] }),
       errors.submit && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-xs", children: errors.submit }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "M", className: "w-full", hideIcon: true, type: "submit", disabled: submitting, children: submitting ? "Sending\u2026" : "Send form" })
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "M", className: "w-full", hideIcon: true, type: "submit", disabled: submitting, children: submitting ? "Sending\u2026" : "Send form" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { lineHeight: 1.4 }, children: [
+        "By submitting this form, you agree that Axevil Capital, LLC will process the information you provide to respond to your enquiry, as described in the",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
+        "."
+      ] })
     ] })
   ] });
 }
@@ -2037,7 +2097,7 @@ Inquiry type: ${inquiryLabel}
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
                 "p",
                 {
                   className: "font-inter-tight font-medium text-center w-full",
@@ -2047,7 +2107,12 @@ Inquiry type: ${inquiryLabel}
                     color: "var(--white-400)",
                     marginTop: "0.5rem"
                   },
-                  children: "We reply within 24 hours. By submitting, you agree to our processing of the information above."
+                  children: [
+                    "We reply within 24 hours. By submitting this form, you agree that Axevil Capital, LLC will process the information you provide to respond to your enquiry, as described in the",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
+                    "."
+                  ]
                 }
               )
             ] }) })
