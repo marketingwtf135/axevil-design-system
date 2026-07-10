@@ -1231,13 +1231,13 @@ function Quiz({ onClose }) {
                             {
                               className: "flex items-center justify-center flex-1",
                               style: { overflow: "hidden", minHeight: 0 },
-                              children: /* @__PURE__ */ jsxs9("div", { style: { position: "relative", maxWidth: "100%", maxHeight: "100%", aspectRatio: cur.imgRatio }, children: [
+                              children: /* @__PURE__ */ jsxs9("div", { style: { position: "relative", width: "100%", aspectRatio: cur.imgRatio }, children: [
                                 /* @__PURE__ */ jsx11(
                                   "img",
                                   {
                                     src: cur.img,
                                     alt: "",
-                                    style: { display: "block", width: "100%", height: "100%", objectFit: "contain" }
+                                    style: { display: "block", width: "100%", height: "100%" }
                                   }
                                 ),
                                 cur.id === 1 && // Baked-in "?" placeholder glyph under "ERA Status" in the source PNG
