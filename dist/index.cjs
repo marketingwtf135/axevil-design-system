@@ -661,7 +661,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
     "div",
     {
-      className: `relative flex flex-col md:flex-row items-center overflow-hidden bg-black-400 rounded-1 w-full p-[clamp(1rem,3vw,1.5rem)] ${illustration ? "md:w-[45rem] md:h-[20rem] md:items-start md:justify-between md:pl-6 md:pr-16 md:py-6" : ""}`,
+      className: `relative flex flex-col md:flex-row items-center overflow-hidden bg-black-400 rounded-1 w-full pt-[clamp(1rem,3vw,1.5rem)] pl-[clamp(1rem,3vw,1.5rem)] pr-[clamp(1rem,3vw,1.5rem)] pb-0 ${illustration ? "md:w-[45rem] md:h-[20rem] md:items-start md:justify-between md:pl-6 md:pr-16 md:py-6" : "md:pb-[clamp(1rem,3vw,1.5rem)]"}`,
       style: { gap: "2rem" },
       children: [
         onClose && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
@@ -714,7 +714,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
                       BtnOwn,
                       {
                         size: "XS",
-                        className: illustration ? "w-full md:w-auto" : "w-full",
+                        className: illustration ? "w-auto" : "w-full",
                         icon: button.icon,
                         hideIcon: !button.icon,
                         onClick: button.href ? () => window.open(button.href, "_blank", "noopener,noreferrer") : button.onClick,
@@ -1034,7 +1034,11 @@ function QuizLeadForm({ onClose, onSubmit }) {
   }
   return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex flex-col items-start bg-black-400 rounded-1 w-full", style: { gap: "1.5rem", padding: "1.5rem" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center justify-between w-full", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-h4 text-white whitespace-pre-line", children: "Fill in the form to get the access\nto private markets" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "font-inter-tight font-medium text-h4 text-white whitespace-pre-line", children: [
+        "Fill in the form to get the access",
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "whitespace-nowrap", children: "to private markets" })
+      ] }),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
         "button",
         {
@@ -1100,7 +1104,7 @@ function QuizLeadForm({ onClose, onSubmit }) {
         )
       ] }),
       errors.submit && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "font-inter-tight font-medium text-red-400 text-xs", children: errors.submit }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "M", className: "w-full", hideIcon: true, type: "submit", disabled: submitting, children: submitting ? "Sending\u2026" : "Send form" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BtnOwn, { size: "S", className: "w-full", hideIcon: true, type: "submit", disabled: submitting, children: submitting ? "Sending\u2026" : "Send form" }),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { lineHeight: 1.4 }, children: [
         "By submitting this form, you agree that Axevil Capital, LLC will process the information you provide to respond to your enquiry, as described in the",
         " ",
@@ -1130,7 +1134,7 @@ var SLIDES = [
     subheading: null,
     body: "The most sought-after private companies of our era \u2014 the ones reshaping the technology of the next decade.",
     img: "/img/ill/ill-qwiz-01.webp",
-    caption: "SpaceX, xAI, Anthropic, Stripe, Cursor \u2014\nand 30 more top companies in portfolio",
+    caption: "SpaceX, xAI, Anthropic, Stripe, Cursor \u2014 and 30 more top companies in portfolio",
     label: "Pre-IPO leaders"
   },
   {
@@ -1269,7 +1273,7 @@ function Quiz({ onClose }) {
                       "div",
                       {
                         className: "flex flex-col rounded-3xl shrink-0 overflow-hidden w-full bg-surface-0 gap-spacing-0.75 p-spacing-1 md:p-spacing-1.5",
-                        style: { height: cur.id === 2 ? "25rem" : "18.75rem" },
+                        style: { height: isBelowLg ? cur.id === 2 ? "17.5rem" : "13.125rem" : cur.id === 2 ? "25rem" : "18.75rem" },
                         children: [
                           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                             "div",
