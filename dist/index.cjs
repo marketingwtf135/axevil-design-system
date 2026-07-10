@@ -627,7 +627,7 @@ function QuizOverlay({ children, maxWidth = "23.75rem" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
     import_framer_motion2.motion.div,
     {
-      className: "absolute inset-0 z-20 flex items-center justify-center",
+      className: "fixed inset-0 z-20 flex items-center justify-center",
       initial: { opacity: 0 },
       animate: { opacity: 1 },
       exit: { opacity: 0 },
