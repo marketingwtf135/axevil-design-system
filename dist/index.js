@@ -302,13 +302,13 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 
 // design-system/src/components/Nav.tsx
 import { Fragment as Fragment3, jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
-var NAV_LINKS = ["Private Companies", "About Axevil"];
+var NAV_LINKS = ["Market Intelligence", "About Axevil"];
 function navHref(label) {
-  if (label === "Private Companies") return "/companies";
+  if (label === "Market Intelligence") return "/companies";
   return "#";
 }
 var MOBILE_SECTIONS = [
-  { label: "Private Companies" },
+  { label: "Market Intelligence" },
   {
     label: "About Axevil",
     items: [
