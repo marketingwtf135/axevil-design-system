@@ -1274,8 +1274,8 @@ function Quiz({ onClose }) {
                           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                             "div",
                             {
-                              className: "flex items-center justify-center flex-1",
-                              style: { overflow: "hidden", minHeight: 0 },
+                              className: "flex justify-center flex-1",
+                              style: { overflow: "hidden", minHeight: 0, alignItems: cur.id === 2 ? "center" : "flex-start" },
                               children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { position: "relative", width: "100%", height: FIXED_IMG_HEIGHT[cur.id], overflow: FIXED_IMG_HEIGHT[cur.id] ? "hidden" : void 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { position: "relative", width: "100%" }, children: [
                                 /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                                   "img",
