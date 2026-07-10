@@ -1082,7 +1082,6 @@ var SLIDES = [
     subheading: null,
     body: "The most sought-after private companies of our era \u2014 the ones reshaping the technology of the next decade.",
     img: "/img/ill/ill-qwiz-01.webp",
-    imgRatio: "713 / 270",
     caption: "SpaceX, xAI, Anthropic, Stripe, Cursor \u2014\nand 30 more top companies in portfolio",
     label: "Pre-IPO leaders"
   },
@@ -1092,7 +1091,6 @@ var SLIDES = [
     subheading: null,
     body: "Every deal is structured through a dedicated SPV under SEC regulation \u2014\nfully transparent, with annual reporting.",
     img: "/img/ill/ill-qwiz-02.webp",
-    imgRatio: "719 / 270",
     caption: "You receive equity documented to the same standards as leading venture capital funds \u2014 institutional-grade ownership.",
     label: "Capital secured"
   },
@@ -1102,7 +1100,6 @@ var SLIDES = [
     subheading: "Structural",
     body: "Before a deal goes live on the platform, we run two independent reviews:\nactual allocation access, jurisdiction, SPV feasibility, liquidity.",
     img: "/img/ill/ill-qwiz-03.webp",
-    imgRatio: "712 / 235",
     caption: "Actual allocation access, jurisdiction, SPV feasibility, liquidity\nIf either side doesn't add up \u2014 no deal, no matter how attractive the company.",
     label: "Real access"
   }
@@ -1231,13 +1228,13 @@ function Quiz({ onClose }) {
                             {
                               className: "flex items-center justify-center flex-1",
                               style: { overflow: "hidden", minHeight: 0 },
-                              children: /* @__PURE__ */ jsxs9("div", { style: { position: "relative", width: "100%", aspectRatio: cur.imgRatio }, children: [
+                              children: /* @__PURE__ */ jsxs9("div", { style: { position: "relative", width: "100%" }, children: [
                                 /* @__PURE__ */ jsx11(
                                   "img",
                                   {
                                     src: cur.img,
                                     alt: "",
-                                    style: { display: "block", width: "100%", height: "100%" }
+                                    style: { display: "block", width: "100%", height: "auto" }
                                   }
                                 ),
                                 cur.id === 1 && // Baked-in "?" placeholder glyph under "ERA Status" in the source PNG
