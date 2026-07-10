@@ -1129,6 +1129,7 @@ var SLIDES = [
     subheading: null,
     body: "The most sought-after private companies of our era \u2014 the ones reshaping the technology of the next decade.",
     img: "/img/ill/ill-qwiz-01.webp",
+    imgRatio: "713 / 270",
     caption: "SpaceX, xAI, Anthropic, Stripe, Cursor \u2014\nand 30 more top companies in portfolio",
     label: "Pre-IPO leaders"
   },
@@ -1138,6 +1139,7 @@ var SLIDES = [
     subheading: null,
     body: "Every deal is structured through a dedicated SPV under SEC regulation \u2014\nfully transparent, with annual reporting.",
     img: "/img/ill/ill-qwiz-02.webp",
+    imgRatio: "719 / 270",
     caption: "You receive equity documented to the same standards as leading venture capital funds \u2014 institutional-grade ownership.",
     label: "Capital secured"
   },
@@ -1147,6 +1149,7 @@ var SLIDES = [
     subheading: "Structural",
     body: "Before a deal goes live on the platform, we run two independent reviews:\nactual allocation access, jurisdiction, SPV feasibility, liquidity.",
     img: "/img/ill/ill-qwiz-03.webp",
+    imgRatio: "712 / 235",
     caption: "Actual allocation access, jurisdiction, SPV feasibility, liquidity\nIf either side doesn't add up \u2014 no deal, no matter how attractive the company.",
     label: "Real access"
   }
@@ -1275,14 +1278,26 @@ function Quiz({ onClose }) {
                             {
                               className: "flex items-center justify-center flex-1",
                               style: { overflow: "hidden", minHeight: 0 },
-                              children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-                                "img",
-                                {
-                                  src: cur.img,
-                                  alt: "",
-                                  style: cur.id === 2 ? { maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" } : { flexShrink: 0, display: "block", margin: "auto" }
-                                }
-                              )
+                              children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { position: "relative", maxWidth: "100%", maxHeight: "100%", aspectRatio: cur.imgRatio }, children: [
+                                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+                                  "img",
+                                  {
+                                    src: cur.img,
+                                    alt: "",
+                                    style: { display: "block", width: "100%", height: "100%", objectFit: "contain" }
+                                  }
+                                ),
+                                cur.id === 1 && // Baked-in "?" placeholder glyph under "ERA Status" in the source PNG
+                                // (unresolved status copy) — patched with a same-color square over the
+                                // exact spot rather than re-exporting the asset (2026-07-10 feedback).
+                                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+                                  "span",
+                                  {
+                                    "aria-hidden": "true",
+                                    style: { position: "absolute", left: "43.4%", top: "14.8%", width: "4.5%", height: "8.9%", background: "var(--black-500)" }
+                                  }
+                                )
+                              ] })
                             }
                           ),
                           (cur.subheading || cur.caption) && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", children: [
