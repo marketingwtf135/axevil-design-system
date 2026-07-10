@@ -1122,6 +1122,7 @@ function useIsBelowLg() {
   }, []);
   return below;
 }
+var FIXED_IMG_HEIGHT = { 0: "8.3125rem", 1: "4.6875rem" };
 var SLIDES = [
   {
     id: 0,
@@ -1275,7 +1276,7 @@ function Quiz({ onClose }) {
                             {
                               className: "flex items-center justify-center flex-1",
                               style: { overflow: "hidden", minHeight: 0 },
-                              children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { position: "relative", width: "100%" }, children: [
+                              children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { position: "relative", width: "100%", height: FIXED_IMG_HEIGHT[cur.id], overflow: FIXED_IMG_HEIGHT[cur.id] ? "hidden" : void 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { position: "relative", width: "100%" }, children: [
                                 /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
                                   "img",
                                   {
@@ -1294,7 +1295,7 @@ function Quiz({ onClose }) {
                                     style: { position: "absolute", left: "43.4%", top: "14.8%", width: "4.5%", height: "8.9%", background: "var(--black-500)" }
                                   }
                                 )
-                              ] })
+                              ] }) })
                             }
                           ),
                           (cur.subheading || cur.caption) && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "shrink-0 flex flex-col gap-spacing-0.75", children: [
