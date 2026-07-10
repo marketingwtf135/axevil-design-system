@@ -1231,7 +1231,7 @@ function Quiz({ onClose }) {
                             {
                               className: "flex items-center justify-center flex-1",
                               style: { overflow: "hidden", minHeight: 0 },
-                              children: /* @__PURE__ */ jsxs9("div", { style: { position: "relative", maxWidth: "100%", maxHeight: "100%", aspectRatio: cur.imgRatio }, children: [
+                              children: /* @__PURE__ */ jsxs9("div", { style: { position: "relative", width: "100%", aspectRatio: cur.imgRatio }, children: [
                                 /* @__PURE__ */ jsx11(
                                   "img",
                                   {
