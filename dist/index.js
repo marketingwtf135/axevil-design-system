@@ -27,6 +27,10 @@ function FadeIn({ children, className = "" }) {
 
 // design-system/src/components/Footer.tsx
 import { Fragment, jsx as jsx2, jsxs } from "react/jsx-runtime";
+var OFFICES = [
+  { city: "San Francisco", address: "548 Market St, San Francisco, California, 94104, United States" },
+  { city: "Dubai", address: "The One Tower, 23rd Floor, Office 13, Dubai, United Arab Emirates" }
+];
 var NAV_COLUMNS = [
   // Wealth Manager + Retail Investors hidden for v1 (2026-06-30).
   // Invest column removed per client feedback 2026-07-08.
@@ -80,15 +84,21 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
             className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
             style: { maxWidth: "90rem" },
             children: [
-              /* @__PURE__ */ jsx2("div", { className: "flex flex-col shrink-0", style: { gap: "1.25rem" }, children: /* @__PURE__ */ jsx2("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ jsx2(
-                "img",
-                {
-                  src: "/img/logos/footer-logo.svg",
-                  alt: "AXEVIL",
-                  className: "footer-logo",
-                  style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
-                }
-              ) }) }),
+              /* @__PURE__ */ jsxs("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
+                /* @__PURE__ */ jsx2("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ jsx2(
+                  "img",
+                  {
+                    src: "/img/logos/footer-logo.svg",
+                    alt: "AXEVIL",
+                    className: "footer-logo",
+                    style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
+                  }
+                ) }),
+                /* @__PURE__ */ jsx2("div", { className: "flex flex-col sm:flex-row lg:flex-col gap-6 sm:gap-10 lg:gap-6", children: OFFICES.map((o) => /* @__PURE__ */ jsxs("address", { className: "not-italic flex flex-col", style: { gap: "0.5rem", maxWidth: "16rem" }, children: [
+                  /* @__PURE__ */ jsx2("span", { className: "font-inter-tight font-medium text-s-med text-white", style: { letterSpacing: "-0.01em" }, children: o.city }),
+                  /* @__PURE__ */ jsx2("span", { className: "font-inter-tight font-normal text-s-med text-white-400", style: { lineHeight: 1.5 }, children: o.address })
+                ] }, o.city)) })
+              ] }),
               links ? /* @__PURE__ */ jsx2("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ jsx2("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
                 /* ── Nav columns ──
                     mobile: 2-col grid
