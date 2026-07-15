@@ -73,15 +73,18 @@ function FadeIn({ children, className = "" }) {
 }
 
 // design-system/src/components/Footer.tsx
+var import_react2 = require("react");
 var import_jsx_runtime2 = require("react/jsx-runtime");
 var OFFICES = [
   { city: "San Francisco", address: "548 Market St, San Francisco, California, 94104, United States" },
-  { city: "Dubai", address: "The One Tower, 23rd Floor, Office 13, Dubai, United Arab Emirates" }
+  { city: "Dubai", address: "The One Tower, 23rd Floor, Office 13, Dubai, United Arab Emirates" },
+  // Astana address per src/pages/Contacts.tsx (single source of truth for office addresses).
+  { city: "Astana", address: "Republic of Kazakhstan, Astana city, Yessil district, Mangilik El avenue, building 55/23, block C4.4, office No.338" }
 ];
 var NAV_COLUMNS = [
   // Wealth Manager + Retail Investors hidden for v1 (2026-06-30).
   // Invest column removed per client feedback 2026-07-08.
-  { heading: "Company", href: "#", items: [
+  { heading: "Company", items: [
     { label: "About Us", href: "/about-us" },
     { label: "Team", href: "/team" },
     { label: "Contacts", href: "/contacts" }
@@ -91,7 +94,7 @@ var NAV_COLUMNS = [
   // reopen the CookieConsent settings modal via the same open/close-by-event convention
   // Quiz.tsx uses ('open-quiz') — reverted from standalone pages per client feedback
   // 2026-07-09 (tried pages first, client asked to go back to the modal).
-  { heading: "Legal", href: "#", items: [
+  { heading: "Legal", items: [
     { label: "Terms of Use", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Cookie Policy", href: "/cookies" },
@@ -100,117 +103,165 @@ var NAV_COLUMNS = [
     { label: "Your Privacy Choices", onClick: () => window.dispatchEvent(new CustomEvent("open-cookie-settings")) }
   ] }
 ];
-var DEFAULT_COMPLIANCE = /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
-  "Axevil Capital, LLC is a Delaware limited liability company (No. 6832739), 548 Market St, San Francisco, California 94104, United States. Dubai office: The One Tower, 23rd Floor, Office 13, Dubai, UAE. Axevil Capital, LLC has filed with the U.S. Securities and Exchange Commission as an Exempt Reporting Adviser (SEC file No. 802-126907; CRD No. 323970). Exempt Reporting Adviser status does not constitute registration with, or approval or endorsement by, the SEC.",
-  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
-  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
-  "The information on this website is provided for general informational purposes only and does not constitute an offer to sell, or a solicitation of an offer to buy, any security, nor investment, legal or tax advice. Any offering of securities is made exclusively through private placements under Rule 506(b) of Regulation D to eligible investors with whom Axevil has a substantive pre-existing relationship, and only pursuant to definitive offering documents. Investments in private companies are speculative, illiquid and involve a high degree of risk, including possible loss of the entire investment. Past performance is not indicative of future results. References to portfolio companies are for informational purposes only; those companies are not affiliated with Axevil and do not sponsor or endorse Axevil or any offering. See our full",
-  " ",
-  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/disclosures", className: "underline hover:text-white transition-colors", children: "Legal Disclosures" }),
-  ",",
-  " ",
-  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/terms", className: "underline hover:text-white transition-colors", children: "Terms of Use" }),
-  ",",
-  " ",
-  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
-  " and",
-  " ",
-  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: "/cookies", className: "underline hover:text-white transition-colors", children: "Cookie Policy" }),
-  "."
-] });
+var DELAWARE_REGISTRY = "https://icis.corp.delaware.gov/ecorp/entitysearch/NameSearch.aspx";
+var COMPLIANCE_BLOCKS = [
+  [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+      "Axevil Capital, LLC is a US-registered company",
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+        "a",
+        {
+          href: DELAWARE_REGISTRY,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "underline hover:text-white-400 transition-colors",
+          children: "(Delaware, #6832739)"
+        }
+      ),
+      " ",
+      "with legal address: 548 Market St, San Francisco, California, 94104, United States."
+    ] })
+  ],
+  ["Axevil Capital, LLC has Exempt Reporting Adviser (ERA) status and is regulated by the US Securities and Exchange Commission (SEC #802\u2212126907)."],
+  [
+    "The information presented on the website is for informational purposes only and:",
+    "\u2014 does not constitute an offer to buy or sell securities or other financial instruments;",
+    "\u2014 does not constitute an invitation to trade or provision of investment services;",
+    "\u2014 does not constitute individual investment advice."
+  ],
+  ["The Company works exclusively with qualified investors who possess the necessary knowledge, experience, and financial capacity to assess risks and invest in high-risk instruments. This asset class involves elevated risks, volatility, and illiquidity. Investors must be prepared to accept the possibility of total loss of invested capital as well as lack of liquidity."],
+  ["NOTIFICATION OF INVESTMENT RISKS AND STATUS OF THE COMPANY'S ACTIVITIES"],
+  [
+    "FOR ALL INVESTORS GENERALLY:",
+    "The Company's activities focus on attracting investments in mature venture projects at the stage of sustainable business development, close to IPO exit.",
+    "The Company does not guarantee profit generation. Investments involve risks, including the possibility of returns below expectations, which cannot be guaranteed."
+  ],
+  [
+    "NOTICE TO INVESTORS IN THE UNITED STATES:",
+    "\u2014 Investment interest offerings are conducted as private placements and are not subject to registration under US securities laws.",
+    "\u2014 Available only to accredited investors.",
+    "\u2014 Such securities may have transfer and resale restrictions.",
+    "\u2014 Investments carry a high level of financial risk.",
+    "\u2014 Independent legal, tax, and financial consultation is strongly recommended before making investment decisions."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED ARAB EMIRATES (UAE):",
+    "\u2014 Investment interest offerings are not public in the UAE.",
+    "\u2014 Directed only to qualified institutional investors.",
+    "\u2014 Interests are not registered or approved by the UAE Central Bank, SCA, or other regulators."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF ITALY:",
+    "\u2014 Interest offerings are not authorized by Italian regulators under Decreto Legislativo No. 58/1998.",
+    "\u2014 Interests may not be offered, distributed, or sold to the general public."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED KINGDOM:",
+    "\u2014 SPVs constitute unregulated collective investment schemes under FSMA 2000.",
+    '\u2014 Promotion is restricted and permitted only to "relevant persons" within the meaning of Financial Promotion Order 2005 (Articles 19(5), 49(2)(a)-(d)).',
+    "\u2014 Most standard protections of the UK regulatory system do not apply.",
+    "\u2014 Compensation under the UK Financial Services Compensation Scheme is not provided."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWEDEN:",
+    "\u2014 The partnership is not an investment fund under the Swedish Investment Funds Act (2004:46).",
+    "\u2014 The offering is not subject to registration under the Swedish Financial Instruments Trading Act (1991:980).",
+    "\u2014 Interests are not approved and will not be approved by the Swedish Financial Supervisory Authority."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWITZERLAND:",
+    "\u2014 SPVs are not approved by FINMA as foreign collective investment schemes under Article 120 CISA. Interests may not be publicly offered or distributed in Switzerland.",
+    "\u2014 SPVs are not regulated by Swiss authorities.",
+    '\u2014 Interests are available only to "qualified investors" under CISA or a limited circle of persons without public offering.',
+    "\u2014 By continuing, you confirm that:",
+    "1. You qualify as an accredited/qualified investor under the laws of your jurisdiction (e.g., in the U.S. an annual income exceeding $200,000 individually or $300,000 jointly, or net worth above $1 million, excluding primary residence).",
+    "2. You are legally permitted to access this information in your jurisdiction.",
+    "3. You understand that private investments involve a high degree of risk, including the risk of total loss of capital."
+  ]
+];
+var COPYRIGHT = "Axevil Capital 2021\u22122026 \u2014 All Rights Reserved";
+var DEFAULT_COMPLIANCE = /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_jsx_runtime2.Fragment, { children: COMPLIANCE_BLOCKS.map((lines, bi) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_react2.Fragment, { children: [
+  bi > 0 && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {})
+  ] }),
+  lines.map((line, li) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_react2.Fragment, { children: [
+    li > 0 && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
+    line
+  ] }, li))
+] }, bi)) });
 function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-    "footer",
-    {
-      className: "w-full bg-page-bg",
-      style: { borderTop: "1px solid var(--color-border-default, #1a1a1a)" },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-          "div",
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("footer", { className: "w-full bg-page-bg border-t border-outline-100", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto w-full container-px max-w-content flex flex-col gap-spacing-2 py-10 md:py-12 lg:pt-16 lg:pb-12", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 pb-spacing-2 border-b border-outline-100", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          "img",
           {
-            className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
-            style: { maxWidth: "90rem" },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                  "img",
-                  {
-                    src: "/img/logos/footer-logo.svg",
-                    alt: "AXEVIL",
-                    className: "footer-logo",
-                    style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
-                  }
-                ) }),
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex flex-col sm:flex-row lg:flex-col gap-6 sm:gap-10 lg:gap-6", children: OFFICES.map((o) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("address", { className: "not-italic flex flex-col", style: { gap: "0.5rem", maxWidth: "16rem" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-inter-tight font-medium text-s-med text-white", style: { letterSpacing: "-0.01em" }, children: o.city }),
-                  /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-inter-tight font-normal text-s-med text-white-400", style: { lineHeight: 1.5 }, children: o.address })
-                ] }, o.city)) })
-              ] }),
-              links ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
-                /* ── Nav columns ──
-                    mobile: 2-col grid
-                    tablet+: flex-row, justify-between, wraps if needed
-                    desktop: pinned right, max-w 44.375rem (=710px)
-                */
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                  "nav",
-                  {
-                    className: "flex flex-wrap gap-x-spacing-4 gap-y-10 font-inter-tight font-medium text-white",
-                    "aria-label": "Footer",
-                    children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                        "a",
-                        {
-                          href: col.href,
-                          className: "text-base text-white hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                          style: { letterSpacing: "-0.02em" },
-                          children: col.heading
-                        }
-                      ),
-                      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: "onClick" in item ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                        "button",
-                        {
-                          type: "button",
-                          onClick: item.onClick,
-                          className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap text-left",
-                          children: item.label
-                        }
-                      ) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                        "a",
-                        {
-                          href: item.href,
-                          className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                          children: item.label
-                        }
-                      ) }, item.label)) })
-                    ] }, col.heading))
-                  }
-                )
-              )
-            ]
+            src: "/img/logos/footer-logo.svg",
+            alt: "AXEVIL",
+            className: "footer-logo",
+            style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
           }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-          "div",
+        ) }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex flex-col sm:flex-row lg:flex-col gap-6 sm:gap-10 lg:gap-6", children: OFFICES.map((o) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("address", { className: "not-italic flex flex-col", style: { gap: "0.5rem", maxWidth: "16rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-inter-tight font-medium text-s-med text-white", style: { letterSpacing: "-0.01em" }, children: o.city }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-inter-tight font-normal text-s-med text-white-400", style: { lineHeight: 1.5 }, children: o.address })
+        ] }, o.city)) })
+      ] }),
+      links ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
+        /* ── nav-wrapper (Figma 2605:6690) — columns gap 3rem, heading→list 2rem, items 1rem ── */
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          "nav",
           {
-            className: "mx-auto w-full container-px flex flex-col gap-6",
-            style: { maxWidth: "90rem", borderTop: "1px solid var(--color-border-default, #1a1a1a)", padding: "1.5rem 0" },
-            children: [
-              compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "52rem" }, children: compliance }),
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "font-inter-tight font-medium text-xs text-white-400", children: "\xA9 2021\u20132026 Axevil Capital, LLC. All rights reserved." })
-            ]
+            className: "flex flex-wrap gap-x-spacing-3 gap-y-10 font-inter-tight font-medium text-white",
+            "aria-label": "Footer",
+            children: NAV_COLUMNS.map((col) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-spacing-2 items-start shrink-0", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { className: "text-m text-white whitespace-nowrap m-0 font-medium", children: col.heading }),
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "flex flex-col gap-spacing-1 items-start text-xs text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: "onClick" in item ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                "button",
+                {
+                  type: "button",
+                  onClick: item.onClick,
+                  className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap text-left",
+                  children: item.label
+                }
+              ) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                "a",
+                {
+                  href: item.href,
+                  className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
+                  children: item.label
+                }
+              ) }, item.label)) })
+            ] }, col.heading))
           }
         )
-      ]
-    }
-  );
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+      "p",
+      {
+        className: "font-inter-tight font-medium text-xs text-black-800 w-full",
+        style: { wordBreak: "break-word" },
+        children: [
+          compliance,
+          compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {})
+          ] }),
+          COPYRIGHT
+        ]
+      }
+    )
+  ] }) });
 }
 
 // design-system/src/components/Nav.tsx
-var import_react3 = require("react");
+var import_react4 = require("react");
 
 // design-system/src/components/btn-own.tsx
-var import_react2 = require("react");
+var import_react3 = require("react");
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var SIZE_STYLES = {
   M: { height: "3.625rem", padding: "0.75rem 1.5rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
@@ -235,7 +286,7 @@ function BtnOwn({
   variant = "primary",
   disabled = false
 }) {
-  const [hovered, setHovered] = (0, import_react2.useState)(false);
+  const [hovered, setHovered] = (0, import_react3.useState)(false);
   const sizeStyle = size ? SIZE_STYLES[size] : {};
   const variantStyle = VARIANT_BASE[variant];
   const iconSrc = icon ?? "/icons/Key.svg";
@@ -401,10 +452,10 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
   const desktopLinks = links ?? NAV_LINKS.map((l) => ({ label: l, href: navHref(l) }));
   const mobileSections = links ? links.map((l) => ({ label: l.label, href: l.href })) : MOBILE_SECTIONS;
   const useDropdowns = !links;
-  const [menuOpen, setMenuOpen] = (0, import_react3.useState)(false);
-  const [openDropdown, setOpenDropdown] = (0, import_react3.useState)(null);
-  const closeTimer = (0, import_react3.useRef)(null);
-  (0, import_react3.useEffect)(() => {
+  const [menuOpen, setMenuOpen] = (0, import_react4.useState)(false);
+  const [openDropdown, setOpenDropdown] = (0, import_react4.useState)(null);
+  const closeTimer = (0, import_react4.useRef)(null);
+  (0, import_react4.useEffect)(() => {
     const close = () => setMenuOpen(false);
     window.addEventListener("popstate", close);
     window.addEventListener("pushstate", close);
@@ -413,14 +464,14 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
       window.removeEventListener("pushstate", close);
     };
   }, []);
-  (0, import_react3.useEffect)(() => {
+  (0, import_react4.useEffect)(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
-  const [hidden, setHidden] = (0, import_react3.useState)(false);
-  (0, import_react3.useEffect)(() => {
+  const [hidden, setHidden] = (0, import_react4.useState)(false);
+  (0, import_react4.useEffect)(() => {
     let lastY = window.scrollY;
     let downAccum = 0;
     let upAccum = 0;
@@ -448,8 +499,8 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  const [mounted, setMounted] = (0, import_react3.useState)(false);
-  (0, import_react3.useEffect)(() => {
+  const [mounted, setMounted] = (0, import_react4.useState)(false);
+  (0, import_react4.useEffect)(() => {
     setMounted(true);
   }, []);
   function openWith(key) {
@@ -627,7 +678,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
 }
 
 // design-system/src/components/Quiz.tsx
-var import_react6 = require("react");
+var import_react7 = require("react");
 var import_framer_motion4 = require("framer-motion");
 
 // design-system/src/components/quiz-overlay.tsx
@@ -753,7 +804,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
 }
 
 // design-system/src/components/quiz-lead-form.tsx
-var import_react5 = require("react");
+var import_react6 = require("react");
 
 // design-system/src/components/form-field.tsx
 var import_jsx_runtime8 = require("react/jsx-runtime");
@@ -791,7 +842,7 @@ function Field({
 }
 
 // design-system/src/components/phone-field.tsx
-var import_react4 = require("react");
+var import_react5 = require("react");
 var import_framer_motion3 = require("framer-motion");
 var import_jsx_runtime9 = require("react/jsx-runtime");
 var COUNTRIES = [
@@ -812,10 +863,10 @@ var COUNTRIES = [
   { code: "br", dial: "+55", name: "Brazil" }
 ];
 function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
-  const [open, setOpen] = (0, import_react4.useState)(false);
-  const ref = (0, import_react4.useRef)(null);
+  const [open, setOpen] = (0, import_react5.useState)(false);
+  const ref = (0, import_react5.useRef)(null);
   const selected = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
-  (0, import_react4.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     function onClickOutside(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
@@ -1013,9 +1064,9 @@ async function submitLead(input) {
 // design-system/src/components/quiz-lead-form.tsx
 var import_jsx_runtime10 = require("react/jsx-runtime");
 function QuizLeadForm({ onClose, onSubmit }) {
-  const [data, setData] = (0, import_react5.useState)({ name: "", email: "", phone: "", countryCode: "us" });
-  const [errors, setErrors] = (0, import_react5.useState)({});
-  const [submitting, setSubmitting] = (0, import_react5.useState)(false);
+  const [data, setData] = (0, import_react6.useState)({ name: "", email: "", phone: "", countryCode: "us" });
+  const [errors, setErrors] = (0, import_react6.useState)({});
+  const [submitting, setSubmitting] = (0, import_react6.useState)(false);
   function validate() {
     const e = {};
     if (!data.name.trim()) e.name = "Required";
@@ -1128,8 +1179,8 @@ function QuizLeadForm({ onClose, onSubmit }) {
 // design-system/src/components/Quiz.tsx
 var import_jsx_runtime11 = require("react/jsx-runtime");
 function useIsBelowLg() {
-  const [below, setBelow] = (0, import_react6.useState)(() => window.innerWidth < 1024);
-  (0, import_react6.useEffect)(() => {
+  const [below, setBelow] = (0, import_react7.useState)(() => window.innerWidth < 1024);
+  (0, import_react7.useEffect)(() => {
     const handler = () => setBelow(window.innerWidth < 1024);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
@@ -1218,13 +1269,13 @@ function AnswerBtn({ opt, selected, onClick }) {
 }
 var Q1_PRINCIPAL_INDEX = 0;
 function Quiz({ onClose }) {
-  const [slide, setSlide] = (0, import_react6.useState)(0);
-  const [progress, setProgress] = (0, import_react6.useState)(0);
-  const [q1, setQ1] = (0, import_react6.useState)(null);
-  const [q2, setQ2] = (0, import_react6.useState)(null);
-  const [step, setStep] = (0, import_react6.useState)("questions");
+  const [slide, setSlide] = (0, import_react7.useState)(0);
+  const [progress, setProgress] = (0, import_react7.useState)(0);
+  const [q1, setQ1] = (0, import_react7.useState)(null);
+  const [q2, setQ2] = (0, import_react7.useState)(null);
+  const [step, setStep] = (0, import_react7.useState)("questions");
   const isBelowLg = useIsBelowLg();
-  (0, import_react6.useEffect)(() => {
+  (0, import_react7.useEffect)(() => {
     if (step !== "questions") return;
     const pInt = setInterval(() => setProgress((p) => Math.min(p + 0.5, 100)), 50);
     const sInt = setInterval(() => {
@@ -1441,7 +1492,7 @@ function Quiz({ onClose }) {
 }
 
 // design-system/src/components/bg-features.tsx
-var import_react7 = require("react");
+var import_react8 = require("react");
 var import_framer_motion5 = require("framer-motion");
 var import_jsx_runtime12 = require("react/jsx-runtime");
 function BgFeatures({
@@ -1453,8 +1504,8 @@ function BgFeatures({
   animated = false,
   animationDuration = 30
 } = {}) {
-  const ref = (0, import_react7.useRef)(null);
-  (0, import_react7.useEffect)(() => {
+  const ref = (0, import_react8.useRef)(null);
+  (0, import_react8.useEffect)(() => {
     if (!spotlight) return;
     const el = ref.current;
     if (!el) return;
@@ -1625,7 +1676,7 @@ function CtaForm({
 }
 
 // design-system/src/components/cta-form-newsletter.tsx
-var import_react8 = require("react");
+var import_react9 = require("react");
 var import_jsx_runtime15 = require("react/jsx-runtime");
 function CtaFormNewsletter({
   buttonLabel = "Subscribe",
@@ -1635,8 +1686,8 @@ function CtaFormNewsletter({
   onSubmit,
   className = ""
 }) {
-  const [email, setEmail] = (0, import_react8.useState)("");
-  const [submitted, setSubmitted] = (0, import_react8.useState)(false);
+  const [email, setEmail] = (0, import_react9.useState)("");
+  const [submitted, setSubmitted] = (0, import_react9.useState)(false);
   function handleSubmit(e) {
     e.preventDefault();
     if (!email.trim()) return;
@@ -1693,11 +1744,11 @@ function CtaFormNewsletter({
 }
 
 // design-system/src/components/faq.tsx
-var import_react9 = require("react");
+var import_react10 = require("react");
 var import_framer_motion6 = require("framer-motion");
 var import_jsx_runtime16 = require("react/jsx-runtime");
 function FAQ({ items, className = "" }) {
-  const [open, setOpen] = (0, import_react9.useState)(null);
+  const [open, setOpen] = (0, import_react10.useState)(null);
   return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: `w-full flex flex-col ${className}`, children: items.map((item, i) => {
     const isOpen = open === i;
     return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { borderBottom: "1px solid rgba(255,255,255,0.1)" }, children: [
@@ -1754,7 +1805,7 @@ function FAQ({ items, className = "" }) {
 
 // design-system/src/components/form.tsx
 var import_framer_motion7 = require("framer-motion");
-var import_react10 = require("react");
+var import_react11 = require("react");
 
 // design-system/src/components/success-icon.tsx
 var import_jsx_runtime17 = require("react/jsx-runtime");
@@ -1784,10 +1835,10 @@ var INQUIRY_OPTIONS = [
   { value: "general", label: "General" }
 ];
 function InquiryDropdown({ value, onChange }) {
-  const [open, setOpen] = (0, import_react10.useState)(false);
-  const ref = (0, import_react10.useRef)(null);
+  const [open, setOpen] = (0, import_react11.useState)(false);
+  const ref = (0, import_react11.useRef)(null);
   const selected = INQUIRY_OPTIONS.find((o) => o.value === value);
-  (0, import_react10.useEffect)(() => {
+  (0, import_react11.useEffect)(() => {
     function onClickOutside(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
@@ -1937,9 +1988,9 @@ function Form({
   recipient = "info@axevil.com",
   paddingClass = "padding-section-t6-b12"
 } = {}) {
-  const [data, setData] = (0, import_react10.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
-  const [errors, setErrors] = (0, import_react10.useState)({});
-  const [submitted, setSubmitted] = (0, import_react10.useState)(false);
+  const [data, setData] = (0, import_react11.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
+  const [errors, setErrors] = (0, import_react11.useState)({});
+  const [submitted, setSubmitted] = (0, import_react11.useState)(false);
   function validate() {
     const e = {};
     if (!data.email.trim()) e.email = "Required";

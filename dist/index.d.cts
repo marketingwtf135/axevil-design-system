@@ -9,11 +9,6 @@ interface FadeInProps {
 }
 declare function FadeIn({ children, className }: FadeInProps): react_jsx_runtime.JSX.Element;
 
-/** Footer — Figma 1121:4630 (desktop), 1121:4632 (tablet), 1121:4730 (mobile)
- *  Desktop: logo left + 2 nav columns right (Invest · Company), justify-between (max-w 1440)
- *  Tablet:  logo top, columns flex-row below (justify-between)
- *  Mobile:  logo top, 2-col grid below
- */
 interface FooterLink {
     label: string;
     href: string;
@@ -21,10 +16,11 @@ interface FooterLink {
 interface FooterProps {
     /** Logo link target (default '/'). */
     logoHref?: string;
-    /** Replace the 5 nav columns with a flat link row (standalone pages, e.g. axevil-about). */
+    /** Replace the nav columns with a flat link row (standalone pages, e.g. axevil-about). */
     links?: FooterLink[];
-    /** Compliance/legal line rendered under the logo — defaults to the standard disclaimer
-     *  (Legal disclaimer, Jurisdictional notices.docx, Part A). Pass `null` to omit it. */
+    /** Compliance/legal copy rendered under the divider — defaults to the standard
+     *  disclaimer transcribed from Figma 2605:6917. Pass `null` to omit it (the
+     *  copyright line stays). */
     compliance?: react.ReactNode;
 }
 declare function Footer({ logoHref, links, compliance }?: FooterProps): react_jsx_runtime.JSX.Element;

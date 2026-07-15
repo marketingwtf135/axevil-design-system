@@ -26,15 +26,18 @@ function FadeIn({ children, className = "" }) {
 }
 
 // design-system/src/components/Footer.tsx
-import { Fragment, jsx as jsx2, jsxs } from "react/jsx-runtime";
+import { Fragment } from "react";
+import { Fragment as Fragment2, jsx as jsx2, jsxs } from "react/jsx-runtime";
 var OFFICES = [
   { city: "San Francisco", address: "548 Market St, San Francisco, California, 94104, United States" },
-  { city: "Dubai", address: "The One Tower, 23rd Floor, Office 13, Dubai, United Arab Emirates" }
+  { city: "Dubai", address: "The One Tower, 23rd Floor, Office 13, Dubai, United Arab Emirates" },
+  // Astana address per src/pages/Contacts.tsx (single source of truth for office addresses).
+  { city: "Astana", address: "Republic of Kazakhstan, Astana city, Yessil district, Mangilik El avenue, building 55/23, block C4.4, office No.338" }
 ];
 var NAV_COLUMNS = [
   // Wealth Manager + Retail Investors hidden for v1 (2026-06-30).
   // Invest column removed per client feedback 2026-07-08.
-  { heading: "Company", href: "#", items: [
+  { heading: "Company", items: [
     { label: "About Us", href: "/about-us" },
     { label: "Team", href: "/team" },
     { label: "Contacts", href: "/contacts" }
@@ -44,7 +47,7 @@ var NAV_COLUMNS = [
   // reopen the CookieConsent settings modal via the same open/close-by-event convention
   // Quiz.tsx uses ('open-quiz') — reverted from standalone pages per client feedback
   // 2026-07-09 (tried pages first, client asked to go back to the modal).
-  { heading: "Legal", href: "#", items: [
+  { heading: "Legal", items: [
     { label: "Terms of Use", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Cookie Policy", href: "/cookies" },
@@ -53,110 +56,158 @@ var NAV_COLUMNS = [
     { label: "Your Privacy Choices", onClick: () => window.dispatchEvent(new CustomEvent("open-cookie-settings")) }
   ] }
 ];
-var DEFAULT_COMPLIANCE = /* @__PURE__ */ jsxs(Fragment, { children: [
-  "Axevil Capital, LLC is a Delaware limited liability company (No. 6832739), 548 Market St, San Francisco, California 94104, United States. Dubai office: The One Tower, 23rd Floor, Office 13, Dubai, UAE. Axevil Capital, LLC has filed with the U.S. Securities and Exchange Commission as an Exempt Reporting Adviser (SEC file No. 802-126907; CRD No. 323970). Exempt Reporting Adviser status does not constitute registration with, or approval or endorsement by, the SEC.",
-  /* @__PURE__ */ jsx2("br", {}),
-  /* @__PURE__ */ jsx2("br", {}),
-  "The information on this website is provided for general informational purposes only and does not constitute an offer to sell, or a solicitation of an offer to buy, any security, nor investment, legal or tax advice. Any offering of securities is made exclusively through private placements under Rule 506(b) of Regulation D to eligible investors with whom Axevil has a substantive pre-existing relationship, and only pursuant to definitive offering documents. Investments in private companies are speculative, illiquid and involve a high degree of risk, including possible loss of the entire investment. Past performance is not indicative of future results. References to portfolio companies are for informational purposes only; those companies are not affiliated with Axevil and do not sponsor or endorse Axevil or any offering. See our full",
-  " ",
-  /* @__PURE__ */ jsx2("a", { href: "/disclosures", className: "underline hover:text-white transition-colors", children: "Legal Disclosures" }),
-  ",",
-  " ",
-  /* @__PURE__ */ jsx2("a", { href: "/terms", className: "underline hover:text-white transition-colors", children: "Terms of Use" }),
-  ",",
-  " ",
-  /* @__PURE__ */ jsx2("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
-  " and",
-  " ",
-  /* @__PURE__ */ jsx2("a", { href: "/cookies", className: "underline hover:text-white transition-colors", children: "Cookie Policy" }),
-  "."
-] });
+var DELAWARE_REGISTRY = "https://icis.corp.delaware.gov/ecorp/entitysearch/NameSearch.aspx";
+var COMPLIANCE_BLOCKS = [
+  [
+    /* @__PURE__ */ jsxs(Fragment2, { children: [
+      "Axevil Capital, LLC is a US-registered company",
+      " ",
+      /* @__PURE__ */ jsx2(
+        "a",
+        {
+          href: DELAWARE_REGISTRY,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "underline hover:text-white-400 transition-colors",
+          children: "(Delaware, #6832739)"
+        }
+      ),
+      " ",
+      "with legal address: 548 Market St, San Francisco, California, 94104, United States."
+    ] })
+  ],
+  ["Axevil Capital, LLC has Exempt Reporting Adviser (ERA) status and is regulated by the US Securities and Exchange Commission (SEC #802\u2212126907)."],
+  [
+    "The information presented on the website is for informational purposes only and:",
+    "\u2014 does not constitute an offer to buy or sell securities or other financial instruments;",
+    "\u2014 does not constitute an invitation to trade or provision of investment services;",
+    "\u2014 does not constitute individual investment advice."
+  ],
+  ["The Company works exclusively with qualified investors who possess the necessary knowledge, experience, and financial capacity to assess risks and invest in high-risk instruments. This asset class involves elevated risks, volatility, and illiquidity. Investors must be prepared to accept the possibility of total loss of invested capital as well as lack of liquidity."],
+  ["NOTIFICATION OF INVESTMENT RISKS AND STATUS OF THE COMPANY'S ACTIVITIES"],
+  [
+    "FOR ALL INVESTORS GENERALLY:",
+    "The Company's activities focus on attracting investments in mature venture projects at the stage of sustainable business development, close to IPO exit.",
+    "The Company does not guarantee profit generation. Investments involve risks, including the possibility of returns below expectations, which cannot be guaranteed."
+  ],
+  [
+    "NOTICE TO INVESTORS IN THE UNITED STATES:",
+    "\u2014 Investment interest offerings are conducted as private placements and are not subject to registration under US securities laws.",
+    "\u2014 Available only to accredited investors.",
+    "\u2014 Such securities may have transfer and resale restrictions.",
+    "\u2014 Investments carry a high level of financial risk.",
+    "\u2014 Independent legal, tax, and financial consultation is strongly recommended before making investment decisions."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED ARAB EMIRATES (UAE):",
+    "\u2014 Investment interest offerings are not public in the UAE.",
+    "\u2014 Directed only to qualified institutional investors.",
+    "\u2014 Interests are not registered or approved by the UAE Central Bank, SCA, or other regulators."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF ITALY:",
+    "\u2014 Interest offerings are not authorized by Italian regulators under Decreto Legislativo No. 58/1998.",
+    "\u2014 Interests may not be offered, distributed, or sold to the general public."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED KINGDOM:",
+    "\u2014 SPVs constitute unregulated collective investment schemes under FSMA 2000.",
+    '\u2014 Promotion is restricted and permitted only to "relevant persons" within the meaning of Financial Promotion Order 2005 (Articles 19(5), 49(2)(a)-(d)).',
+    "\u2014 Most standard protections of the UK regulatory system do not apply.",
+    "\u2014 Compensation under the UK Financial Services Compensation Scheme is not provided."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWEDEN:",
+    "\u2014 The partnership is not an investment fund under the Swedish Investment Funds Act (2004:46).",
+    "\u2014 The offering is not subject to registration under the Swedish Financial Instruments Trading Act (1991:980).",
+    "\u2014 Interests are not approved and will not be approved by the Swedish Financial Supervisory Authority."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWITZERLAND:",
+    "\u2014 SPVs are not approved by FINMA as foreign collective investment schemes under Article 120 CISA. Interests may not be publicly offered or distributed in Switzerland.",
+    "\u2014 SPVs are not regulated by Swiss authorities.",
+    '\u2014 Interests are available only to "qualified investors" under CISA or a limited circle of persons without public offering.',
+    "\u2014 By continuing, you confirm that:",
+    "1. You qualify as an accredited/qualified investor under the laws of your jurisdiction (e.g., in the U.S. an annual income exceeding $200,000 individually or $300,000 jointly, or net worth above $1 million, excluding primary residence).",
+    "2. You are legally permitted to access this information in your jurisdiction.",
+    "3. You understand that private investments involve a high degree of risk, including the risk of total loss of capital."
+  ]
+];
+var COPYRIGHT = "Axevil Capital 2021\u22122026 \u2014 All Rights Reserved";
+var DEFAULT_COMPLIANCE = /* @__PURE__ */ jsx2(Fragment2, { children: COMPLIANCE_BLOCKS.map((lines, bi) => /* @__PURE__ */ jsxs(Fragment, { children: [
+  bi > 0 && /* @__PURE__ */ jsxs(Fragment2, { children: [
+    /* @__PURE__ */ jsx2("br", {}),
+    /* @__PURE__ */ jsx2("br", {})
+  ] }),
+  lines.map((line, li) => /* @__PURE__ */ jsxs(Fragment, { children: [
+    li > 0 && /* @__PURE__ */ jsx2("br", {}),
+    line
+  ] }, li))
+] }, bi)) });
 function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {}) {
-  return /* @__PURE__ */ jsxs(
-    "footer",
-    {
-      className: "w-full bg-page-bg",
-      style: { borderTop: "1px solid var(--color-border-default, #1a1a1a)" },
-      children: [
-        /* @__PURE__ */ jsxs(
-          "div",
+  return /* @__PURE__ */ jsx2("footer", { className: "w-full bg-page-bg border-t border-outline-100", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto w-full container-px max-w-content flex flex-col gap-spacing-2 py-10 md:py-12 lg:pt-16 lg:pb-12", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 pb-spacing-2 border-b border-outline-100", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
+        /* @__PURE__ */ jsx2("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ jsx2(
+          "img",
           {
-            className: "mx-auto w-full container-px flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 py-10 md:py-12 lg:pt-16 lg:pb-12",
-            style: { maxWidth: "90rem" },
-            children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
-                /* @__PURE__ */ jsx2("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ jsx2(
-                  "img",
-                  {
-                    src: "/img/logos/footer-logo.svg",
-                    alt: "AXEVIL",
-                    className: "footer-logo",
-                    style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
-                  }
-                ) }),
-                /* @__PURE__ */ jsx2("div", { className: "flex flex-col sm:flex-row lg:flex-col gap-6 sm:gap-10 lg:gap-6", children: OFFICES.map((o) => /* @__PURE__ */ jsxs("address", { className: "not-italic flex flex-col", style: { gap: "0.5rem", maxWidth: "16rem" }, children: [
-                  /* @__PURE__ */ jsx2("span", { className: "font-inter-tight font-medium text-s-med text-white", style: { letterSpacing: "-0.01em" }, children: o.city }),
-                  /* @__PURE__ */ jsx2("span", { className: "font-inter-tight font-normal text-s-med text-white-400", style: { lineHeight: 1.5 }, children: o.address })
-                ] }, o.city)) })
-              ] }),
-              links ? /* @__PURE__ */ jsx2("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ jsx2("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
-                /* ── Nav columns ──
-                    mobile: 2-col grid
-                    tablet+: flex-row, justify-between, wraps if needed
-                    desktop: pinned right, max-w 44.375rem (=710px)
-                */
-                /* @__PURE__ */ jsx2(
-                  "nav",
-                  {
-                    className: "flex flex-wrap gap-x-spacing-4 gap-y-10 font-inter-tight font-medium text-white",
-                    "aria-label": "Footer",
-                    children: NAV_COLUMNS.map((col) => /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-8 items-start shrink-0", children: [
-                      /* @__PURE__ */ jsx2(
-                        "a",
-                        {
-                          href: col.href,
-                          className: "text-base text-white hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                          style: { letterSpacing: "-0.02em" },
-                          children: col.heading
-                        }
-                      ),
-                      /* @__PURE__ */ jsx2("ul", { className: "flex flex-col gap-4 items-start text-s-med text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ jsx2("li", { children: "onClick" in item ? /* @__PURE__ */ jsx2(
-                        "button",
-                        {
-                          type: "button",
-                          onClick: item.onClick,
-                          className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap text-left",
-                          children: item.label
-                        }
-                      ) : /* @__PURE__ */ jsx2(
-                        "a",
-                        {
-                          href: item.href,
-                          className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
-                          children: item.label
-                        }
-                      ) }, item.label)) })
-                    ] }, col.heading))
-                  }
-                )
-              )
-            ]
+            src: "/img/logos/footer-logo.svg",
+            alt: "AXEVIL",
+            className: "footer-logo",
+            style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
           }
-        ),
-        /* @__PURE__ */ jsxs(
-          "div",
+        ) }),
+        /* @__PURE__ */ jsx2("div", { className: "flex flex-col sm:flex-row lg:flex-col gap-6 sm:gap-10 lg:gap-6", children: OFFICES.map((o) => /* @__PURE__ */ jsxs("address", { className: "not-italic flex flex-col", style: { gap: "0.5rem", maxWidth: "16rem" }, children: [
+          /* @__PURE__ */ jsx2("span", { className: "font-inter-tight font-medium text-s-med text-white", style: { letterSpacing: "-0.01em" }, children: o.city }),
+          /* @__PURE__ */ jsx2("span", { className: "font-inter-tight font-normal text-s-med text-white-400", style: { lineHeight: 1.5 }, children: o.address })
+        ] }, o.city)) })
+      ] }),
+      links ? /* @__PURE__ */ jsx2("nav", { className: "flex flex-wrap lg:justify-end font-inter-tight font-medium text-white", style: { gap: "1rem 1.5rem" }, "aria-label": "Footer", children: links.map((l) => /* @__PURE__ */ jsx2("a", { href: l.href, className: "text-s-med text-white-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap", children: l.label }, l.href)) }) : (
+        /* ── nav-wrapper (Figma 2605:6690) — columns gap 3rem, heading→list 2rem, items 1rem ── */
+        /* @__PURE__ */ jsx2(
+          "nav",
           {
-            className: "mx-auto w-full container-px flex flex-col gap-6",
-            style: { maxWidth: "90rem", borderTop: "1px solid var(--color-border-default, #1a1a1a)", padding: "1.5rem 0" },
-            children: [
-              compliance && /* @__PURE__ */ jsx2("p", { className: "font-inter-tight font-medium text-xs text-white-400", style: { maxWidth: "52rem" }, children: compliance }),
-              /* @__PURE__ */ jsx2("p", { className: "font-inter-tight font-medium text-xs text-white-400", children: "\xA9 2021\u20132026 Axevil Capital, LLC. All rights reserved." })
-            ]
+            className: "flex flex-wrap gap-x-spacing-3 gap-y-10 font-inter-tight font-medium text-white",
+            "aria-label": "Footer",
+            children: NAV_COLUMNS.map((col) => /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-spacing-2 items-start shrink-0", children: [
+              /* @__PURE__ */ jsx2("h2", { className: "text-m text-white whitespace-nowrap m-0 font-medium", children: col.heading }),
+              /* @__PURE__ */ jsx2("ul", { className: "flex flex-col gap-spacing-1 items-start text-xs text-white-400 list-none p-0 m-0", children: col.items.map((item) => /* @__PURE__ */ jsx2("li", { children: "onClick" in item ? /* @__PURE__ */ jsx2(
+                "button",
+                {
+                  type: "button",
+                  onClick: item.onClick,
+                  className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap text-left",
+                  children: item.label
+                }
+              ) : /* @__PURE__ */ jsx2(
+                "a",
+                {
+                  href: item.href,
+                  className: "hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white whitespace-nowrap",
+                  children: item.label
+                }
+              ) }, item.label)) })
+            ] }, col.heading))
           }
         )
-      ]
-    }
-  );
+      )
+    ] }),
+    /* @__PURE__ */ jsxs(
+      "p",
+      {
+        className: "font-inter-tight font-medium text-xs text-black-800 w-full",
+        style: { wordBreak: "break-word" },
+        children: [
+          compliance,
+          compliance && /* @__PURE__ */ jsxs(Fragment2, { children: [
+            /* @__PURE__ */ jsx2("br", {}),
+            /* @__PURE__ */ jsx2("br", {})
+          ] }),
+          COPYRIGHT
+        ]
+      }
+    )
+  ] }) });
 }
 
 // design-system/src/components/Nav.tsx
@@ -246,7 +297,7 @@ function BtnOwn({
 
 // design-system/src/components/nav-dropdown.tsx
 import { motion, AnimatePresence } from "framer-motion";
-import { Fragment as Fragment2, jsx as jsx4, jsxs as jsxs3 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx4, jsxs as jsxs3 } from "react/jsx-runtime";
 function Card({ item, onClose }) {
   return /* @__PURE__ */ jsxs3(
     "a",
@@ -297,7 +348,7 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
               style: { background: "var(--black-500)", padding: "0.5rem", gap: "1.5rem" },
               children: [
                 /* @__PURE__ */ jsx4("div", { className: "flex flex-col flex-1 min-w-0", style: { gap: "1rem" }, children: col1.map((it) => /* @__PURE__ */ jsx4(Card, { item: it, onClose }, it.label)) }),
-                col2.length > 0 && /* @__PURE__ */ jsxs3(Fragment2, { children: [
+                col2.length > 0 && /* @__PURE__ */ jsxs3(Fragment3, { children: [
                   /* @__PURE__ */ jsx4("div", { style: { width: "1px", alignSelf: "stretch", background: "rgba(255,255,255,0.1)" } }),
                   /* @__PURE__ */ jsx4("div", { className: "flex flex-col flex-1 min-w-0", style: { gap: "1rem" }, children: col2.map((it) => /* @__PURE__ */ jsx4(Card, { item: it, onClose }, it.label)) })
                 ] })
@@ -311,7 +362,7 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 }
 
 // design-system/src/components/Nav.tsx
-import { Fragment as Fragment3, jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
 var NAV_LINKS = ["Market Intelligence", "About Axevil"];
 function navHref(label) {
   if (label === "Market Intelligence") return "/companies";
@@ -417,7 +468,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
     closeTimer.current = setTimeout(() => setOpenDropdown(null), 180);
   }
   const activeItems = openDropdown === "company" ? COMPANY_ITEMS : [];
-  return /* @__PURE__ */ jsxs4(Fragment3, { children: [
+  return /* @__PURE__ */ jsxs4(Fragment4, { children: [
     /* @__PURE__ */ jsx5(
       "nav",
       {
@@ -1513,7 +1564,7 @@ function DescTag({ number, label, className = "" }) {
 }
 
 // design-system/src/components/cta-form.tsx
-import { Fragment as Fragment4, jsx as jsx14, jsxs as jsxs12 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx14, jsxs as jsxs12 } from "react/jsx-runtime";
 var GRADIENT = "var(--gradient-headline)";
 function CtaForm({
   number,
@@ -1561,11 +1612,11 @@ function CtaForm({
             className: "flex flex-col sm:flex-row items-stretch sm:items-center justify-center w-full max-w-[30rem] sm:max-w-none",
             style: { gap: "0.5rem" },
             children: [
-              primarySize ? /* @__PURE__ */ jsx14(BtnOwn, { size: primarySize, hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:w-auto", children: primaryLabel }) : /* @__PURE__ */ jsxs12(Fragment4, { children: [
+              primarySize ? /* @__PURE__ */ jsx14(BtnOwn, { size: primarySize, hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:w-auto", children: primaryLabel }) : /* @__PURE__ */ jsxs12(Fragment5, { children: [
                 /* @__PURE__ */ jsx14(BtnOwn, { size: "S", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "w-full sm:hidden", children: primaryLabel }),
                 /* @__PURE__ */ jsx14(BtnOwn, { size: "M", hideIcon: primaryHideIcon, onClick: onPrimaryClick, className: "hidden sm:flex sm:w-auto", children: primaryLabel })
               ] }),
-              secondaryLabel && /* @__PURE__ */ jsxs12(Fragment4, { children: [
+              secondaryLabel && /* @__PURE__ */ jsxs12(Fragment5, { children: [
                 /* @__PURE__ */ jsx14(BtnOwn, { size: "S", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "w-full sm:hidden", children: secondaryLabel }),
                 /* @__PURE__ */ jsx14(BtnOwn, { size: "M", hideIcon: true, variant: "secondary", onClick: onSecondaryClick, className: "hidden sm:flex sm:w-auto", children: secondaryLabel })
               ] })
@@ -2419,7 +2470,7 @@ function StatusPill({ status, label, className = "" }) {
 }
 
 // design-system/src/components/tag.tsx
-import { Fragment as Fragment5, jsx as jsx25, jsxs as jsxs21 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx25, jsxs as jsxs21 } from "react/jsx-runtime";
 function Tag({
   label,
   variant = "tab",
@@ -2451,7 +2502,7 @@ function Tag({
     cls += active ? "bg-white text-black" : "bg-transparent text-white/40 hover:text-white/70";
   }
   cls += className;
-  const content = /* @__PURE__ */ jsxs21(Fragment5, { children: [
+  const content = /* @__PURE__ */ jsxs21(Fragment6, { children: [
     leading,
     label
   ] });
