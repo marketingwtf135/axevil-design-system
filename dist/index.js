@@ -32,7 +32,7 @@ var OFFICES = [
   { city: "San Francisco", address: "548 Market St, San Francisco, California, 94104, United States" },
   { city: "Dubai", address: "The One Tower, 23rd Floor, Office 13, Dubai, United Arab Emirates" },
   // Astana address per src/pages/Contacts.tsx (single source of truth for office addresses).
-  { city: "Astana", address: "Republic of Kazakhstan, Astana city, Yessil district, Mangilik El avenue, building 55/23, block C4.4, office No.338" }
+  { city: "Astana", address: "Office 338, 55/23 Mangilik El Avenue, Astana, Republic of Kazakhstan" }
 ];
 var CONTACT_EMAIL = "info@axevil.com";
 var SOCIALS = [
@@ -103,52 +103,12 @@ var COMPLIANCE_BLOCKS = [
   ],
   ["The Company works exclusively with qualified investors who possess the necessary knowledge, experience, and financial capacity to assess risks and invest in high-risk instruments. This asset class involves elevated risks, volatility, and illiquidity. Investors must be prepared to accept the possibility of total loss of invested capital as well as lack of liquidity."],
   ["NOTIFICATION OF INVESTMENT RISKS AND STATUS OF THE COMPANY'S ACTIVITIES"],
+  // Per-jurisdiction notices (US/UAE/Italy/UK/Sweden/Switzerland) removed 2026-07-25 per
+  // client: they duplicate /disclosures (LegalDisclosures.tsx) — the footer keeps only
+  // this one general paragraph, everything else lives on that page.
   [
-    "FOR ALL INVESTORS GENERALLY:",
     "The Company's activities focus on attracting investments in mature venture projects at the stage of sustainable business development, close to IPO exit.",
     "The Company does not guarantee profit generation. Investments involve risks, including the possibility of returns below expectations, which cannot be guaranteed."
-  ],
-  [
-    "NOTICE TO INVESTORS IN THE UNITED STATES:",
-    "\u2014 Investment interest offerings are conducted as private placements and are not subject to registration under US securities laws.",
-    "\u2014 Available only to accredited investors.",
-    "\u2014 Such securities may have transfer and resale restrictions.",
-    "\u2014 Investments carry a high level of financial risk.",
-    "\u2014 Independent legal, tax, and financial consultation is strongly recommended before making investment decisions."
-  ],
-  [
-    "NOTICE TO RESIDENTS OF THE UNITED ARAB EMIRATES (UAE):",
-    "\u2014 Investment interest offerings are not public in the UAE.",
-    "\u2014 Directed only to qualified institutional investors.",
-    "\u2014 Interests are not registered or approved by the UAE Central Bank, SCA, or other regulators."
-  ],
-  [
-    "NOTICE TO RESIDENTS OF ITALY:",
-    "\u2014 Interest offerings are not authorized by Italian regulators under Decreto Legislativo No. 58/1998.",
-    "\u2014 Interests may not be offered, distributed, or sold to the general public."
-  ],
-  [
-    "NOTICE TO RESIDENTS OF THE UNITED KINGDOM:",
-    "\u2014 SPVs constitute unregulated collective investment schemes under FSMA 2000.",
-    '\u2014 Promotion is restricted and permitted only to "relevant persons" within the meaning of Financial Promotion Order 2005 (Articles 19(5), 49(2)(a)-(d)).',
-    "\u2014 Most standard protections of the UK regulatory system do not apply.",
-    "\u2014 Compensation under the UK Financial Services Compensation Scheme is not provided."
-  ],
-  [
-    "NOTICE TO RESIDENTS OF SWEDEN:",
-    "\u2014 The partnership is not an investment fund under the Swedish Investment Funds Act (2004:46).",
-    "\u2014 The offering is not subject to registration under the Swedish Financial Instruments Trading Act (1991:980).",
-    "\u2014 Interests are not approved and will not be approved by the Swedish Financial Supervisory Authority."
-  ],
-  [
-    "NOTICE TO RESIDENTS OF SWITZERLAND:",
-    "\u2014 SPVs are not approved by FINMA as foreign collective investment schemes under Article 120 CISA. Interests may not be publicly offered or distributed in Switzerland.",
-    "\u2014 SPVs are not regulated by Swiss authorities.",
-    '\u2014 Interests are available only to "qualified investors" under CISA or a limited circle of persons without public offering.',
-    "\u2014 By continuing, you confirm that:",
-    "1. You qualify as an accredited/qualified investor under the laws of your jurisdiction (e.g., in the U.S. an annual income exceeding $200,000 individually or $300,000 jointly, or net worth above $1 million, excluding primary residence).",
-    "2. You are legally permitted to access this information in your jurisdiction.",
-    "3. You understand that private investments involve a high degree of risk, including the risk of total loss of capital."
   ]
 ];
 var COPYRIGHT = "Axevil Capital 2021\u22122026 \u2014 All Rights Reserved";
@@ -2252,6 +2212,7 @@ function PageEntry({
   style,
   initial = { opacity: 0 },
   animate = { opacity: 1 },
+  exit = { opacity: 0, transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } },
   transition = { duration: 1.5, ease: [0.4, 0, 0.2, 1] },
   ...rest
 }) {
@@ -2262,6 +2223,7 @@ function PageEntry({
       style,
       initial,
       animate,
+      exit,
       transition,
       ...rest,
       children
@@ -2391,12 +2353,12 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
         ),
         /* @__PURE__ */ jsx23("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
       ] }),
-      /* @__PURE__ */ jsxs19(
+      linkedin && /* @__PURE__ */ jsxs19(
         "a",
         {
-          href: linkedin || void 0,
-          target: linkedin ? "_blank" : void 0,
-          rel: linkedin ? "noreferrer" : void 0,
+          href: linkedin,
+          target: "_blank",
+          rel: "noreferrer",
           className: "flex items-center gap-2 text-white",
           children: [
             /* @__PURE__ */ jsx23("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),

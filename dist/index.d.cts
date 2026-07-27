@@ -286,6 +286,11 @@ declare function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave 
  * Default animation: opacity 0 → 1 over 1.5s easeOut. Override via the
  * standard motion props (`initial`, `animate`, `transition`).
  *
+ * Also carries a default `exit` (opacity → 0, 0.4s) so that when App.tsx's route
+ * switch is wrapped in `<AnimatePresence>`, the page being NAVIGATED AWAY FROM fades
+ * out instead of being unmounted instantly — the abrupt cut + a slow 1.5s fade-in on
+ * top of it was reading as a lag/stutter on every route change (2026-07-25 feedback).
+ *
  * Hero-specific reveals (device illustrations, video backgrounds) live inside
  * their own components and stagger after this wrapper completes via their own
  * `transition.delay` values.
@@ -295,7 +300,7 @@ interface PageEntryProps extends Omit<MotionProps, 'children'> {
     className?: string;
     style?: CSSProperties;
 }
-declare function PageEntry({ children, className, style, initial, animate, transition, ...rest }: PageEntryProps): react_jsx_runtime.JSX.Element;
+declare function PageEntry({ children, className, style, initial, animate, exit, transition, ...rest }: PageEntryProps): react_jsx_runtime.JSX.Element;
 
 interface SectionHeadingProps {
     /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */
@@ -328,7 +333,7 @@ interface SliderCardProps {
     role: string;
     description: string;
     photo: string;
-    /** LinkedIn profile URL — wired later; the link renders regardless (Figma 797:4193). */
+    /** LinkedIn profile URL (Figma 797:4193) — the link only renders when this is set. */
     linkedin?: string;
     className?: string;
 }
