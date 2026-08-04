@@ -285,11 +285,17 @@ interface NavDropdownProps {
 declare function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }: NavDropdownProps): react_jsx_runtime.JSX.Element;
 
 /**
- * PageEntry — standard `<main>` wrapper with a 1.5s fade-in preload.
+ * PageEntry — standard `<main>` wrapper with a fade-in.
  * Drop-in replacement for `<main>` at the top of any page component.
  *
- * Default animation: opacity 0 → 1 over 1.5s easeOut. Override via the
+ * Default animation: opacity 0 → 1 over 0.5s easeOut. Override via the
  * standard motion props (`initial`, `animate`, `transition`).
+ *
+ * The fade-in was 1.5s until 2026-08-04. On a first visit that read as a considered
+ * reveal, but on every subsequent route change it stacked on top of the 0.4s exit — a
+ * combined ~2s before the new page was fully legible, which the client read as a
+ * preloader rather than a transition. 0.5s in / 0.35s out keeps the crossfade smooth
+ * while the destination lands almost immediately.
  *
  * Also carries a default `exit` (opacity → 0, 0.4s) so that when App.tsx's route
  * switch is wrapped in `<AnimatePresence>`, the page being NAVIGATED AWAY FROM fades
