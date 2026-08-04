@@ -1633,28 +1633,7 @@ function FAQ({ items, className = "" }) {
 // design-system/src/components/form.tsx
 import { AnimatePresence as AnimatePresence4, motion as motion6 } from "framer-motion";
 import { useEffect as useEffect6, useRef as useRef4, useState as useState8 } from "react";
-
-// design-system/src/components/success-icon.tsx
-import { jsx as jsx16 } from "react/jsx-runtime";
-function SuccessIcon() {
-  return /* @__PURE__ */ jsx16(
-    "div",
-    {
-      className: "flex items-center justify-center shrink-0",
-      style: {
-        width: "3.5rem",
-        height: "3.5rem",
-        borderRadius: "50%",
-        background: "var(--status-open-bg)",
-        border: "1px solid var(--status-open-border)"
-      },
-      children: /* @__PURE__ */ jsx16("svg", { width: "20", height: "16", viewBox: "0 0 20 16", fill: "none", style: { width: "1.25rem", height: "1rem" }, children: /* @__PURE__ */ jsx16("path", { d: "M1.5 8L7 13.5L18.5 1.5", stroke: "var(--status-open)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }) })
-    }
-  );
-}
-
-// design-system/src/components/form.tsx
-import { jsx as jsx17, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx16, jsxs as jsxs14 } from "react/jsx-runtime";
 var INQUIRY_OPTIONS = [
   { value: "press", label: "Press inquiry" },
   { value: "partnership", label: "Partnership" },
@@ -1698,7 +1677,7 @@ function InquiryDropdown({ value, onChange }) {
           border: "none"
         },
         children: [
-          /* @__PURE__ */ jsx17(
+          /* @__PURE__ */ jsx16(
             "span",
             {
               className: "font-inter-tight font-medium text-m",
@@ -1706,7 +1685,7 @@ function InquiryDropdown({ value, onChange }) {
               children: selected ? selected.label : "Inquiry type (optional)"
             }
           ),
-          /* @__PURE__ */ jsx17(
+          /* @__PURE__ */ jsx16(
             motion6.svg,
             {
               animate: { rotate: open ? 180 : 0 },
@@ -1717,13 +1696,13 @@ function InquiryDropdown({ value, onChange }) {
               fill: "none",
               "aria-hidden": "true",
               style: { flexShrink: 0, display: "block", width: "1.25rem", height: "1.25rem" },
-              children: /* @__PURE__ */ jsx17("path", { d: "M5 8L10 13L15 8", stroke: "rgba(255,255,255,0.4)", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
+              children: /* @__PURE__ */ jsx16("path", { d: "M5 8L10 13L15 8", stroke: "rgba(255,255,255,0.4)", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" })
             }
           )
         ]
       }
     ),
-    /* @__PURE__ */ jsx17(AnimatePresence4, { children: open && /* @__PURE__ */ jsx17(
+    /* @__PURE__ */ jsx16(AnimatePresence4, { children: open && /* @__PURE__ */ jsx16(
       motion6.div,
       {
         role: "listbox",
@@ -1738,7 +1717,7 @@ function InquiryDropdown({ value, onChange }) {
           borderRadius: "1rem",
           background: "var(--black-500)"
         },
-        children: INQUIRY_OPTIONS.map((opt, i) => /* @__PURE__ */ jsx17(
+        children: INQUIRY_OPTIONS.map((opt, i) => /* @__PURE__ */ jsx16(
           "button",
           {
             type: "button",
@@ -1770,40 +1749,22 @@ function InquiryDropdown({ value, onChange }) {
   ] });
 }
 function SuccessState() {
-  return /* @__PURE__ */ jsxs14(
+  return /* @__PURE__ */ jsx16(
     motion6.div,
     {
-      className: "flex flex-col items-center justify-center w-full",
+      className: "w-full",
       initial: { opacity: 0, y: 16 },
       animate: { opacity: 1, y: 0 },
       transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-      style: {
-        background: "var(--black-500)",
-        borderRadius: "1.25rem",
-        gap: "1.25rem",
-        padding: "3rem 1.5rem"
-      },
-      children: [
-        /* @__PURE__ */ jsx17(SuccessIcon, {}),
-        /* @__PURE__ */ jsxs14("div", { className: "flex flex-col items-center text-center", style: { gap: "0.5rem" }, children: [
-          /* @__PURE__ */ jsx17(
-            "h3",
-            {
-              className: "font-inter-tight font-semibold text-white",
-              style: { fontSize: "clamp(1.125rem, 1.5vw, 1.375rem)", lineHeight: 1.2, letterSpacing: "-0.02em" },
-              children: "Thank you \u2014 we received your request."
-            }
-          ),
-          /* @__PURE__ */ jsx17(
-            "p",
-            {
-              className: "font-inter-tight font-medium",
-              style: { fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)", lineHeight: 1.5, color: "rgba(255,255,255,0.4)" },
-              children: "Our team will reply within 24 hours."
-            }
-          )
-        ] })
-      ]
+      children: /* @__PURE__ */ jsx16(
+        QuizSuccessState,
+        {
+          heading: "Thank you \u2014 we received\nyour request.",
+          button: { label: "Back to home", onClick: () => {
+            window.location.href = "/";
+          } }
+        }
+      )
     }
   );
 }
@@ -1863,7 +1824,7 @@ Inquiry type: ${inquiryLabel}
     window.location.href = `mailto:${recipient}?${params}`;
     setSubmitted(true);
   }
-  return /* @__PURE__ */ jsx17(
+  return /* @__PURE__ */ jsx16(
     "section",
     {
       id: "contact-form",
@@ -1880,11 +1841,11 @@ Inquiry type: ${inquiryLabel}
           children: [
             /* @__PURE__ */ jsxs14("div", { className: "flex flex-col items-center justify-center w-full", style: { maxWidth: "37.5rem", gap: "1rem" }, children: [
               /* @__PURE__ */ jsxs14("div", { className: "flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 whitespace-nowrap", children: [
-                /* @__PURE__ */ jsx17("span", { className: "opacity-50", children: number }),
-                /* @__PURE__ */ jsx17("span", { className: "opacity-80", children: label })
+                /* @__PURE__ */ jsx16("span", { className: "opacity-50", children: number }),
+                /* @__PURE__ */ jsx16("span", { className: "opacity-80", children: label })
               ] }),
               /* @__PURE__ */ jsxs14("div", { className: "flex flex-col items-center text-center", style: { gap: "1rem" }, children: [
-                /* @__PURE__ */ jsx17(
+                /* @__PURE__ */ jsx16(
                   "h2",
                   {
                     className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
@@ -1898,7 +1859,7 @@ Inquiry type: ${inquiryLabel}
                     children: title
                   }
                 ),
-                /* @__PURE__ */ jsx17(
+                /* @__PURE__ */ jsx16(
                   "p",
                   {
                     className: "font-inter-tight font-medium",
@@ -1914,8 +1875,8 @@ Inquiry type: ${inquiryLabel}
                 )
               ] })
             ] }),
-            /* @__PURE__ */ jsx17("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ jsx17(SuccessState, {}) : /* @__PURE__ */ jsxs14("form", { onSubmit: handleSubmit, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
-              /* @__PURE__ */ jsx17(Field, { error: errors.email, input: /* @__PURE__ */ jsx17(
+            /* @__PURE__ */ jsx16("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ jsx16(SuccessState, {}) : /* @__PURE__ */ jsxs14("form", { onSubmit: handleSubmit, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
+              /* @__PURE__ */ jsx16(Field, { error: errors.email, input: /* @__PURE__ */ jsx16(
                 "input",
                 {
                   type: "email",
@@ -1929,7 +1890,7 @@ Inquiry type: ${inquiryLabel}
                   className: inputClass(!!errors.email)
                 }
               ) }),
-              /* @__PURE__ */ jsx17(Field, { error: errors.name, input: /* @__PURE__ */ jsx17(
+              /* @__PURE__ */ jsx16(Field, { error: errors.name, input: /* @__PURE__ */ jsx16(
                 "input",
                 {
                   type: "text",
@@ -1942,7 +1903,7 @@ Inquiry type: ${inquiryLabel}
                   className: inputClass(!!errors.name)
                 }
               ) }),
-              /* @__PURE__ */ jsx17(Field, { input: /* @__PURE__ */ jsx17(
+              /* @__PURE__ */ jsx16(Field, { input: /* @__PURE__ */ jsx16(
                 "input",
                 {
                   type: "text",
@@ -1955,7 +1916,7 @@ Inquiry type: ${inquiryLabel}
                 }
               ) }),
               /* @__PURE__ */ jsxs14("div", { className: "flex flex-col sm:flex-row w-full", style: { gap: "0.5rem" }, children: [
-                /* @__PURE__ */ jsx17(Field, { className: "flex-1", input: /* @__PURE__ */ jsx17(
+                /* @__PURE__ */ jsx16(Field, { className: "flex-1", input: /* @__PURE__ */ jsx16(
                   "input",
                   {
                     type: "text",
@@ -1967,7 +1928,7 @@ Inquiry type: ${inquiryLabel}
                     className: inputClass(false)
                   }
                 ) }),
-                /* @__PURE__ */ jsx17("div", { className: "flex-1", children: /* @__PURE__ */ jsx17(
+                /* @__PURE__ */ jsx16("div", { className: "flex-1", children: /* @__PURE__ */ jsx16(
                   InquiryDropdown,
                   {
                     value: data.inquiry,
@@ -1993,7 +1954,7 @@ Inquiry type: ${inquiryLabel}
                     marginTop: "0.5rem"
                   },
                   children: [
-                    /* @__PURE__ */ jsx17(
+                    /* @__PURE__ */ jsx16(
                       "img",
                       {
                         src: "/icons/Email.svg",
@@ -2019,7 +1980,7 @@ Inquiry type: ${inquiryLabel}
                   children: [
                     "We reply within 24 hours. By submitting this form, you agree that Axevil Capital, LLC will process the information you provide to respond to your enquiry, as described in the",
                     " ",
-                    /* @__PURE__ */ jsx17("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
+                    /* @__PURE__ */ jsx16("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
                     "."
                   ]
                 }
@@ -2033,7 +1994,7 @@ Inquiry type: ${inquiryLabel}
 }
 
 // design-system/src/components/hero-eyebrow.tsx
-import { jsx as jsx18, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsx as jsx17, jsxs as jsxs15 } from "react/jsx-runtime";
 function HeroEyebrow({ children, className = "" }) {
   return /* @__PURE__ */ jsxs15(
     "div",
@@ -2048,7 +2009,7 @@ function HeroEyebrow({ children, className = "" }) {
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.25)"
       },
       children: [
-        /* @__PURE__ */ jsx18(
+        /* @__PURE__ */ jsx17(
           "span",
           {
             className: "block ri-online-dot",
@@ -2068,7 +2029,7 @@ function HeroEyebrow({ children, className = "" }) {
 }
 
 // design-system/src/components/ill-cards.tsx
-import { jsx as jsx19, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx18, jsxs as jsxs16 } from "react/jsx-runtime";
 function IllCards({
   cards,
   className = "",
@@ -2079,7 +2040,7 @@ function IllCards({
   hideImages = false
 }) {
   const titleClass = titleSize === "h3" ? "text-h3" : "text-h4";
-  return /* @__PURE__ */ jsx19(
+  return /* @__PURE__ */ jsx18(
     "div",
     {
       className: `grid grid-cols-1 md:grid-cols-2 w-full ${className}`,
@@ -2094,7 +2055,7 @@ function IllCards({
             ...card.border ?? { border: "1px solid var(--black-500, #1A1A1A)" }
           },
           children: [
-            /* @__PURE__ */ jsx19(
+            /* @__PURE__ */ jsx18(
               "span",
               {
                 className: "font-inter-tight font-medium text-m text-black-800 absolute",
@@ -2108,8 +2069,8 @@ function IllCards({
               }
             ),
             !hideImages && /* @__PURE__ */ jsxs16("picture", { children: [
-              card.imgMobile && /* @__PURE__ */ jsx19("source", { media: "(max-width: 480px)", srcSet: card.imgMobile }),
-              /* @__PURE__ */ jsx19(
+              card.imgMobile && /* @__PURE__ */ jsx18("source", { media: "(max-width: 480px)", srcSet: card.imgMobile }),
+              /* @__PURE__ */ jsx18(
                 "img",
                 {
                   src: card.img,
@@ -2135,7 +2096,7 @@ function IllCards({
                 className: "absolute flex flex-col gap-3",
                 style: { left: "1.5rem", right: "1.5rem", bottom: "1.5rem", zIndex: 5 },
                 children: [
-                  /* @__PURE__ */ jsx19(
+                  /* @__PURE__ */ jsx18(
                     "h3",
                     {
                       className: `font-inter-tight font-medium text-white ${titleClass}`,
@@ -2143,7 +2104,7 @@ function IllCards({
                       children: card.title
                     }
                   ),
-                  /* @__PURE__ */ jsx19("p", { className: "font-inter-tight font-normal text-paragraph text-white-400", children: card.body })
+                  /* @__PURE__ */ jsx18("p", { className: "font-inter-tight font-normal text-paragraph text-white-400", children: card.body })
                 ]
               }
             )
@@ -2157,7 +2118,7 @@ function IllCards({
 
 // design-system/src/components/nav-dropdown.tsx
 import { motion as motion7, AnimatePresence as AnimatePresence5 } from "framer-motion";
-import { Fragment as Fragment5, jsx as jsx20, jsxs as jsxs17 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx19, jsxs as jsxs17 } from "react/jsx-runtime";
 function Card({ item, onClose }) {
   return /* @__PURE__ */ jsxs17(
     "a",
@@ -2167,8 +2128,8 @@ function Card({ item, onClose }) {
       className: "flex flex-col w-full rounded-[0.5rem] transition-colors hover:bg-[rgba(48,48,48,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
       style: { padding: "0.75rem", gap: "0.625rem" },
       children: [
-        /* @__PURE__ */ jsx20("span", { className: "font-inter-tight font-medium text-xs whitespace-nowrap", style: { color: "var(--white-400)" }, children: item.label }),
-        /* @__PURE__ */ jsx20("span", { className: "font-inter-tight font-medium text-s-med", style: { color: "var(--white-200)", lineHeight: 1.3 }, children: item.description })
+        /* @__PURE__ */ jsx19("span", { className: "font-inter-tight font-medium text-xs whitespace-nowrap", style: { color: "var(--white-400)" }, children: item.label }),
+        /* @__PURE__ */ jsx19("span", { className: "font-inter-tight font-medium text-s-med", style: { color: "var(--white-200)", lineHeight: 1.3 }, children: item.description })
       ]
     }
   );
@@ -2177,7 +2138,7 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
   const half = Math.ceil(items.length / 2);
   const col1 = items.slice(0, half);
   const col2 = items.slice(half);
-  return /* @__PURE__ */ jsx20(AnimatePresence5, { children: open && /* @__PURE__ */ jsx20(
+  return /* @__PURE__ */ jsx19(AnimatePresence5, { children: open && /* @__PURE__ */ jsx19(
     motion7.div,
     {
       initial: { opacity: 0, y: "1rem" },
@@ -2192,7 +2153,7 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
       },
       onMouseEnter,
       onMouseLeave,
-      children: /* @__PURE__ */ jsx20(
+      children: /* @__PURE__ */ jsx19(
         "div",
         {
           className: "rounded-[1rem] border",
@@ -2207,10 +2168,10 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
               className: "flex items-stretch rounded-[0.75rem]",
               style: { background: "var(--black-500)", padding: "0.5rem", gap: "1.5rem" },
               children: [
-                /* @__PURE__ */ jsx20("div", { className: "flex flex-col flex-1 min-w-0", style: { gap: "1rem" }, children: col1.map((it) => /* @__PURE__ */ jsx20(Card, { item: it, onClose }, it.label)) }),
+                /* @__PURE__ */ jsx19("div", { className: "flex flex-col flex-1 min-w-0", style: { gap: "1rem" }, children: col1.map((it) => /* @__PURE__ */ jsx19(Card, { item: it, onClose }, it.label)) }),
                 col2.length > 0 && /* @__PURE__ */ jsxs17(Fragment5, { children: [
-                  /* @__PURE__ */ jsx20("div", { style: { width: "1px", alignSelf: "stretch", background: "rgba(255,255,255,0.1)" } }),
-                  /* @__PURE__ */ jsx20("div", { className: "flex flex-col flex-1 min-w-0", style: { gap: "1rem" }, children: col2.map((it) => /* @__PURE__ */ jsx20(Card, { item: it, onClose }, it.label)) })
+                  /* @__PURE__ */ jsx19("div", { style: { width: "1px", alignSelf: "stretch", background: "rgba(255,255,255,0.1)" } }),
+                  /* @__PURE__ */ jsx19("div", { className: "flex flex-col flex-1 min-w-0", style: { gap: "1rem" }, children: col2.map((it) => /* @__PURE__ */ jsx19(Card, { item: it, onClose }, it.label)) })
                 ] })
               ]
             }
@@ -2223,7 +2184,7 @@ function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave }) {
 
 // design-system/src/components/page-entry.tsx
 import { motion as motion8 } from "framer-motion";
-import { jsx as jsx21 } from "react/jsx-runtime";
+import { jsx as jsx20 } from "react/jsx-runtime";
 function PageEntry({
   children,
   className = "",
@@ -2234,7 +2195,7 @@ function PageEntry({
   transition = { duration: 1.5, ease: [0.4, 0, 0.2, 1] },
   ...rest
 }) {
-  return /* @__PURE__ */ jsx21(
+  return /* @__PURE__ */ jsx20(
     motion8.main,
     {
       className,
@@ -2250,7 +2211,7 @@ function PageEntry({
 }
 
 // design-system/src/components/section-heading.tsx
-import { jsx as jsx22, jsxs as jsxs18 } from "react/jsx-runtime";
+import { jsx as jsx21, jsxs as jsxs18 } from "react/jsx-runtime";
 var DEFAULT_GRADIENT = "var(--gradient-headline)";
 function SectionHeading({
   number,
@@ -2266,7 +2227,7 @@ function SectionHeading({
   className = ""
 }) {
   const alignClass = align === "center" ? "items-center text-center" : "items-start";
-  const headingEl = /* @__PURE__ */ jsx22(
+  const headingEl = /* @__PURE__ */ jsx21(
     "h2",
     {
       className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
@@ -2283,7 +2244,7 @@ function SectionHeading({
       children: title
     }
   );
-  const subtitleEl = subtitle && /* @__PURE__ */ jsx22(
+  const subtitleEl = subtitle && /* @__PURE__ */ jsx21(
     "p",
     {
       className: "font-inter-tight font-normal text-paragraph text-white/60",
@@ -2297,7 +2258,7 @@ function SectionHeading({
       className: `flex flex-col w-full ${alignClass} ${className}`,
       style: { gap, overflow: "visible" },
       children: [
-        number !== void 0 && label && /* @__PURE__ */ jsx22(DescTag, { number, label }),
+        number !== void 0 && label && /* @__PURE__ */ jsx21(DescTag, { number, label }),
         subtitle ? /* @__PURE__ */ jsxs18("div", { className: `flex flex-col w-full ${alignClass}`, style: { gap: innerGap }, children: [
           headingEl,
           subtitleEl
@@ -2308,7 +2269,7 @@ function SectionHeading({
 }
 
 // design-system/src/components/slider-card.tsx
-import { jsx as jsx23, jsxs as jsxs19 } from "react/jsx-runtime";
+import { jsx as jsx22, jsxs as jsxs19 } from "react/jsx-runtime";
 function SliderCard({ name, role, description, photo, linkedin, className = "" }) {
   return /* @__PURE__ */ jsxs19("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
     /* @__PURE__ */ jsxs19(
@@ -2317,7 +2278,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
         className: "relative rounded-2 w-full overflow-hidden border-2 border-outline-100",
         style: { height: "25rem" },
         children: [
-          /* @__PURE__ */ jsx23(
+          /* @__PURE__ */ jsx22(
             "img",
             {
               src: "/img/block09/bg-speaker-gradient.png",
@@ -2328,7 +2289,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
               style: { zIndex: 0, objectFit: "cover" }
             }
           ),
-          /* @__PURE__ */ jsx23(
+          /* @__PURE__ */ jsx22(
             "img",
             {
               alt: name,
@@ -2344,8 +2305,8 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
               className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-1",
               style: { background: "var(--black-600)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", zIndex: 2 },
               children: [
-                /* @__PURE__ */ jsx23("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
-                /* @__PURE__ */ jsx23(
+                /* @__PURE__ */ jsx22("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
+                /* @__PURE__ */ jsx22(
                   "span",
                   {
                     className: "font-inter-tight font-semibold text-white whitespace-nowrap",
@@ -2361,7 +2322,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
     ),
     /* @__PURE__ */ jsxs19("div", { className: "flex flex-col items-start px-4 w-full", style: { gap: "1.25rem" }, children: [
       /* @__PURE__ */ jsxs19("div", { className: "flex flex-col items-start w-full", style: { gap: "0.75rem" }, children: [
-        /* @__PURE__ */ jsx23(
+        /* @__PURE__ */ jsx22(
           "h4",
           {
             className: "font-inter-tight font-semibold text-white w-full",
@@ -2369,7 +2330,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
             children: name
           }
         ),
-        /* @__PURE__ */ jsx23("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
+        /* @__PURE__ */ jsx22("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
       ] }),
       linkedin && /* @__PURE__ */ jsxs19(
         "a",
@@ -2379,8 +2340,8 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           rel: "noreferrer",
           className: "flex items-center gap-2 text-white",
           children: [
-            /* @__PURE__ */ jsx23("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
-            /* @__PURE__ */ jsx23(
+            /* @__PURE__ */ jsx22("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
+            /* @__PURE__ */ jsx22(
               "svg",
               {
                 width: "12",
@@ -2389,7 +2350,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
                 fill: "none",
                 "aria-hidden": "true",
                 className: "shrink-0 transition-transform duration-700 ease-in-out group-hover:rotate-180",
-                children: /* @__PURE__ */ jsx23("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
+                children: /* @__PURE__ */ jsx22("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
               }
             )
           ]
@@ -2400,7 +2361,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
 }
 
 // design-system/src/components/status-pill.tsx
-import { jsx as jsx24, jsxs as jsxs20 } from "react/jsx-runtime";
+import { jsx as jsx23, jsxs as jsxs20 } from "react/jsx-runtime";
 var COLORS = {
   open: { dot: "var(--status-open)", bg: "var(--status-open-bg)", border: "var(--status-open-border)", text: "var(--status-open)" },
   closed: { dot: "var(--status-closed)", bg: "var(--status-closed-bg)", border: "var(--status-closed-border)", text: "var(--status-closed)" },
@@ -2421,7 +2382,7 @@ function StatusPill({ status, label, className = "" }) {
         gap: status === "soon" ? "0.5rem" : "0.375rem"
       },
       children: [
-        /* @__PURE__ */ jsx24("span", { className: "block rounded-full", style: { width: "0.4375rem", height: "0.4375rem", background: c.dot } }),
+        /* @__PURE__ */ jsx23("span", { className: "block rounded-full", style: { width: "0.4375rem", height: "0.4375rem", background: c.dot } }),
         label
       ]
     }
@@ -2429,7 +2390,7 @@ function StatusPill({ status, label, className = "" }) {
 }
 
 // design-system/src/components/tag.tsx
-import { Fragment as Fragment6, jsx as jsx25, jsxs as jsxs21 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx24, jsxs as jsxs21 } from "react/jsx-runtime";
 function Tag({
   label,
   variant = "tab",
@@ -2466,12 +2427,12 @@ function Tag({
     label
   ] });
   if (onClick) {
-    return /* @__PURE__ */ jsx25("button", { type: "button", onClick, className: cls, style, children: content });
+    return /* @__PURE__ */ jsx24("button", { type: "button", onClick, className: cls, style, children: content });
   }
   if (href) {
-    return /* @__PURE__ */ jsx25("a", { href, className: cls, style, children: content });
+    return /* @__PURE__ */ jsx24("a", { href, className: cls, style, children: content });
   }
-  return /* @__PURE__ */ jsx25("span", { className: cls, style, children: content });
+  return /* @__PURE__ */ jsx24("span", { className: cls, style, children: content });
 }
 
 // design-system/src/components/preload-devices.tsx
