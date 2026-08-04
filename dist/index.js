@@ -1651,6 +1651,19 @@ function FAQ({ items, className = "" }) {
 // design-system/src/components/form.tsx
 import { AnimatePresence as AnimatePresence4, motion as motion6 } from "framer-motion";
 import { useEffect as useEffect6, useRef as useRef4, useState as useState8 } from "react";
+
+// design-system/src/lib/navigate.ts
+function navigate(path) {
+  if (typeof window === "undefined") return;
+  if (path === window.location.pathname) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  window.history.pushState({}, "", path);
+  window.dispatchEvent(new Event("pushstate"));
+}
+
+// design-system/src/components/form.tsx
 import { jsx as jsx16, jsxs as jsxs14 } from "react/jsx-runtime";
 var INQUIRY_OPTIONS = [
   { value: "press", label: "Press inquiry" },
@@ -1779,7 +1792,7 @@ function SuccessState() {
         {
           heading: "Thank you \u2014 we received\nyour request.",
           button: { label: "Back to home", onClick: () => {
-            window.location.href = "/";
+            navigate("/");
           } }
         }
       )
