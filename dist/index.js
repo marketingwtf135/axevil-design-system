@@ -861,14 +861,15 @@ async function submitLead(input) {
     name: input.name,
     email: input.email || void 0,
     phone: input.phone || void 0,
-    lead_type: "partner",
+    ...input.extra ?? {},
+    lead_type: input.leadType ?? "partner",
     manager_id: QUIZ_MANAGER_ID,
     source_l1,
     source_l2,
     // Real ad campaigns keep their utm_campaign value; anything without one (organic/direct
     // visits, which is most quiz traffic) is tagged "site-quiz" instead of left blank, so these
     // leads are identifiable as quiz submissions in the CRM regardless of channel.
-    source_l3: utm.campaign || "site-quiz",
+    source_l3: utm.campaign || input.sourceL3 || "site-quiz",
     utm,
     page_path: window.location.pathname,
     referrer: document.referrer || ""
@@ -1835,6 +1836,17 @@ function Form({
     }
     setErrors({});
     const inquiryLabel = INQUIRY_OPTIONS.find((o) => o.value === data.inquiry)?.label ?? "\u2014";
+    void submitLead({
+      name: data.name,
+      email: data.email,
+      leadType: "contact",
+      sourceL3: "site-contact-form",
+      extra: {
+        position: data.position || void 0,
+        company: data.company || void 0,
+        inquiry_type: inquiryLabel
+      }
+    });
     const body = encodeURIComponent(
       `Name: ${data.name}
 Email: ${data.email}
