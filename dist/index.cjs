@@ -74,6 +74,23 @@ function FadeIn({ children, className = "" }) {
 
 // design-system/src/components/Footer.tsx
 var import_react2 = require("react");
+
+// design-system/src/lib/openMailComposer.ts
+function mailtoHref({ to, cc, subject }) {
+  const params = [
+    cc ? `cc=${encodeURIComponent(cc)}` : "",
+    subject ? `subject=${encodeURIComponent(subject)}` : ""
+  ].filter(Boolean).join("&");
+  return params ? `mailto:${to}?${params}` : `mailto:${to}`;
+}
+function handleMailClick(event, { to, cc, subject }) {
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
+  event.preventDefault();
+  const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}` + (cc ? `&cc=${encodeURIComponent(cc)}` : "") + (subject ? `&su=${encodeURIComponent(subject)}` : "");
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+// design-system/src/components/Footer.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
 var OFFICES = [
   { city: "San Francisco", address: "548 Market St, San Francisco, California, 94104, United States" },
@@ -186,7 +203,8 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
           /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
             "a",
             {
-              href: `mailto:${CONTACT_EMAIL}`,
+              href: mailtoHref({ to: CONTACT_EMAIL }),
+              onClick: (e) => handleMailClick(e, { to: CONTACT_EMAIL }),
               className: "group inline-flex items-center rounded-0.5 bg-black-500 hover:bg-black-400 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
               style: { gap: "0.625rem", padding: "0.625rem 0.875rem" },
               children: [
