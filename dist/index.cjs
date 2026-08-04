@@ -1859,6 +1859,8 @@ function Form({
   title = "Send us a note.",
   subtitle = "Tell us briefly what you need. We will reply within 24 hours.",
   recipient = "info@axevil.com",
+  cc = "support@axevil.com",
+  subject = "Question from the website axevil.com",
   paddingClass = "padding-section-t6-b12"
 } = {}) {
   const [data, setData] = (0, import_react11.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
@@ -1880,7 +1882,6 @@ function Form({
     }
     setErrors({});
     const inquiryLabel = INQUIRY_OPTIONS.find((o) => o.value === data.inquiry)?.label ?? "\u2014";
-    const subject = encodeURIComponent(`New inquiry from ${data.name}`);
     const body = encodeURIComponent(
       `Name: ${data.name}
 Email: ${data.email}
@@ -1889,7 +1890,12 @@ Company: ${data.company || "\u2014"}
 Inquiry type: ${inquiryLabel}
 `
     );
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    const params = [
+      `subject=${encodeURIComponent(subject)}`,
+      cc ? `cc=${encodeURIComponent(cc)}` : "",
+      `body=${body}`
+    ].filter(Boolean).join("&");
+    window.location.href = `mailto:${recipient}?${params}`;
     setSubmitted(true);
   }
   return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(

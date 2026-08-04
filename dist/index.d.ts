@@ -192,9 +192,14 @@ interface FormProps {
     subtitle?: ReactNode;
     /** Email recipient for the mailto submit. Default: info@axevil.com */
     recipient?: string;
+    /** Carbon copy on the mailto submit. Default: support@axevil.com (client 2026-08-04). */
+    cc?: string;
+    /** Subject line. Default: "Question from the website axevil.com" (client 2026-08-04) —
+     *  a fixed subject so the shared inbox can filter website enquiries into one thread. */
+    subject?: string;
     paddingClass?: string;
 }
-declare function Form({ number, label, title, subtitle, recipient, paddingClass, }?: FormProps): react_jsx_runtime.JSX.Element;
+declare function Form({ number, label, title, subtitle, recipient, cc, subject, paddingClass, }?: FormProps): react_jsx_runtime.JSX.Element;
 
 /**
  * Hero eyebrow pill — status-open variant with pulsing online-dot.
