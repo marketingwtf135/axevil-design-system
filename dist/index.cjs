@@ -895,6 +895,17 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
   );
 }
 
+// design-system/src/lib/analytics.ts
+var scriptLoaded = false;
+function gtag(...args) {
+  window.dataLayer = window.dataLayer ?? [];
+  window.dataLayer.push(args);
+}
+function trackEvent(name, params) {
+  if (typeof window === "undefined" || !scriptLoaded) return;
+  gtag("event", name, params ?? {});
+}
+
 // design-system/src/lib/submitLead.ts
 function classifySource(utmSource, utmMedium) {
   const source = utmSource.toLowerCase();
@@ -954,6 +965,7 @@ async function submitLead(input) {
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return { ok: false, error: data.error ?? `http_${res.status}` };
+    trackEvent("generate_lead", { lead_type: input.leadType ?? "partner", form: input.sourceL3 ?? "quiz" });
     return { ok: true, action: data.action };
   } catch {
     return { ok: false, error: "network_error" };
