@@ -896,7 +896,6 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
 }
 
 // design-system/src/lib/submitLead.ts
-var QUIZ_MANAGER_ID = 999;
 function classifySource(utmSource, utmMedium) {
   const source = utmSource.toLowerCase();
   const medium = utmMedium.toLowerCase();
@@ -927,8 +926,16 @@ async function submitLead(input) {
     email: input.email || void 0,
     phone: input.phone || void 0,
     ...input.extra ?? {},
+    // CRM contract v1.2. Everything routed through submitLead is something a salesperson
+    // has to act on — a quiz result, a contact-form enquiry, a partnership request — so it
+    // is always "application". Plain mailing signups go through submitSubscription with
+    // intent "subscribe" instead, and must not land in the sales queue.
+    intent: "application",
     lead_type: input.leadType ?? "partner",
-    manager_id: QUIZ_MANAGER_ID,
+    // No manager_id on purpose (client's call 2026-08-06): leads used to be pinned to the
+    // test-circuit manager 999 ("Иван Тестов"), which meant every quiz and contact-form
+    // enquiry landed on one person. Omitting the field hands routing back to the CRM, which
+    // distributes across the sales team itself. Do not re-add without an explicit request.
     source_l1,
     source_l2,
     // Real ad campaigns keep their utm_campaign value; anything without one (organic/direct
