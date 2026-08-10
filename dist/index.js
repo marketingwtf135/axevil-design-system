@@ -849,13 +849,17 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error }) {
 }
 
 // design-system/src/lib/analytics.ts
-var scriptLoaded = false;
 function gtag(...args) {
+  if (typeof window === "undefined") return;
+  if (typeof window.gtag === "function") {
+    window.gtag(...args);
+    return;
+  }
   window.dataLayer = window.dataLayer ?? [];
   window.dataLayer.push(args);
 }
 function trackEvent(name, params) {
-  if (typeof window === "undefined" || !scriptLoaded) return;
+  if (typeof window === "undefined") return;
   gtag("event", name, params ?? {});
 }
 
@@ -1465,7 +1469,7 @@ function DescTag({ number, label, className = "" }) {
   return /* @__PURE__ */ jsxs10(
     "div",
     {
-      className: `flex gap-2 items-center font-inter-tight font-medium text-m text-neutral-30 ${className}`,
+      className: `flex gap-2 items-center font-inter-tight font-medium text-m text-white-400 ${className}`,
       children: [
         /* @__PURE__ */ jsx12("span", { className: "text-m opacity-50", children: number }),
         /* @__PURE__ */ jsx12("span", { className: "text-m opacity-80", children: label })
