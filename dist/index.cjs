@@ -220,7 +220,7 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
                 /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
                   "span",
                   {
-                    className: "font-inter-tight font-semibold text-m text-white whitespace-nowrap",
+                    className: "font-inter-tight font-medium text-m text-white whitespace-nowrap",
                     style: { letterSpacing: "-0.01em" },
                     children: CONTACT_EMAIL
                   }
@@ -2426,7 +2426,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
           "h4",
           {
-            className: "font-inter-tight font-semibold text-white w-full",
+            className: "font-inter-tight font-medium text-white w-full",
             style: { fontSize: "clamp(1.125rem, 1.5vw, 1.5rem)", lineHeight: 1.2, letterSpacing: "-0.02em", margin: 0 },
             children: name
           }
