@@ -711,6 +711,7 @@ function Field({
   error,
   className,
   height = "3.75rem",
+  radius = "1rem",
   children
 }) {
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `flex flex-col w-full ${className ?? ""}`, style: { gap: "0.375rem" }, children: [
@@ -721,7 +722,7 @@ function Field({
         style: {
           background: "var(--black-500)",
           height,
-          borderRadius: "1rem",
+          borderRadius: radius,
           padding: "0 1rem",
           border: error ? "1px solid rgba(239,68,68,0.5)" : "none"
         },
