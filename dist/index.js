@@ -302,6 +302,19 @@ function identifyLead(email, props) {
   if (props) mixpanel.people.set(props);
 }
 
+// design-system/src/lib/gtm.ts
+function push(event) {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer ?? [];
+  window.dataLayer.push(event);
+}
+function pushCtaClick(ctaType, ctaLocation) {
+  push({ event: "cta_click", cta_type: ctaType, cta_location: ctaLocation });
+}
+function pushFormSubmit(formName, landingId) {
+  push({ event: "form_submit", form_name: formName, landing_id: landingId });
+}
+
 // design-system/src/components/btn-own.tsx
 import { jsx as jsx3, jsxs as jsxs2 } from "react/jsx-runtime";
 var SIZE_STYLES = {
@@ -341,7 +354,9 @@ function BtnOwn({
       type,
       disabled,
       onClick: () => {
-        trackCTAClick(typeof children === "string" ? children : type === "submit" ? "submit" : "cta", { variant });
+        const ctaLabel = typeof children === "string" ? children : type === "submit" ? "submit" : "cta";
+        trackCTAClick(ctaLabel, { variant });
+        pushCtaClick(ctaLabel);
         if (onClick) {
           onClick();
           return;
@@ -1091,6 +1106,10 @@ function trackEvent(name, params) {
 }
 
 // design-system/src/lib/submitLead.ts
+var GTM_FORM_NAME = {
+  partner: "request_access",
+  contact: "contact"
+};
 function classifySource(utmSource, utmMedium) {
   const source = utmSource.toLowerCase();
   const medium = utmMedium.toLowerCase();
@@ -1156,6 +1175,7 @@ async function submitLead(input) {
     }
     trackEvent("generate_lead", { lead_type: input.leadType ?? "partner", form: input.sourceL3 ?? "quiz" });
     trackFormComplete(formName, { lead_type: formName });
+    pushFormSubmit(GTM_FORM_NAME[formName] ?? formName);
     if (input.email) identifyLead(input.email, { $name: input.name, lead_type: formName });
     return { ok: true, action: data.action };
   } catch {
