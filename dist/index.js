@@ -261,6 +261,48 @@ import { useState as useState2, useEffect as useEffect2 } from "react";
 
 // design-system/src/components/btn-own.tsx
 import { useState } from "react";
+
+// design-system/src/lib/mixpanel.ts
+import mixpanel from "mixpanel-browser";
+var ready = false;
+var anonymousId = null;
+function mpReady() {
+  return typeof window !== "undefined" && ready;
+}
+function trackWebEvent(name, props) {
+  if (!mpReady()) return;
+  mixpanel.track(name, props);
+}
+function trackCTAClick(label, extra) {
+  trackWebEvent("webCTAClick", { label, page_path: window.location.pathname, ...extra });
+}
+function trackFormStart(formName) {
+  trackWebEvent("webFormStart", { form_name: formName, page_path: window.location.pathname });
+}
+function trackFormSubmit(formName, extra) {
+  trackWebEvent("webFormSubmit", { form_name: formName, page_path: window.location.pathname, ...extra });
+}
+function trackFormComplete(formName, extra) {
+  trackWebEvent("webFormComplete", { form_name: formName, page_path: window.location.pathname, ...extra });
+}
+function trackFormError(formName, error) {
+  trackWebEvent("webFormError", { form_name: formName, page_path: window.location.pathname, error });
+}
+function identifyLead(email, props) {
+  if (!mpReady() || !email) return;
+  const current = mixpanel.get_distinct_id();
+  if (current !== email) {
+    if (current === anonymousId) {
+      mixpanel.alias(email);
+      mixpanel.identify(email);
+    } else {
+      mixpanel.identify(email);
+    }
+  }
+  if (props) mixpanel.people.set(props);
+}
+
+// design-system/src/components/btn-own.tsx
 import { jsx as jsx3, jsxs as jsxs2 } from "react/jsx-runtime";
 var SIZE_STYLES = {
   M: { height: "3.625rem", padding: "0.75rem 1.5rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
@@ -299,6 +341,7 @@ function BtnOwn({
       type,
       disabled,
       onClick: () => {
+        trackCTAClick(typeof children === "string" ? children : type === "submit" ? "submit" : "cta", { variant });
         if (onClick) {
           onClick();
           return;
@@ -648,7 +691,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
 }
 
 // design-system/src/components/quiz-lead-form.tsx
-import { useState as useState4 } from "react";
+import { useRef as useRef3, useState as useState4 } from "react";
 
 // design-system/src/components/form-field.tsx
 import { jsx as jsx7, jsxs as jsxs5 } from "react/jsx-runtime";
@@ -1071,6 +1114,8 @@ function readUtm() {
   };
 }
 async function submitLead(input) {
+  const formName = input.leadType ?? "partner";
+  trackFormSubmit(formName, { lead_type: formName });
   const utm = readUtm();
   const { source_l1, source_l2 } = classifySource(utm.source, utm.medium);
   const payload = {
@@ -1105,10 +1150,16 @@ async function submitLead(input) {
       body: JSON.stringify(payload)
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, error: data.error ?? `http_${res.status}` };
+    if (!res.ok) {
+      trackFormError(formName, data.error ?? `http_${res.status}`);
+      return { ok: false, error: data.error ?? `http_${res.status}` };
+    }
     trackEvent("generate_lead", { lead_type: input.leadType ?? "partner", form: input.sourceL3 ?? "quiz" });
+    trackFormComplete(formName, { lead_type: formName });
+    if (input.email) identifyLead(input.email, { $name: input.name, lead_type: formName });
     return { ok: true, action: data.action };
   } catch {
+    trackFormError(formName, "network_error");
     return { ok: false, error: "network_error" };
   }
 }
@@ -1119,6 +1170,12 @@ function QuizLeadForm({ onClose, onSubmit }) {
   const [data, setData] = useState4({ name: "", email: "", phone: "", countryCode: "us" });
   const [errors, setErrors] = useState4({});
   const [submitting, setSubmitting] = useState4(false);
+  const startedRef = useRef3(false);
+  function onFormFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart("partner");
+  }
   function validate() {
     const e = {};
     if (!data.name.trim()) e.name = "Required";
@@ -1164,7 +1221,7 @@ function QuizLeadForm({ onClose, onSubmit }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxs7("form", { className: "flex flex-col items-start w-full", style: { gap: "1rem" }, onSubmit: handleSubmit, noValidate: true, children: [
+    /* @__PURE__ */ jsxs7("form", { className: "flex flex-col items-start w-full", style: { gap: "1rem" }, onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, children: [
       /* @__PURE__ */ jsxs7("div", { className: "flex flex-col items-start w-full", style: { gap: "0.5rem" }, children: [
         /* @__PURE__ */ jsx9(
           Field,
@@ -1544,7 +1601,7 @@ function Quiz({ onClose }) {
 }
 
 // design-system/src/components/bg-features.tsx
-import { useEffect as useEffect5, useRef as useRef3 } from "react";
+import { useEffect as useEffect5, useRef as useRef4 } from "react";
 import { motion as motion4 } from "framer-motion";
 import { jsx as jsx11, jsxs as jsxs9 } from "react/jsx-runtime";
 function BgFeatures({
@@ -1556,7 +1613,7 @@ function BgFeatures({
   animated = false,
   animationDuration = 30
 } = {}) {
-  const ref = useRef3(null);
+  const ref = useRef4(null);
   useEffect5(() => {
     if (!spotlight) return;
     const el = ref.current;
@@ -1728,7 +1785,7 @@ function CtaForm({
 }
 
 // design-system/src/components/cta-form-newsletter.tsx
-import { useState as useState6 } from "react";
+import { useRef as useRef5, useState as useState6 } from "react";
 import { jsx as jsx14, jsxs as jsxs12 } from "react/jsx-runtime";
 function CtaFormNewsletter({
   buttonLabel = "Subscribe",
@@ -1740,6 +1797,12 @@ function CtaFormNewsletter({
 }) {
   const [email, setEmail] = useState6("");
   const [submitted, setSubmitted] = useState6(false);
+  const startedRef = useRef5(false);
+  function onFormFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart("newsletter");
+  }
   function handleSubmit(e) {
     e.preventDefault();
     if (!email.trim()) return;
@@ -1766,6 +1829,7 @@ function CtaFormNewsletter({
     "form",
     {
       onSubmit: handleSubmit,
+      onFocus: onFormFocus,
       className: `flex flex-row items-center w-full max-w-[30rem] lg:max-w-none lg:w-auto ${className}`,
       style: { gap: "0.5rem" },
       children: [
@@ -1857,7 +1921,7 @@ function FAQ({ items, className = "" }) {
 
 // design-system/src/components/form.tsx
 import { AnimatePresence as AnimatePresence4, motion as motion6 } from "framer-motion";
-import { useEffect as useEffect6, useRef as useRef4, useState as useState8 } from "react";
+import { useEffect as useEffect6, useRef as useRef6, useState as useState8 } from "react";
 
 // design-system/src/lib/navigate.ts
 function navigate(path) {
@@ -1880,7 +1944,7 @@ var INQUIRY_OPTIONS = [
 ];
 function InquiryDropdown({ value, onChange }) {
   const [open, setOpen] = useState8(false);
-  const ref = useRef4(null);
+  const ref = useRef6(null);
   const selected = INQUIRY_OPTIONS.find((o) => o.value === value);
   useEffect6(() => {
     function onClickOutside(e) {
@@ -2019,6 +2083,12 @@ function Form({
   const [data, setData] = useState8({ email: "", name: "", position: "", company: "", inquiry: "" });
   const [errors, setErrors] = useState8({});
   const [submitted, setSubmitted] = useState8(false);
+  const startedRef = useRef6(false);
+  function onFormFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart("contact");
+  }
   function validate() {
     const e = {};
     if (!data.email.trim()) e.email = "Required";
@@ -2113,7 +2183,7 @@ Inquiry type: ${inquiryLabel}
                 )
               ] })
             ] }),
-            /* @__PURE__ */ jsx16("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ jsx16(SuccessState, {}) : /* @__PURE__ */ jsxs14("form", { onSubmit: handleSubmit, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
+            /* @__PURE__ */ jsx16("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ jsx16(SuccessState, {}) : /* @__PURE__ */ jsxs14("form", { onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
               /* @__PURE__ */ jsx16(Field, { error: errors.email, input: /* @__PURE__ */ jsx16(
                 "input",
                 {

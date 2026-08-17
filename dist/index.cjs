@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,6 +17,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // design-system/src/components/index.ts
@@ -308,6 +318,48 @@ var import_react4 = require("react");
 
 // design-system/src/components/btn-own.tsx
 var import_react3 = require("react");
+
+// design-system/src/lib/mixpanel.ts
+var import_mixpanel_browser = __toESM(require("mixpanel-browser"), 1);
+var ready = false;
+var anonymousId = null;
+function mpReady() {
+  return typeof window !== "undefined" && ready;
+}
+function trackWebEvent(name, props) {
+  if (!mpReady()) return;
+  import_mixpanel_browser.default.track(name, props);
+}
+function trackCTAClick(label, extra) {
+  trackWebEvent("webCTAClick", { label, page_path: window.location.pathname, ...extra });
+}
+function trackFormStart(formName) {
+  trackWebEvent("webFormStart", { form_name: formName, page_path: window.location.pathname });
+}
+function trackFormSubmit(formName, extra) {
+  trackWebEvent("webFormSubmit", { form_name: formName, page_path: window.location.pathname, ...extra });
+}
+function trackFormComplete(formName, extra) {
+  trackWebEvent("webFormComplete", { form_name: formName, page_path: window.location.pathname, ...extra });
+}
+function trackFormError(formName, error) {
+  trackWebEvent("webFormError", { form_name: formName, page_path: window.location.pathname, error });
+}
+function identifyLead(email, props) {
+  if (!mpReady() || !email) return;
+  const current = import_mixpanel_browser.default.get_distinct_id();
+  if (current !== email) {
+    if (current === anonymousId) {
+      import_mixpanel_browser.default.alias(email);
+      import_mixpanel_browser.default.identify(email);
+    } else {
+      import_mixpanel_browser.default.identify(email);
+    }
+  }
+  if (props) import_mixpanel_browser.default.people.set(props);
+}
+
+// design-system/src/components/btn-own.tsx
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var SIZE_STYLES = {
   M: { height: "3.625rem", padding: "0.75rem 1.5rem", borderRadius: "1rem", fontSize: "var(--font-btn)", fontWeight: 600 },
@@ -346,6 +398,7 @@ function BtnOwn({
       type,
       disabled,
       onClick: () => {
+        trackCTAClick(typeof children === "string" ? children : type === "submit" ? "submit" : "cta", { variant });
         if (onClick) {
           onClick();
           return;
@@ -1118,6 +1171,8 @@ function readUtm() {
   };
 }
 async function submitLead(input) {
+  const formName = input.leadType ?? "partner";
+  trackFormSubmit(formName, { lead_type: formName });
   const utm = readUtm();
   const { source_l1, source_l2 } = classifySource(utm.source, utm.medium);
   const payload = {
@@ -1152,10 +1207,16 @@ async function submitLead(input) {
       body: JSON.stringify(payload)
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, error: data.error ?? `http_${res.status}` };
+    if (!res.ok) {
+      trackFormError(formName, data.error ?? `http_${res.status}`);
+      return { ok: false, error: data.error ?? `http_${res.status}` };
+    }
     trackEvent("generate_lead", { lead_type: input.leadType ?? "partner", form: input.sourceL3 ?? "quiz" });
+    trackFormComplete(formName, { lead_type: formName });
+    if (input.email) identifyLead(input.email, { $name: input.name, lead_type: formName });
     return { ok: true, action: data.action };
   } catch {
+    trackFormError(formName, "network_error");
     return { ok: false, error: "network_error" };
   }
 }
@@ -1166,6 +1227,12 @@ function QuizLeadForm({ onClose, onSubmit }) {
   const [data, setData] = (0, import_react6.useState)({ name: "", email: "", phone: "", countryCode: "us" });
   const [errors, setErrors] = (0, import_react6.useState)({});
   const [submitting, setSubmitting] = (0, import_react6.useState)(false);
+  const startedRef = (0, import_react6.useRef)(false);
+  function onFormFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart("partner");
+  }
   function validate() {
     const e = {};
     if (!data.name.trim()) e.name = "Required";
@@ -1211,7 +1278,7 @@ function QuizLeadForm({ onClose, onSubmit }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("form", { className: "flex flex-col items-start w-full", style: { gap: "1rem" }, onSubmit: handleSubmit, noValidate: true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("form", { className: "flex flex-col items-start w-full", style: { gap: "1rem" }, onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, children: [
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.5rem" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
           Field,
@@ -1787,6 +1854,12 @@ function CtaFormNewsletter({
 }) {
   const [email, setEmail] = (0, import_react9.useState)("");
   const [submitted, setSubmitted] = (0, import_react9.useState)(false);
+  const startedRef = (0, import_react9.useRef)(false);
+  function onFormFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart("newsletter");
+  }
   function handleSubmit(e) {
     e.preventDefault();
     if (!email.trim()) return;
@@ -1813,6 +1886,7 @@ function CtaFormNewsletter({
     "form",
     {
       onSubmit: handleSubmit,
+      onFocus: onFormFocus,
       className: `flex flex-row items-center w-full max-w-[30rem] lg:max-w-none lg:w-auto ${className}`,
       style: { gap: "0.5rem" },
       children: [
@@ -2066,6 +2140,12 @@ function Form({
   const [data, setData] = (0, import_react11.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
   const [errors, setErrors] = (0, import_react11.useState)({});
   const [submitted, setSubmitted] = (0, import_react11.useState)(false);
+  const startedRef = (0, import_react11.useRef)(false);
+  function onFormFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart("contact");
+  }
   function validate() {
     const e = {};
     if (!data.email.trim()) e.email = "Required";
@@ -2160,7 +2240,7 @@ Inquiry type: ${inquiryLabel}
                 )
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SuccessState, {}) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { onSubmit: handleSubmit, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SuccessState, {}) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { error: errors.email, input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
                 "input",
                 {
