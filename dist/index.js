@@ -757,7 +757,7 @@ function Field({
 }
 
 // design-system/src/components/phone-field.tsx
-import { useEffect as useEffect3, useRef as useRef2, useState as useState3 } from "react";
+import { useEffect as useEffect3, useMemo, useRef as useRef2, useState as useState3 } from "react";
 import { motion as motion2, AnimatePresence } from "framer-motion";
 import { jsx as jsx8, jsxs as jsxs6 } from "react/jsx-runtime";
 var COUNTRIES = [
@@ -959,17 +959,99 @@ var COUNTRIES = [
   { code: "zm", dial: "+260", name: "Zambia" },
   { code: "zw", dial: "+263", name: "Zimbabwe" }
 ].sort((a, b) => a.name.localeCompare(b.name));
+var IP_GEO_ENDPOINT = "https://speed.cloudflare.com/meta";
+var IP_GEO_TIMEOUT_MS = 3e3;
+var IP_GEO_CACHE_KEY = "axevil:geo-country:v1";
+var IP_GEO_CACHE_TTL_MS = 24 * 60 * 60 * 1e3;
+function readCachedCountry() {
+  try {
+    const raw = localStorage.getItem(IP_GEO_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (Date.now() - parsed.cachedAt > IP_GEO_CACHE_TTL_MS) return null;
+    return parsed.code;
+  } catch {
+    return null;
+  }
+}
+function writeCachedCountry(code) {
+  try {
+    localStorage.setItem(IP_GEO_CACHE_KEY, JSON.stringify({ code, cachedAt: Date.now() }));
+  } catch {
+  }
+}
+async function detectCountryByIp() {
+  const cached = readCachedCountry();
+  if (cached) return cached;
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), IP_GEO_TIMEOUT_MS);
+  try {
+    const res = await fetch(IP_GEO_ENDPOINT, { signal: controller.signal });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const code = data.country?.toLowerCase();
+    if (!code || !COUNTRIES.some((c) => c.code === code)) return null;
+    writeCachedCountry(code);
+    return code;
+  } catch {
+    return null;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+function filterCountries(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return COUNTRIES;
+  if (/^\+?\d+$/.test(q)) {
+    const digits = q.replace(/^\+/, "");
+    return COUNTRIES.filter((c) => c.dial.slice(1).startsWith(digits));
+  }
+  const starts = [];
+  const contains = [];
+  for (const c of COUNTRIES) {
+    const name = c.name.toLowerCase();
+    if (name.startsWith(q)) starts.push(c);
+    else if (name.includes(q)) contains.push(c);
+  }
+  return [...starts, ...contains];
+}
 function PhoneField({ value, onChange, countryCode, onCountryChange, error, height = "3.5rem", radius }) {
   const [open, setOpen] = useState3(false);
+  const [query, setQuery] = useState3("");
   const ref = useRef2(null);
+  const searchRef = useRef2(null);
+  const touchedRef = useRef2(false);
   const selected = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
+  const filtered = useMemo(() => filterCountries(query), [query]);
   useEffect3(() => {
     function onClickOutside(e) {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target)) {
+        setOpen(false);
+        setQuery("");
+      }
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
+  useEffect3(() => {
+    let cancelled = false;
+    detectCountryByIp().then((code) => {
+      if (cancelled || touchedRef.current || !code) return;
+      onCountryChange(code);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  useEffect3(() => {
+    if (open) searchRef.current?.focus();
+  }, [open]);
+  function selectCountry(code) {
+    touchedRef.current = true;
+    onCountryChange(code);
+    setOpen(false);
+    setQuery("");
+  }
   return /* @__PURE__ */ jsx8(
     Field,
     {
@@ -987,10 +1069,16 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
               "aria-label": "Country code",
               onClick: () => setOpen((o) => !o),
               onKeyDown: (e) => {
-                if (e.key === "Escape") setOpen(false);
-                else if ((e.key === "Enter" || e.key === " " || e.key === "ArrowDown") && !open) {
+                if (e.key === "Escape") {
+                  setOpen(false);
+                  setQuery("");
+                } else if ((e.key === "Enter" || e.key === " " || e.key === "ArrowDown") && !open) {
                   e.preventDefault();
                   setOpen(true);
+                } else if (!open && !e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1 && /[a-zA-Z0-9+]/.test(e.key)) {
+                  e.preventDefault();
+                  setOpen(true);
+                  setQuery(e.key);
                 }
               },
               className: "flex items-center cursor-pointer select-none outline-none",
@@ -1024,62 +1112,89 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
               ]
             }
           ),
-          /* @__PURE__ */ jsx8(AnimatePresence, { children: open && /* @__PURE__ */ jsx8(
+          /* @__PURE__ */ jsx8(AnimatePresence, { children: open && /* @__PURE__ */ jsxs6(
             motion2.div,
             {
-              role: "listbox",
-              "aria-label": "Country code",
               initial: { opacity: 0, y: -6 },
               animate: { opacity: 1, y: 0 },
               exit: { opacity: 0, y: -6 },
               transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] },
-              className: "absolute left-0 z-[1000] overflow-y-auto",
+              className: "absolute left-0 z-[1000] flex flex-col",
               style: {
                 top: "calc(100% + 0.5rem)",
                 marginLeft: "-0.75rem",
-                width: "12.5rem",
-                maxHeight: "15rem",
+                width: "13.5rem",
+                maxHeight: "18rem",
                 borderRadius: "1rem",
-                background: "var(--black-500)"
+                background: "var(--black-500)",
+                overflow: "hidden"
               },
-              children: COUNTRIES.map((c, i) => /* @__PURE__ */ jsxs6(
-                "button",
-                {
-                  type: "button",
-                  role: "option",
-                  "aria-selected": c.code === selected.code,
-                  onClick: () => {
-                    onCountryChange(c.code);
-                    setOpen(false);
-                  },
-                  className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-m w-full text-left outline-none",
-                  style: {
-                    gap: "0.5rem",
-                    padding: "0 1rem",
-                    height: "2.75rem",
-                    background: "transparent",
-                    borderBottom: i < COUNTRIES.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                    color: "var(--white-400)"
-                  },
-                  onMouseEnter: (e) => e.currentTarget.style.color = "var(--white-100)",
-                  onMouseLeave: (e) => e.currentTarget.style.color = "var(--white-400)",
-                  children: [
-                    /* @__PURE__ */ jsx8(
-                      "img",
-                      {
-                        src: `https://flagcdn.com/${c.code}.svg`,
-                        alt: "",
-                        "aria-hidden": "true",
-                        className: "rounded-full object-cover shrink-0",
-                        style: { width: "1.125rem", height: "1.125rem" }
+              children: [
+                /* @__PURE__ */ jsx8("div", { style: { padding: "0.5rem", flexShrink: 0 }, children: /* @__PURE__ */ jsx8(
+                  "input",
+                  {
+                    ref: searchRef,
+                    type: "text",
+                    value: query,
+                    onChange: (e) => setQuery(e.target.value),
+                    onKeyDown: (e) => {
+                      if (e.key === "Escape") {
+                        setOpen(false);
+                        setQuery("");
+                      } else if (e.key === "Enter" && filtered[0]) {
+                        e.preventDefault();
+                        selectCountry(filtered[0].code);
                       }
-                    ),
-                    /* @__PURE__ */ jsx8("span", { className: "truncate", children: c.name }),
-                    /* @__PURE__ */ jsx8("span", { className: "shrink-0", style: { marginLeft: "auto" }, children: c.dial })
-                  ]
-                },
-                c.code
-              ))
+                    },
+                    placeholder: "Search country",
+                    "aria-label": "Search country",
+                    className: "w-full bg-transparent font-inter-tight font-medium text-s-med text-white placeholder:text-white/35 focus:outline-none",
+                    style: { padding: "0.5rem 0.75rem", borderRadius: "0.5rem", background: "rgba(255,255,255,0.06)" }
+                  }
+                ) }),
+                /* @__PURE__ */ jsx8("div", { role: "listbox", "aria-label": "Country code", className: "overflow-y-auto", style: { maxHeight: "14rem" }, children: filtered.length === 0 ? /* @__PURE__ */ jsx8(
+                  "p",
+                  {
+                    className: "font-inter-tight font-medium text-s-med text-white/40",
+                    style: { padding: "0.75rem 1rem", margin: 0 },
+                    children: "No countries found"
+                  }
+                ) : filtered.map((c, i) => /* @__PURE__ */ jsxs6(
+                  "button",
+                  {
+                    type: "button",
+                    role: "option",
+                    "aria-selected": c.code === selected.code,
+                    onClick: () => selectCountry(c.code),
+                    className: "group flex items-center cursor-pointer transition-colors hover:bg-white/5 font-inter-tight font-medium text-m w-full text-left outline-none",
+                    style: {
+                      gap: "0.5rem",
+                      padding: "0 1rem",
+                      height: "2.75rem",
+                      background: "transparent",
+                      borderBottom: i < filtered.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                      color: "var(--white-400)"
+                    },
+                    onMouseEnter: (e) => e.currentTarget.style.color = "var(--white-100)",
+                    onMouseLeave: (e) => e.currentTarget.style.color = "var(--white-400)",
+                    children: [
+                      /* @__PURE__ */ jsx8(
+                        "img",
+                        {
+                          src: `https://flagcdn.com/${c.code}.svg`,
+                          alt: "",
+                          "aria-hidden": "true",
+                          className: "rounded-full object-cover shrink-0",
+                          style: { width: "1.125rem", height: "1.125rem" }
+                        }
+                      ),
+                      /* @__PURE__ */ jsx8("span", { className: "truncate", children: c.name }),
+                      /* @__PURE__ */ jsx8("span", { className: "shrink-0", style: { marginLeft: "auto" }, children: c.dial })
+                    ]
+                  },
+                  c.code
+                )) })
+              ]
             }
           ) })
         ] }),
