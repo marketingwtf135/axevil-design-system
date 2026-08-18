@@ -189,6 +189,16 @@
 .ps-t12-b0  { padding-top: var(--ps-12); padding-bottom: 0; }
 .ps-t0-b12  { padding-top: 0;            padding-bottom: var(--ps-12); }
 
+/* text-h3 is always medium (client 2026-08-12: "во всей ДС замени text-h3 с semibold на
+   medium" — one token change instead of hand-editing the ~20 files across every AXEVIL
+   surface that pair `text-h3` with `font-semibold`). !important is load-bearing, not
+   decorative: `text-h3` and `font-semibold` are two separate, equal-specificity Tailwind
+   utility classes, and Tailwind's corePlugin order emits fontWeight utilities AFTER
+   fontSize ones — so without !important, a plain `font-weight: 500` here would lose to
+   any co-occurring `font-semibold` (600) rather than override it, and this rule would
+   visibly do nothing anywhere it was needed. */
+.text-h3 { font-weight: 500 !important; }
+
 /* -- Gradient text utility -- */
 .text-acc-gradient {
   background: var(--acc-gradient);

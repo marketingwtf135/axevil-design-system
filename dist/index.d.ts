@@ -313,6 +313,31 @@ interface PageEntryProps extends Omit<MotionProps, 'children'> {
 }
 declare function PageEntry({ children, className, style, initial, animate, exit, transition, ...rest }: PageEntryProps): react_jsx_runtime.JSX.Element;
 
+/** Full dial-code list (client 2026-08-13: "оооочень мало стран", the 15-entry "major
+ *  financial hubs" curation this used to be wasn't enough — visitors outside that set had
+ *  no way to enter their own country at all). Sorted by name for a list this size (the
+ *  curated one didn't need it at 15 entries; at ~195 a fixed relevance order stops helping
+ *  and alphabetical is what makes a specific country findable). Flags load from
+ *  flagcdn.com with no bundled assets, matching CompanyCard's <Flag>. */
+declare const COUNTRIES: {
+    code: string;
+    dial: string;
+    name: string;
+}[];
+interface PhoneFieldProps {
+    value: string;
+    onChange: (v: string) => void;
+    countryCode: string;
+    onCountryChange: (code: string) => void;
+    error?: string;
+    /** Passed straight to Field — match a sibling field's radius when this sits next to one. */
+    height?: string;
+    radius?: string;
+}
+/** Phone input with a country-dial-code picker (flag + code), same visual language and
+ *  outside-click/keyboard behavior as `InquiryDropdown` in form.tsx. */
+declare function PhoneField({ value, onChange, countryCode, onCountryChange, error, height, radius }: PhoneFieldProps): react_jsx_runtime.JSX.Element;
+
 interface SectionHeadingProps {
     /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */
     number?: string | number;
@@ -336,8 +361,22 @@ interface SectionHeadingProps {
     innerGap?: string;
     /** Extra className on the wrapper */
     className?: string;
+    /**
+     * Element the title renders as. Default `h2`.
+     *
+     * Pass `'p'` on a RESPONSIVE DUPLICATE — a second copy of the same heading that exists only so a
+     * different breakpoint can lay it out differently. Both copies are in the DOM at once (one is
+     * merely `display:none`), so two `<h2>`s ship on every render: the 2026-08-18 SEO audit counted
+     * "Key Stats" three times on the home page and again on /retail-investors and /wealth-managers,
+     * and "Pre-packaged institutional infrastructure" twice on /wealth-managers. A `<p>` with the
+     * identical classes is pixel-identical (Tailwind's preflight zeroes heading margins) and is not
+     * a heading, which is the whole point — the outline should describe the page once.
+     *
+     * Not a general styling escape hatch: the FIRST, canonical copy of a heading stays an `h2`.
+     */
+    titleAs?: 'h2' | 'p';
 }
-declare function SectionHeading({ number, label, title, subtitle, align, gradient, titleMaxWidth, subtitleMaxWidth, gap, innerGap, className, }: SectionHeadingProps): react_jsx_runtime.JSX.Element;
+declare function SectionHeading({ number, label, title, subtitle, align, gradient, titleMaxWidth, subtitleMaxWidth, gap, innerGap, className, titleAs, }: SectionHeadingProps): react_jsx_runtime.JSX.Element;
 
 interface SliderCardProps {
     name: string;
@@ -453,4 +492,4 @@ declare const PRELOAD_FADE_IN_VIEW_MOTION: {
     };
 };
 
-export { BgFeatures, BtnOwn, CtaForm, CtaFormNewsletter, DescTag, type DropdownItem, FAQ, type FAQItem, FadeIn, Footer, Form, HeroEyebrow, type IllCard, IllCards, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, Quiz, SectionHeading, SliderCard, type StatusKind, StatusPill, Tag, type TagSize, type TagVariant };
+export { BgFeatures, BtnOwn, COUNTRIES, CtaForm, CtaFormNewsletter, DescTag, type DropdownItem, FAQ, type FAQItem, FadeIn, Footer, Form, HeroEyebrow, type IllCard, IllCards, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, PhoneField, Quiz, SectionHeading, SliderCard, type StatusKind, StatusPill, Tag, type TagSize, type TagVariant };

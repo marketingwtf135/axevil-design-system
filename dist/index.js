@@ -70,8 +70,17 @@ var SOCIALS = [
   }
 ];
 var NAV_COLUMNS = [
-  // Wealth Manager + Retail Investors hidden for v1 (2026-06-30).
-  // Invest column removed per client feedback 2026-07-08.
+  /* Invest column removed per client feedback 2026-07-08. The Platform column below was added
+     2026-08-18 (technical-SEO brief §7.1): /retail-investors, /wealth-managers and the research
+     hub had no inbound internal link anywhere on the site, so no crawler could reach them by
+     following links and no visitor could find them without the address. They are in the header
+     too now — this is the second path, and the one that survives a header redesign. */
+  { heading: "Platform", items: [
+    { label: "Market Intelligence", href: "/companies" },
+    { label: "For investors", href: "/retail-investors" },
+    { label: "For advisors", href: "/wealth-managers" },
+    { label: "Research", href: "/research" }
+  ] },
   { heading: "Company", items: [
     { label: "About Us", href: "/about-us" },
     { label: "Team", href: "/team" },
@@ -403,6 +412,9 @@ function BtnOwn({
 import { Fragment as Fragment3, jsx as jsx4, jsxs as jsxs3 } from "react/jsx-runtime";
 var NAV_LINKS = [
   { label: "Market Intelligence", href: "/companies" },
+  { label: "For investors", href: "/retail-investors" },
+  { label: "For advisors", href: "/wealth-managers" },
+  { label: "Research", href: "/research" },
   { label: "About", href: "/about-us" },
   { label: "Team", href: "/team" },
   { label: "Contact", href: "/contacts" }
@@ -490,7 +502,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                 "a",
                 {
                   href,
-                  className: "flex items-center px-4 py-2 rounded-full font-inter-tight font-medium text-s-med text-white opacity-80 hover:opacity-100 hover:bg-white/5 transition-[opacity,background-color] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+                  className: "flex items-center whitespace-nowrap lg:px-2 xl:px-4 py-2 rounded-full font-inter-tight font-medium text-s-med text-white opacity-80 hover:opacity-100 hover:bg-white/5 transition-[opacity,background-color] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
                   children: label
                 },
                 label
@@ -1324,7 +1336,9 @@ var SLIDES = [
     subheading: null,
     body: "The most sought-after private companies of our era \u2014 the ones reshaping the technology of the next decade.",
     img: "/img/ill/ill-qwiz-01.webp",
-    caption: "SpaceX, xAI, Anthropic, Stripe, Cursor \u2014 and 30 more top companies in portfolio",
+    // §12.1: SpaceX listed in June 2026, xAI was absorbed into it in February — neither belongs
+    // in a caption about private companies in the portfolio.
+    caption: "Anthropic, OpenAI, Anduril, Stripe, Cursor \u2014 and 30 more top companies in portfolio",
     label: "Pre-IPO leaders"
   },
   {
@@ -2552,13 +2566,15 @@ function SectionHeading({
   subtitleMaxWidth,
   gap = "clamp(1.5rem, 3vw, 2rem)",
   innerGap = "clamp(1rem, 2vw, 1.5rem)",
-  className = ""
+  className = "",
+  titleAs = "h2"
 }) {
   const alignClass = align === "center" ? "items-center text-center" : "items-start";
+  const TitleTag = titleAs;
   const headingEl = /* @__PURE__ */ jsx21(
-    "h2",
+    TitleTag,
     {
-      className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text",
+      className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text bg-clip-text [-webkit-background-clip:text]",
       style: {
         backgroundImage: gradient,
         /* text-h2 has line-height:1 — tight enough that descenders (y, g, j, p, q)
@@ -2787,6 +2803,7 @@ var PRELOAD_FADE_IN_VIEW_MOTION = {
 export {
   BgFeatures,
   BtnOwn,
+  COUNTRIES,
   CtaForm,
   CtaFormNewsletter,
   DescTag,
@@ -2802,6 +2819,7 @@ export {
   PRELOAD_FADE_IN_VIEW_MOTION,
   PRELOAD_IN_VIEW_MOTION,
   PageEntry,
+  PhoneField,
   Quiz,
   SectionHeading,
   SliderCard,
