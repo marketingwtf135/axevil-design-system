@@ -497,4 +497,4 @@ declare const PRELOAD_FADE_IN_VIEW_MOTION: {
     };
 };
 
-export { BgFeatures, BtnOwn, COUNTRIES, CtaForm, CtaFormNewsletter, DescTag, type DropdownItem, FAQ, type FAQItem, FadeIn, Footer, Form, HeroEyebrow, type IllCard, IllCards, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, PhoneField, Quiz, SectionHeading, SliderCard, type StatusKind, StatusPill, Tag, type TagSize, type TagVariant };
+export { BgFeatures, BtnOwn, COUNTRIES, CtaForm, CtaFormNewsletter, DescTag, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FadeIn, Footer, Form, HeroEyebrow, type IllCard, IllCards, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, PhoneField, Quiz, SectionHeading, SliderCard, type StatusKind, StatusPill, Tag, type TagSize, type TagVariant };

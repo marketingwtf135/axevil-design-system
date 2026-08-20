@@ -962,6 +962,33 @@ var COUNTRIES = [
   { code: "zm", dial: "+260", name: "Zambia" },
   { code: "zw", dial: "+263", name: "Zimbabwe" }
 ].sort((a, b) => a.name.localeCompare(b.name));
+var DIAL_CODE_PREFERENCE = {
+  "+1": "us",
+  "+7": "ru"
+};
+var COUNTRIES_BY_DIAL_LENGTH = [...COUNTRIES].sort((a, b) => {
+  if (b.dial.length !== a.dial.length) return b.dial.length - a.dial.length;
+  const preferred = DIAL_CODE_PREFERENCE[a.dial];
+  if (preferred === a.code) return -1;
+  if (preferred === b.code) return 1;
+  return 0;
+});
+function detectCountryFromInput(raw) {
+  if (!raw.trim().startsWith("+")) return null;
+  const compact = raw.replace(/[^\d+]/g, "");
+  for (const c of COUNTRIES_BY_DIAL_LENGTH) {
+    if (!compact.startsWith(c.dial)) continue;
+    const dialDigitCount = c.dial.length - 1;
+    let i = 1;
+    let seen = 0;
+    while (i < raw.length && seen < dialDigitCount) {
+      if (/\d/.test(raw[i])) seen += 1;
+      i += 1;
+    }
+    return { code: c.code, rest: raw.slice(i).replace(/^[\s()-]+/, "") };
+  }
+  return null;
+}
 var IP_GEO_ENDPOINT = "https://speed.cloudflare.com/meta";
 var IP_GEO_TIMEOUT_MS = 3e3;
 var IP_GEO_CACHE_KEY = "axevil:geo-country:v1";
@@ -1211,7 +1238,17 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
             "aria-label": "Phone number",
             placeholder,
             value,
-            onChange: (e) => onChange(e.target.value),
+            onChange: (e) => {
+              const v = e.target.value;
+              const detected = detectCountryFromInput(v);
+              if (detected) {
+                touchedRef.current = true;
+                onCountryChange(detected.code);
+                onChange(detected.rest);
+              } else {
+                onChange(v);
+              }
+            },
             className: inputClass(!!error)
           }
         )
@@ -2925,6 +2962,7 @@ export {
   CtaForm,
   CtaFormNewsletter,
   DescTag,
+  HeroEyebrow as DynamicGreenBadge,
   FAQ,
   FadeIn,
   Footer,
