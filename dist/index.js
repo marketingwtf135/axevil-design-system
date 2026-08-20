@@ -317,11 +317,16 @@ function push(event) {
   window.dataLayer = window.dataLayer ?? [];
   window.dataLayer.push(event);
 }
-function pushCtaClick(ctaType, ctaLocation) {
-  push({ event: "cta_click", cta_type: ctaType, cta_location: ctaLocation });
+function currentPageId() {
+  if (typeof window === "undefined") return "";
+  const path = window.location.pathname.replace(/^\/+/, "");
+  return path || "home";
+}
+function pushCtaClick(ctaType, landingId) {
+  push({ event: "cta_click", cta_type: ctaType, landing_id: landingId ?? currentPageId() });
 }
 function pushFormSubmit(formName, landingId) {
-  push({ event: "form_submit", form_name: formName, landing_id: landingId });
+  push({ event: "form_submit", form_name: formName, landing_id: landingId ?? currentPageId() });
 }
 
 // design-system/src/components/btn-own.tsx
@@ -512,7 +517,6 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                   BtnOwn,
                   {
                     size: "S",
-                    hideIcon: true,
                     className: "hidden sm:flex lg:hidden",
                     onClick: cta,
                     children: ctaLabel
@@ -522,7 +526,6 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                   BtnOwn,
                   {
                     size: "XS",
-                    hideIcon: true,
                     className: "hidden lg:flex",
                     onClick: cta,
                     children: ctaLabel
@@ -1015,7 +1018,7 @@ function filterCountries(query) {
   }
   return [...starts, ...contains];
 }
-function PhoneField({ value, onChange, countryCode, onCountryChange, error, height = "3.5rem", radius }) {
+function PhoneField({ value, onChange, countryCode, onCountryChange, error, height = "3.5rem", radius, placeholder = "Phone Number" }) {
   const [open, setOpen] = useState3(false);
   const [query, setQuery] = useState3("");
   const ref = useRef2(null);
@@ -1206,7 +1209,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
             inputMode: "tel",
             autoComplete: "tel-national",
             "aria-label": "Phone number",
-            placeholder: "Phone Number",
+            placeholder,
             value,
             onChange: (e) => onChange(e.target.value),
             className: inputClass(!!error)

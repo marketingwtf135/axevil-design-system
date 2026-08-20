@@ -333,10 +333,12 @@ interface PhoneFieldProps {
     /** Passed straight to Field — match a sibling field's radius when this sits next to one. */
     height?: string;
     radius?: string;
+    /** Input placeholder — override per consumer locale. Defaults to the English label. */
+    placeholder?: string;
 }
 /** Phone input with a country-dial-code picker (flag + code), same visual language and
  *  outside-click/keyboard behavior as `InquiryDropdown` in form.tsx. */
-declare function PhoneField({ value, onChange, countryCode, onCountryChange, error, height, radius }: PhoneFieldProps): react_jsx_runtime.JSX.Element;
+declare function PhoneField({ value, onChange, countryCode, onCountryChange, error, height, radius, placeholder }: PhoneFieldProps): react_jsx_runtime.JSX.Element;
 
 interface SectionHeadingProps {
     /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */
