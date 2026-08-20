@@ -424,7 +424,7 @@ var NAV_LINKS = [
   { label: "Team", href: "/team" },
   { label: "Contact", href: "/contacts" }
 ];
-function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } = {}) {
+function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, hideBurger = false } = {}) {
   const cta = onCtaClick ?? (() => window.dispatchEvent(new CustomEvent("open-quiz")));
   const navLinks = links ?? NAV_LINKS;
   const [menuOpen, setMenuOpen] = useState2(false);
@@ -517,7 +517,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                   BtnOwn,
                   {
                     size: "S",
-                    className: "hidden sm:flex lg:hidden",
+                    className: hideBurger ? "flex lg:hidden" : "hidden sm:flex lg:hidden",
                     onClick: cta,
                     children: ctaLabel
                   }
@@ -531,7 +531,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick } 
                     children: ctaLabel
                   }
                 ),
-                /* @__PURE__ */ jsxs3(
+                !hideBurger && /* @__PURE__ */ jsxs3(
                   "button",
                   {
                     type: "button",

@@ -41,8 +41,11 @@ interface NavProps {
     ctaLabel?: string;
     /** CTA click handler (default dispatches the 'open-quiz' event). */
     onCtaClick?: () => void;
+    /** Hide the mobile/tablet burger + drawer entirely (e.g. when `links` is empty and
+     *  there's nothing to open) — the CTA button stays visible at every width instead. */
+    hideBurger?: boolean;
 }
-declare function Nav({ links, logoHref, ctaLabel, onCtaClick }?: NavProps): react_jsx_runtime.JSX.Element;
+declare function Nav({ links, logoHref, ctaLabel, onCtaClick, hideBurger }?: NavProps): react_jsx_runtime.JSX.Element;
 
 interface QuizProps {
     onClose: () => void;
