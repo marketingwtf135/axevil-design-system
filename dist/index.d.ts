@@ -338,10 +338,14 @@ interface PhoneFieldProps {
     radius?: string;
     /** Input placeholder — override per consumer locale. Defaults to the English label. */
     placeholder?: string;
+    /** Hide the flag/dial-code picker UI — the field becomes a plain number input. The
+     *  dial code still applies silently from `countryCode` (IP auto-detect and the
+     *  paste-a-full-number auto-detect both keep working, just invisibly). */
+    hideCountryPicker?: boolean;
 }
 /** Phone input with a country-dial-code picker (flag + code), same visual language and
  *  outside-click/keyboard behavior as `InquiryDropdown` in form.tsx. */
-declare function PhoneField({ value, onChange, countryCode, onCountryChange, error, height, radius, placeholder }: PhoneFieldProps): react_jsx_runtime.JSX.Element;
+declare function PhoneField({ value, onChange, countryCode, onCountryChange, error, height, radius, placeholder, hideCountryPicker }: PhoneFieldProps): react_jsx_runtime.JSX.Element;
 
 interface SectionHeadingProps {
     /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */

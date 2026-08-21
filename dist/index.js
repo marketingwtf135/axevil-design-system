@@ -1045,7 +1045,7 @@ function filterCountries(query) {
   }
   return [...starts, ...contains];
 }
-function PhoneField({ value, onChange, countryCode, onCountryChange, error, height = "3.5rem", radius, placeholder = "Phone Number" }) {
+function PhoneField({ value, onChange, countryCode, onCountryChange, error, height = "3.5rem", radius, placeholder = "Phone Number", hideCountryPicker = false }) {
   const [open, setOpen] = useState3(false);
   const [query, setQuery] = useState3("");
   const ref = useRef2(null);
@@ -1089,7 +1089,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
       radius,
       error,
       input: /* @__PURE__ */ jsxs6("div", { className: "flex items-center w-full", style: { gap: "0.5rem" }, children: [
-        /* @__PURE__ */ jsxs6("div", { ref, className: "relative shrink-0", children: [
+        !hideCountryPicker && /* @__PURE__ */ jsxs6("div", { ref, className: "relative shrink-0", children: [
           /* @__PURE__ */ jsxs6(
             "button",
             {
@@ -1228,7 +1228,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
             }
           ) })
         ] }),
-        /* @__PURE__ */ jsx8("span", { className: "shrink-0", style: { width: "1px", height: "1.25rem", background: "rgba(255,255,255,0.1)" } }),
+        !hideCountryPicker && /* @__PURE__ */ jsx8("span", { className: "shrink-0", style: { width: "1px", height: "1.25rem", background: "rgba(255,255,255,0.1)" } }),
         /* @__PURE__ */ jsx8(
           "input",
           {
