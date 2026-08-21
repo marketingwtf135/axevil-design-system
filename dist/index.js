@@ -517,7 +517,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   BtnOwn,
                   {
                     size: "S",
-                    className: hideBurger ? "flex lg:hidden" : "hidden sm:flex lg:hidden",
+                    className: hideBurger ? "flex sm:hidden" : "hidden sm:flex lg:hidden",
                     onClick: cta,
                     children: ctaLabel
                   }
@@ -526,7 +526,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   BtnOwn,
                   {
                     size: "XS",
-                    className: "hidden lg:flex",
+                    className: hideBurger ? "hidden sm:flex" : "hidden lg:flex",
                     onClick: cta,
                     children: ctaLabel
                   }
