@@ -477,9 +477,6 @@ function BtnOwn({
 var import_jsx_runtime4 = require("react/jsx-runtime");
 var NAV_LINKS = [
   { label: "Market Intelligence", href: "/companies" },
-  { label: "For investors", href: "/retail-investors" },
-  { label: "For advisors", href: "/wealth-managers" },
-  { label: "Research", href: "/research" },
   { label: "About", href: "/about-us" },
   { label: "Team", href: "/team" },
   { label: "Contact", href: "/contacts" }
