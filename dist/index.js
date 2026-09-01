@@ -96,6 +96,9 @@ var NAV_COLUMNS = [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Cookie Policy", href: "/cookies" },
     { label: "Legal Disclosures", href: "/disclosures" },
+    // Restored 2026-09-01 (client): the old site carried a data-deletion request form and
+    // the old Privacy Policy linked to it; the rebuild shipped without either.
+    { label: "Data Deletion", href: "/data-deletion" },
     { label: "Cookie Settings", onClick: () => window.dispatchEvent(new CustomEvent("open-cookie-settings")) },
     { label: "Your Privacy Choices", onClick: () => window.dispatchEvent(new CustomEvent("open-cookie-settings")) }
   ] }
