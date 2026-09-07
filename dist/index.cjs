@@ -161,7 +161,11 @@ var NAV_COLUMNS = [
     { label: "Market Intelligence", href: "/companies" },
     { label: "For investors", href: "/retail-investors" },
     { label: "For advisors", href: "/wealth-managers" },
-    { label: "Research", href: "/research" }
+    { label: "Research", href: "/research" },
+    /* Educational cluster. Its spec is blunt about this: a page with no inbound links does not
+       count as published, and the site-wide footer is the one link that survives every later
+       redesign of the header. Points at the first article until the section index exists. */
+    { label: "Pre-IPO explained", href: "/learn/what-is-pre-ipo-investing" }
   ] },
   { heading: "Company", items: [
     { label: "About Us", href: "/about-us" },
@@ -820,6 +824,7 @@ function Field({
   className,
   height = "3.75rem",
   radius = "1rem",
+  background = "var(--black-500)",
   children
 }) {
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `flex flex-col w-full ${className ?? ""}`, style: { gap: "0.375rem" }, children: [
@@ -828,7 +833,7 @@ function Field({
       {
         className: "flex items-center w-full",
         style: {
-          background: "var(--black-500)",
+          background,
           height,
           borderRadius: radius,
           padding: "0 1rem",
@@ -2213,10 +2218,18 @@ var INQUIRY_OPTIONS = [
   { value: "investor", label: "Investor access" },
   { value: "general", label: "General" }
 ];
-function InquiryDropdown({ value, onChange }) {
+function Dropdown({
+  value,
+  onChange,
+  options,
+  placeholder,
+  ariaLabel,
+  background
+}) {
   const [open, setOpen] = (0, import_react11.useState)(false);
   const ref = (0, import_react11.useRef)(null);
-  const selected = INQUIRY_OPTIONS.find((o) => o.value === value);
+  const selected = options.find((o) => o.value === value);
+  const fill = background ?? "var(--black-500)";
   (0, import_react11.useEffect)(() => {
     function onClickOutside(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -2231,7 +2244,7 @@ function InquiryDropdown({ value, onChange }) {
         type: "button",
         "aria-haspopup": "listbox",
         "aria-expanded": open,
-        "aria-label": "Inquiry type",
+        "aria-label": ariaLabel,
         onClick: () => setOpen(!open),
         onKeyDown: (e) => {
           if (e.key === "Escape") {
@@ -2243,7 +2256,7 @@ function InquiryDropdown({ value, onChange }) {
         },
         className: "flex items-center justify-between cursor-pointer select-none w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
         style: {
-          background: "var(--black-500)",
+          background: fill,
           height: "3.75rem",
           borderRadius: "1rem",
           padding: "0 1rem",
@@ -2255,7 +2268,7 @@ function InquiryDropdown({ value, onChange }) {
             {
               className: "font-inter-tight font-medium text-m",
               style: { color: selected ? "var(--white-100)" : "rgba(255,255,255,0.35)" },
-              children: selected ? selected.label : "Inquiry type (optional)"
+              children: selected ? selected.label : placeholder
             }
           ),
           /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
@@ -2279,7 +2292,7 @@ function InquiryDropdown({ value, onChange }) {
       import_framer_motion6.motion.div,
       {
         role: "listbox",
-        "aria-label": "Inquiry type",
+        "aria-label": ariaLabel,
         initial: { opacity: 0, y: -6 },
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: -6 },
@@ -2288,9 +2301,9 @@ function InquiryDropdown({ value, onChange }) {
         style: {
           marginTop: "0.25rem",
           borderRadius: "1rem",
-          background: "var(--black-500)"
+          background: fill
         },
-        children: INQUIRY_OPTIONS.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+        children: options.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
           "button",
           {
             type: "button",
@@ -2308,7 +2321,7 @@ function InquiryDropdown({ value, onChange }) {
               padding: "0 1rem",
               height: "3.25rem",
               background: "transparent",
-              borderBottom: i < INQUIRY_OPTIONS.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+              borderBottom: i < options.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
               color: "var(--white-400)"
             },
             onMouseEnter: (e) => e.currentTarget.style.color = "var(--white-100)",
@@ -2320,6 +2333,18 @@ function InquiryDropdown({ value, onChange }) {
       }
     ) })
   ] });
+}
+function InquiryDropdown({ value, onChange }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    Dropdown,
+    {
+      value,
+      onChange,
+      options: INQUIRY_OPTIONS,
+      placeholder: "Inquiry type (optional)",
+      ariaLabel: "Inquiry type"
+    }
+  );
 }
 function SuccessState() {
   return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
