@@ -68,22 +68,31 @@ const tokens = {
 
   fontSize: {
     // Keys carry NO `text-` prefix — Tailwind generates `text-<key>`.
+    // Every entry below is one row of the Figma "Typography Spec — Developer Handoff"
+    // (node 3265:3633, September 2026); the trailing comment names the spec row it
+    // implements. Sizes and the per-breakpoint line-height/letter-spacing come from the
+    // --font-* / --lh-* / --ls-* vars in tokens.css; the literals here are the properties
+    // the spec holds constant across all three breakpoints.
     'link':       ['0.8125rem', { lineHeight: 'normal', letterSpacing: '0' }],
     'link-block': ['0.875rem',  { lineHeight: 'normal', letterSpacing: '0' }],
-    'xs':     ['var(--font-xs)', { lineHeight: '1.3',  letterSpacing: '0' }],
-    's-med':  ['var(--font-s)',  { lineHeight: '1.3',  letterSpacing: '0' }],
-    's-semi': ['var(--font-s)',  { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
-    'm':      ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: '-0.02em' }],
-    'l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],
-    'large':  ['var(--font-large)', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
-    'paragraph':   ['var(--font-l)', { lineHeight: 'var(--lh-paragraph)', letterSpacing: '-0.01em', fontWeight: '400' }],
-    'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: '0' }],
-    'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],
-    'h4':          ['var(--font-h4)', { lineHeight: '1.1',  letterSpacing: '-0.02em', fontWeight: '500' }],
-    'h3':          ['var(--font-h3)', { lineHeight: '1.2',  letterSpacing: '-0.02em' }],
-    'h2':          ['var(--font-h2)', { lineHeight: '1',    letterSpacing: '-0.02em' }],
-    'h1-med':      ['var(--font-h1)', { lineHeight: '1',    letterSpacing: '-0.02em' }],
-    'h1-semi':     ['var(--font-h1-semi)', { lineHeight: '0.95', letterSpacing: '-0.02em' }],
+    'xs':     ['var(--font-xs)', { lineHeight: '1.3',  letterSpacing: 'normal' }],           // text-XS
+    's-med':  ['var(--font-s)',  { lineHeight: '1.3',  letterSpacing: 'normal' }],           // text-S-medium
+    's-semi': ['var(--font-s)',  { lineHeight: '1.2',  letterSpacing: '-0.02em' }],          // text-S-semibold
+    'm':      ['var(--font-m)',  { lineHeight: 'var(--lh-m)', letterSpacing: '-0.02em' }],   // text-M
+    // text-M-reg — the regular-weight 16px row. Added 2026-09-08: the spec lists it as its
+    // own style (400 / 140% / normal tracking), which `text-m` + `font-normal` could not
+    // express, because that pair keeps text-M's -0.02em and its responsive line-height.
+    'm-reg':  ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: 'normal', fontWeight: '400' }],
+    'l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],          // text-L
+    'large':  ['var(--font-large)', { lineHeight: '1.3', letterSpacing: '-0.02em' }],        // text-large
+    'paragraph':   ['var(--font-paragraph)', { lineHeight: 'var(--lh-paragraph)', letterSpacing: 'var(--ls-paragraph)', fontWeight: '400' }], // paragraph
+    'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: 'var(--ls-btn)' }],      // text-btn
+    'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],          // text-XL
+    'h4':          ['var(--font-h4)', { lineHeight: '1.2',  letterSpacing: 'var(--ls-h4)', fontWeight: '500' }],  // h4
+    'h3':          ['var(--font-h3)', { lineHeight: 'var(--lh-h3)', letterSpacing: 'var(--ls-h3)' }],             // h3
+    'h2':          ['var(--font-h2)', { lineHeight: '1',    letterSpacing: '-0.02em' }],     // h2
+    'h1-med':      ['var(--font-h1)', { lineHeight: '1',    letterSpacing: '-0.02em' }],     // h1-med
+    'h1-semi':     ['var(--font-h1-semi)', { lineHeight: 'var(--lh-h1-semi)', letterSpacing: '-0.02em' }],        // h1-semibold
   },
 
   fontWeight: {

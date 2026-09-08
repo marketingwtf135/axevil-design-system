@@ -272,7 +272,6 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
                   "span",
                   {
                     className: "font-inter-tight font-medium text-m text-white whitespace-nowrap",
-                    style: { letterSpacing: "-0.01em" },
                     children: CONTACT_EMAIL
                   }
                 )
@@ -654,7 +653,6 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   href,
                   onClick: () => setMenuOpen(false),
                   className: "font-inter-tight font-medium text-h4 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
-                  style: { fontSize: "var(--font-h4)", letterSpacing: "-0.02em", lineHeight: 1.1 },
                   children: label
                 },
                 label
@@ -1810,7 +1808,7 @@ function Quiz({ onClose }) {
                     "p",
                     {
                       className: "font-inter-tight font-medium text-h4 shrink-0",
-                      style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
+                      style: { color: "var(--white-200)" },
                       children: "What best describes your role?"
                     }
                   ),
@@ -1821,7 +1819,7 @@ function Quiz({ onClose }) {
                     "p",
                     {
                       className: "font-inter-tight font-medium text-h4 shrink-0",
-                      style: { color: "var(--white-200)", letterSpacing: "-0.02em" },
+                      style: { color: "var(--white-200)" },
                       children: "Have you participated in private markets before?"
                     }
                   ),
