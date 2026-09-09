@@ -347,6 +347,31 @@ interface PhoneFieldProps {
  *  outside-click/keyboard behavior as `InquiryDropdown` in form.tsx. */
 declare function PhoneField({ value, onChange, countryCode, onCountryChange, error, height, radius, placeholder, hideCountryPicker }: PhoneFieldProps): react_jsx_runtime.JSX.Element;
 
+/**
+ * SearchInput — the minimal underline search field (Figma 2180:6142, and the `search-input`
+ * node of page-research 3245:5134, which is the same component): transparent field, a single
+ * 1px black-600 bottom border, an 18px magnifier on the RIGHT, 14px white-400 placeholder.
+ *
+ * EXTRACTED 2026-09-09 from the local copy in pages/Companies.tsx, because /research now
+ * renders the same field in its filters row and CLAUDE.md's component-reuse rule is explicit
+ * that a second copy is a finding rather than a convenience. Companies keeps its local
+ * `SearchInput` name and delegates here, so nothing at its call sites had to change.
+ *
+ * The placeholder and the accessible label are props, not constants: the field is the same
+ * control on both surfaces, but "Search 500+ companies…" is a lie on a page that lists reports.
+ */
+interface SearchInputProps {
+    value: string;
+    onChange: (v: string) => void;
+    /** Visible placeholder — name what is actually being searched. */
+    placeholder: string;
+    /** Accessible name. The field has no visible label, so this is the only one a reader gets. */
+    ariaLabel: string;
+    className?: string;
+    autoFocus?: boolean;
+}
+declare function SearchInput({ value, onChange, placeholder, ariaLabel, className, autoFocus, }: SearchInputProps): react_jsx_runtime.JSX.Element;
+
 interface SectionHeadingProps {
     /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */
     number?: string | number;
@@ -501,4 +526,4 @@ declare const PRELOAD_FADE_IN_VIEW_MOTION: {
     };
 };
 
-export { BgFeatures, BtnOwn, COUNTRIES, CtaForm, CtaFormNewsletter, DescTag, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FadeIn, Footer, Form, HeroEyebrow, type IllCard, IllCards, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, PhoneField, Quiz, SectionHeading, SliderCard, type StatusKind, StatusPill, Tag, type TagSize, type TagVariant };
+export { BgFeatures, BtnOwn, COUNTRIES, CtaForm, CtaFormNewsletter, DescTag, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FadeIn, Footer, Form, HeroEyebrow, type IllCard, IllCards, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, PhoneField, Quiz, SearchInput, SectionHeading, SliderCard, type StatusKind, StatusPill, Tag, type TagSize, type TagVariant };

@@ -51,6 +51,7 @@ __export(index_exports, {
   PageEntry: () => PageEntry,
   PhoneField: () => PhoneField,
   Quiz: () => Quiz,
+  SearchInput: () => SearchInput,
   SectionHeading: () => SectionHeading,
   SliderCard: () => SliderCard,
   StatusPill: () => StatusPill,
@@ -2812,8 +2813,44 @@ function PageEntry({
   );
 }
 
-// design-system/src/components/section-heading.tsx
+// design-system/src/components/search-input.tsx
 var import_jsx_runtime21 = require("react/jsx-runtime");
+function SearchInput({
+  value,
+  onChange,
+  placeholder,
+  ariaLabel,
+  className,
+  autoFocus
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+    "div",
+    {
+      className: `flex items-center ${className ?? ""}`,
+      style: { height: "3rem", paddingLeft: "1rem", paddingRight: "1rem", borderBottom: "1px solid var(--black-600)" },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+          "input",
+          {
+            autoFocus,
+            type: "text",
+            value,
+            onChange: (e) => onChange(e.target.value),
+            placeholder,
+            autoComplete: "off",
+            "aria-label": ariaLabel,
+            className: "min-w-0 flex-1 bg-transparent font-inter-tight font-medium text-s-med text-white outline-none placeholder:text-white-400",
+            style: { padding: 0, border: "none" }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "flex shrink-0 items-center", style: { paddingLeft: "0.75rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("img", { src: "/icons/Search.svg", alt: "", "aria-hidden": "true", style: { width: "1.125rem", height: "1.125rem", opacity: 0.6 } }) })
+      ]
+    }
+  );
+}
+
+// design-system/src/components/section-heading.tsx
+var import_jsx_runtime22 = require("react/jsx-runtime");
 var DEFAULT_GRADIENT = "var(--gradient-headline)";
 function SectionHeading({
   number,
@@ -2831,7 +2868,7 @@ function SectionHeading({
 }) {
   const alignClass = align === "center" ? "items-center text-center" : "items-start";
   const TitleTag = titleAs;
-  const headingEl = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+  const headingEl = /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
     TitleTag,
     {
       className: "font-inter-tight font-semibold text-h2 text-transparent gradient-text bg-clip-text [-webkit-background-clip:text]",
@@ -2848,7 +2885,7 @@ function SectionHeading({
       children: title
     }
   );
-  const subtitleEl = subtitle && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+  const subtitleEl = subtitle && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
     "p",
     {
       className: "font-inter-tight font-normal text-paragraph text-white/60",
@@ -2856,14 +2893,14 @@ function SectionHeading({
       children: subtitle
     }
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
     "div",
     {
       className: `flex flex-col w-full ${alignClass} ${className}`,
       style: { gap, overflow: "visible" },
       children: [
-        number !== void 0 && label && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(DescTag, { number, label }),
-        subtitle ? /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { className: `flex flex-col w-full ${alignClass}`, style: { gap: innerGap }, children: [
+        number !== void 0 && label && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(DescTag, { number, label }),
+        subtitle ? /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: `flex flex-col w-full ${alignClass}`, style: { gap: innerGap }, children: [
           headingEl,
           subtitleEl
         ] }) : headingEl
@@ -2873,16 +2910,16 @@ function SectionHeading({
 }
 
 // design-system/src/components/slider-card.tsx
-var import_jsx_runtime22 = require("react/jsx-runtime");
+var import_jsx_runtime23 = require("react/jsx-runtime");
 function SliderCard({ name, role, description, photo, linkedin, className = "" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: `group flex flex-col items-start shrink-0 relative ${className}`, style: { gap: "1.5rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
       "div",
       {
         className: "relative rounded-2 w-full overflow-hidden border-2 border-outline-100",
         style: { height: "25rem" },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "img",
             {
               src: "/img/block09/bg-speaker-gradient.png",
@@ -2893,7 +2930,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
               style: { zIndex: 0, objectFit: "cover" }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "img",
             {
               alt: name,
@@ -2903,14 +2940,14 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
               style: { zIndex: 1, objectFit: "contain", objectPosition: "bottom center" }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "div",
             {
               className: "absolute top-5 left-5 flex gap-2 items-center px-4 py-3 rounded-1",
               style: { background: "var(--black-600)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", zIndex: 2 },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "rounded-full shrink-0 size-2", style: { background: "rgba(255,255,255,0.5)" } }),
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "span",
                   {
                     className: "font-inter-tight font-semibold text-white whitespace-nowrap",
@@ -2924,9 +2961,9 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: "flex flex-col items-start px-4 w-full", style: { gap: "1.25rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.75rem" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: "flex flex-col items-start px-4 w-full", style: { gap: "1.25rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: "flex flex-col items-start w-full", style: { gap: "0.75rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
           "h4",
           {
             className: "font-inter-tight font-medium text-white w-full",
@@ -2934,9 +2971,9 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
             children: name
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { className: "font-inter-tight font-normal text-paragraph text-white/50 w-full", children: description })
       ] }),
-      linkedin && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+      linkedin && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
         "a",
         {
           href: linkedin,
@@ -2944,8 +2981,8 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           rel: "noreferrer",
           className: "flex items-center gap-2 text-white",
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "font-inter-tight font-medium text-m whitespace-nowrap group-hover:underline", children: "LinkedIn" }),
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "svg",
               {
                 width: "12",
@@ -2954,7 +2991,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
                 fill: "none",
                 "aria-hidden": "true",
                 className: "shrink-0 transition-transform duration-700 ease-in-out group-hover:rotate-180",
-                children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
+                children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("path", { d: "M6 1.5v9M1.5 6h9", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" })
               }
             )
           ]
@@ -2965,7 +3002,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
 }
 
 // design-system/src/components/status-pill.tsx
-var import_jsx_runtime23 = require("react/jsx-runtime");
+var import_jsx_runtime24 = require("react/jsx-runtime");
 var COLORS = {
   open: { dot: "var(--status-open)", bg: "var(--status-open-bg)", border: "var(--status-open-border)", text: "var(--status-open)" },
   closed: { dot: "var(--status-closed)", bg: "var(--status-closed-bg)", border: "var(--status-closed-border)", text: "var(--status-closed)" },
@@ -2973,7 +3010,7 @@ var COLORS = {
 };
 function StatusPill({ status, label, className = "" }) {
   const c = COLORS[status];
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
     "span",
     {
       className: `inline-flex items-center justify-center font-inter-tight font-medium text-xs whitespace-nowrap ${className}`,
@@ -2986,7 +3023,7 @@ function StatusPill({ status, label, className = "" }) {
         gap: status === "soon" ? "0.5rem" : "0.375rem"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "block rounded-full", style: { width: "0.4375rem", height: "0.4375rem", background: c.dot } }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "block rounded-full", style: { width: "0.4375rem", height: "0.4375rem", background: c.dot } }),
         label
       ]
     }
@@ -2994,7 +3031,7 @@ function StatusPill({ status, label, className = "" }) {
 }
 
 // design-system/src/components/tag.tsx
-var import_jsx_runtime24 = require("react/jsx-runtime");
+var import_jsx_runtime25 = require("react/jsx-runtime");
 function Tag({
   label,
   variant = "tab",
@@ -3026,17 +3063,17 @@ function Tag({
     cls += active ? "bg-white text-black" : "bg-transparent text-white/40 hover:text-white/70";
   }
   cls += className;
-  const content = /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
+  const content = /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
     leading,
     label
   ] });
   if (onClick) {
-    return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("button", { type: "button", onClick, className: cls, style, children: content });
+    return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("button", { type: "button", onClick, className: cls, style, children: content });
   }
   if (href) {
-    return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("a", { href, className: cls, style, children: content });
+    return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("a", { href, className: cls, style, children: content });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: cls, style, children: content });
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: cls, style, children: content });
 }
 
 // design-system/src/components/preload-devices.tsx
@@ -3083,6 +3120,7 @@ var PRELOAD_FADE_IN_VIEW_MOTION = {
   PageEntry,
   PhoneField,
   Quiz,
+  SearchInput,
   SectionHeading,
   SliderCard,
   StatusPill,
