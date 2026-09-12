@@ -301,6 +301,22 @@ import { useState } from "react";
 
 // design-system/src/lib/mixpanel.ts
 import mixpanel from "mixpanel-browser";
+
+// design-system/src/lib/cookieConsent.ts
+var STORAGE_KEY = "axevil_consent";
+var CONSENT_VERSION = 1;
+function readConsent() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && parsed.version === CONSENT_VERSION ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+// design-system/src/lib/mixpanel.ts
 var ready = false;
 var anonymousId = null;
 function mpReady() {
@@ -2077,7 +2093,8 @@ function CtaFormNewsletter({
 import { useState as useState7 } from "react";
 import { motion as motion5, AnimatePresence as AnimatePresence3 } from "framer-motion";
 import { jsx as jsx15, jsxs as jsxs13 } from "react/jsx-runtime";
-function FAQ({ items, className = "" }) {
+function FAQ({ items, className = "", variant = "default" }) {
+  const article = variant === "article";
   const [open, setOpen] = useState7(null);
   return /* @__PURE__ */ jsx15("div", { className: `w-full flex flex-col ${className}`, children: items.map((item, i) => {
     const isOpen = open === i;
@@ -2091,7 +2108,14 @@ function FAQ({ items, className = "" }) {
           className: "w-full flex items-center justify-between gap-4 text-left outline-none",
           style: { paddingTop: "clamp(1.25rem, 3vw, 1.75rem)", paddingBottom: "1.5rem", minHeight: "3.5rem" },
           children: [
-            /* @__PURE__ */ jsx15("span", { className: "font-inter-tight font-medium text-[0.875rem] md:text-xl", style: { color: "var(--white-300)" }, children: item.q }),
+            /* @__PURE__ */ jsx15(
+              "span",
+              {
+                className: "font-inter-tight font-medium text-[0.875rem] md:text-xl",
+                style: { color: article ? "var(--white-100)" : "var(--white-300)" },
+                children: item.q
+              }
+            ),
             /* @__PURE__ */ jsx15(
               motion5.div,
               {
@@ -2099,8 +2123,8 @@ function FAQ({ items, className = "" }) {
                 transition: { duration: 0.3, ease: "easeInOut" },
                 className: "shrink-0 flex items-center justify-center",
                 style: {
-                  width: "clamp(3rem, 4vw, 3.5rem)",
-                  height: "clamp(3rem, 4vw, 3.5rem)",
+                  width: article ? "3rem" : "clamp(3rem, 4vw, 3.5rem)",
+                  height: article ? "3rem" : "clamp(3rem, 4vw, 3.5rem)",
                   border: "1px solid rgba(255,255,255,0.15)",
                   borderRadius: "50%",
                   flexShrink: 0
@@ -2996,6 +3020,10 @@ function Tag({
     style.padding = "0.5rem 0.875rem";
     style.background = "var(--black-400)";
     style.border = "1px solid var(--border-subtle)";
+  } else if (variant === "topic") {
+    cls += "inline-flex items-center gap-2 font-medium text-s-med text-white-400 rounded-0.5 ";
+    style.padding = "0.75rem 1rem";
+    style.background = "var(--black-300)";
   } else {
     const sizeStyles = size === "sm" ? "text-s-med px-3.5 py-1.5" : size === "lg" ? "text-m px-6 py-2.5" : "text-m px-5 py-2";
     cls += `font-semibold rounded-full ${sizeStyles} `;
@@ -3013,6 +3041,955 @@ function Tag({
     return /* @__PURE__ */ jsx25("a", { href, className: cls, style, children: content });
   }
   return /* @__PURE__ */ jsx25("span", { className: cls, style, children: content });
+}
+
+// design-system/src/components/rich-text/measure.ts
+var ARTICLE_MEASURE = "50rem";
+var WIDE_MEASURE = "62.5rem";
+var HERO_MEASURE = "50rem";
+var SCROLL_MARGIN = "clamp(5.5rem, 10vw, 7rem)";
+
+// design-system/src/components/rich-text/typography.ts
+var H2 = {
+  fontSize: "2.25rem",
+  fontWeight: 600,
+  lineHeight: 1.2,
+  letterSpacing: "-0.02em"
+};
+var H3 = {
+  fontSize: "1.125rem",
+  fontWeight: 500,
+  lineHeight: 1.35,
+  letterSpacing: "-0.02em"
+};
+var LEAD = {
+  fontSize: "1.5rem",
+  fontWeight: 500,
+  lineHeight: 1.35,
+  letterSpacing: "-0.02em"
+};
+var BODY = {
+  fontSize: "1rem",
+  fontWeight: 400,
+  lineHeight: 1.4
+};
+var FACT_VALUE = {
+  fontSize: "2.25rem",
+  fontWeight: 600,
+  lineHeight: 1.1,
+  letterSpacing: "-0.02em",
+  fontVariantNumeric: "tabular-nums"
+};
+var FACT_LABEL = {
+  fontSize: "0.875rem",
+  fontWeight: 400,
+  lineHeight: 1.35
+};
+var SOURCE = {
+  fontSize: "0.75rem",
+  fontWeight: 500,
+  lineHeight: 1.3
+};
+var TERM = {
+  fontSize: "1rem",
+  fontWeight: 500,
+  lineHeight: 1.45,
+  letterSpacing: "-0.02em"
+};
+var DEFINITION = {
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  lineHeight: 1.3
+};
+var TABLE_HEAD = {
+  fontSize: "1rem",
+  fontWeight: 500,
+  lineHeight: 1.45,
+  letterSpacing: "-0.02em"
+};
+var TABLE_CELL = {
+  fontSize: "1.125rem",
+  fontWeight: 500,
+  lineHeight: 1.35,
+  letterSpacing: "-0.02em",
+  fontVariantNumeric: "tabular-nums"
+};
+var TABLE_CELL_DENSE = {
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  lineHeight: 1.35
+};
+var PILL = {
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  lineHeight: 1.3,
+  fontVariantNumeric: "tabular-nums"
+};
+var CARD_META = {
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  lineHeight: 1.3
+};
+var CARD_TITLE = {
+  fontSize: "1.5rem",
+  fontWeight: 500,
+  lineHeight: 1.2,
+  letterSpacing: "-0.02em"
+};
+
+// design-system/src/components/rich-text/Inline.tsx
+import { Fragment as Fragment7, jsx as jsx26 } from "react/jsx-runtime";
+function InlineText({ content }) {
+  const nodes = Array.isArray(content) ? content : [content];
+  return /* @__PURE__ */ jsx26(Fragment7, { children: nodes.map((n, i) => renderNode(n, i)) });
+}
+function renderNode(node, key) {
+  if (typeof node === "string") return node;
+  switch (node.type) {
+    case "strong":
+      return /* @__PURE__ */ jsx26("strong", { className: "font-medium text-white", children: node.text }, key);
+    case "em":
+      return /* @__PURE__ */ jsx26("em", { className: "not-italic font-medium text-white-200", children: node.text }, key);
+    case "term":
+      return node.href ? /* @__PURE__ */ jsx26(
+        "a",
+        {
+          href: node.href,
+          className: "font-medium text-white-200 underline decoration-white/25 hover:text-white hover:decoration-white transition-colors",
+          children: node.text
+        },
+        key
+      ) : /* @__PURE__ */ jsx26("strong", { className: "font-medium text-white-200", children: node.text }, key);
+    case "link":
+      return /* @__PURE__ */ jsx26(
+        "a",
+        {
+          href: node.href,
+          target: node.external ? "_blank" : void 0,
+          rel: node.external ? "noopener noreferrer" : void 0,
+          className: "text-white underline decoration-white/25 hover:decoration-white transition-colors",
+          children: node.text
+        },
+        key
+      );
+  }
+}
+
+// design-system/src/components/rich-text/blocks/Text.tsx
+import { jsx as jsx27 } from "react/jsx-runtime";
+function Lead({ paragraphs }) {
+  return /* @__PURE__ */ jsx27("div", { className: "flex flex-col w-full", style: { gap: "1.5rem" }, children: paragraphs.map((p, i) => /* @__PURE__ */ jsx27("p", { className: "font-inter-tight text-white", style: { ...LEAD, margin: 0 }, children: /* @__PURE__ */ jsx27(InlineText, { content: p }) }, i)) });
+}
+function Paragraph({ content }) {
+  return /* @__PURE__ */ jsx27("p", { className: "font-inter-tight text-white-300 w-full", style: { ...BODY, margin: 0 }, children: /* @__PURE__ */ jsx27(InlineText, { content }) });
+}
+function SubHeading({ text, id }) {
+  return /* @__PURE__ */ jsx27("h3", { id, className: "font-inter-tight text-white w-full", style: { ...H3, margin: 0 }, children: text });
+}
+
+// design-system/src/components/rich-text/blocks/FactGrid.tsx
+import { jsx as jsx28, jsxs as jsxs23 } from "react/jsx-runtime";
+function FactGrid({ items }) {
+  return /* @__PURE__ */ jsx28("div", { className: "grid grid-cols-1 sm:grid-cols-2 w-full", style: { gap: "0.75rem" }, children: items.map((f) => /* @__PURE__ */ jsxs23(
+    "div",
+    {
+      className: "flex flex-col justify-between bg-black-300 rounded-1",
+      style: { padding: "1.25rem", gap: "2rem", minHeight: "10.75rem" },
+      children: [
+        /* @__PURE__ */ jsxs23("div", { className: "flex flex-col", style: { gap: "0.5rem" }, children: [
+          /* @__PURE__ */ jsx28("p", { className: "font-inter-tight text-white-100", style: { ...FACT_VALUE, margin: 0 }, children: f.value }),
+          /* @__PURE__ */ jsx28("p", { className: "font-inter-tight text-white-400", style: { ...FACT_LABEL, margin: 0 }, children: f.label })
+        ] }),
+        /* @__PURE__ */ jsx28("p", { className: "font-inter-tight text-black-800", style: { ...SOURCE, margin: 0 }, children: f.href ? /* @__PURE__ */ jsx28("a", { href: f.href, target: "_blank", rel: "noopener noreferrer", className: "hover:text-white-400 transition-colors", children: f.source }) : f.source })
+      ]
+    },
+    f.label
+  )) });
+}
+
+// design-system/src/components/rich-text/blocks/Figure.tsx
+import { jsx as jsx29, jsxs as jsxs24 } from "react/jsx-runtime";
+function Figure({
+  src,
+  alt,
+  width,
+  height,
+  caption,
+  source,
+  maxHeight
+}) {
+  return /* @__PURE__ */ jsxs24("figure", { className: "w-full", style: { margin: 0 }, children: [
+    /* @__PURE__ */ jsx29(
+      "img",
+      {
+        src,
+        alt,
+        width,
+        height,
+        loading: "lazy",
+        decoding: "async",
+        className: "block rounded-1",
+        style: {
+          width: "100%",
+          height: "auto",
+          aspectRatio: `${width} / ${height}`,
+          /* `contain`, not `cover`: under a height cap the point is to see all of the figure,
+             not a crop of it. */
+          ...maxHeight ? { maxHeight, objectFit: "contain" } : { objectFit: "cover" }
+        }
+      }
+    ),
+    (caption || source) && /* @__PURE__ */ jsxs24("figcaption", { className: "flex flex-col", style: { gap: "0.375rem", marginTop: "1rem" }, children: [
+      caption && /* @__PURE__ */ jsx29("span", { className: "font-inter-tight text-white-300", style: FACT_LABEL, children: caption }),
+      source && /* @__PURE__ */ jsx29("span", { className: "font-inter-tight text-black-800", style: SOURCE, children: source })
+    ] })
+  ] });
+}
+
+// design-system/src/components/rich-text/blocks/DealSpotlight.tsx
+import { jsx as jsx30, jsxs as jsxs25 } from "react/jsx-runtime";
+function DealSpotlight({
+  logo,
+  company,
+  round,
+  statement,
+  figures,
+  link
+}) {
+  return /* @__PURE__ */ jsxs25(
+    "div",
+    {
+      className: "flex flex-col md:flex-row md:justify-between w-full bg-black-300 rounded-0.75",
+      style: { padding: "1.25rem", gap: "1.5rem" },
+      children: [
+        /* @__PURE__ */ jsxs25("div", { className: "flex flex-col flex-1 justify-between", style: { gap: "1.5rem", maxWidth: "21.875rem" }, children: [
+          /* @__PURE__ */ jsxs25("div", { className: "flex flex-col", style: { gap: "1.25rem" }, children: [
+            /* @__PURE__ */ jsxs25("div", { className: "flex items-center", style: { gap: "1rem" }, children: [
+              /* @__PURE__ */ jsx30(
+                "img",
+                {
+                  src: logo,
+                  alt: `${company} logo`,
+                  loading: "lazy",
+                  decoding: "async",
+                  className: "block shrink-0",
+                  style: { height: "3rem", width: "auto" }
+                }
+              ),
+              /* @__PURE__ */ jsxs25("div", { className: "flex flex-col", style: { gap: "0.25rem" }, children: [
+                /* @__PURE__ */ jsx30("span", { className: "font-inter-tight font-medium text-l text-white", children: company }),
+                /* @__PURE__ */ jsx30("span", { className: "font-inter-tight font-medium text-s-med text-white-400", children: round })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsx30("p", { className: "font-inter-tight font-medium text-m text-white", style: { margin: 0 }, children: statement })
+          ] }),
+          /* @__PURE__ */ jsx30(
+            "a",
+            {
+              href: link.href,
+              className: "font-inter-tight font-medium text-s-med text-white-400 hover:text-white transition-colors",
+              style: { width: "fit-content" },
+              children: link.label
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsx30("div", { className: "flex flex-col shrink-0 md:w-[12.5rem]", style: { gap: "0.5rem" }, children: figures.map((f) => /* @__PURE__ */ jsxs25("div", { className: "flex flex-col bg-black-500 rounded-0.5", style: { padding: "1rem", gap: "1.5rem" }, children: [
+          /* @__PURE__ */ jsxs25("div", { className: "flex flex-col", style: { gap: "0.5rem" }, children: [
+            /* @__PURE__ */ jsx30("span", { className: "font-inter-tight text-h4 font-semibold text-white", style: { fontVariantNumeric: "tabular-nums" }, children: f.value }),
+            /* @__PURE__ */ jsx30("span", { className: "font-inter-tight font-normal text-xs text-white-400", children: f.label })
+          ] }),
+          /* @__PURE__ */ jsx30("span", { className: "font-inter-tight font-medium text-xs text-black-800", children: f.source })
+        ] }, f.label)) })
+      ]
+    }
+  );
+}
+
+// design-system/src/components/rich-text/blocks/Glossary.tsx
+import { jsx as jsx31, jsxs as jsxs26 } from "react/jsx-runtime";
+function Glossary({ entries }) {
+  return /* @__PURE__ */ jsx31("dl", { className: "w-full m-0 divide-y divide-border-subtle", children: entries.map((e) => /* @__PURE__ */ jsxs26(
+    "div",
+    {
+      id: `term-${slugify(e.term)}`,
+      className: "flex flex-col md:flex-row",
+      style: { paddingTop: "1.125rem", paddingBottom: "1.125rem", gap: "0.5rem 1.5rem", scrollMarginTop: "6rem" },
+      children: [
+        /* @__PURE__ */ jsx31("dt", { className: "font-inter-tight text-white shrink-0 md:w-[15rem]", style: { ...TERM, margin: 0 }, children: e.href ? /* @__PURE__ */ jsx31("a", { href: e.href, className: "underline decoration-white/25 hover:decoration-white transition-colors", children: e.term }) : e.term }),
+        /* @__PURE__ */ jsx31("dd", { className: "font-inter-tight text-white-300 flex-1", style: { ...DEFINITION, margin: 0 }, children: e.definition })
+      ]
+    },
+    e.term
+  )) });
+}
+function slugify(term) {
+  return term.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+// design-system/src/components/rich-text/blocks/SourcesTable.tsx
+import { jsx as jsx32, jsxs as jsxs27 } from "react/jsx-runtime";
+var COLS = "3rem minmax(9rem, 14rem) minmax(0, 1fr) 7rem";
+function SourcesTable({ rows }) {
+  return /* @__PURE__ */ jsx32("div", { className: "w-full", style: { overflowX: "auto" }, children: /* @__PURE__ */ jsxs27("div", { style: { minWidth: "40rem" }, children: [
+    /* @__PURE__ */ jsxs27(
+      "div",
+      {
+        className: "grid bg-black-400 rounded-t-1 font-inter-tight text-white-400",
+        style: { ...TABLE_HEAD, gridTemplateColumns: COLS, padding: "1.25rem 1.5rem", columnGap: "1.5rem" },
+        children: [
+          /* @__PURE__ */ jsx32("span", { children: "\u2116" }),
+          /* @__PURE__ */ jsx32("span", { children: "Source" }),
+          /* @__PURE__ */ jsx32("span", { children: "What it supports" }),
+          /* @__PURE__ */ jsx32("span", { children: "Date" })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsx32("div", { className: "bg-black-300 rounded-b-1", style: { paddingInline: "1.5rem", paddingBottom: "1.25rem" }, children: rows.map((s, i) => /* @__PURE__ */ jsxs27(
+      "div",
+      {
+        className: `grid items-baseline${i < rows.length - 1 ? " border-b border-dashed border-black-600" : ""}`,
+        style: {
+          gridTemplateColumns: COLS,
+          columnGap: "1.5rem",
+          paddingTop: "1rem",
+          paddingBottom: i < rows.length - 1 ? "1rem" : 0
+        },
+        children: [
+          /* @__PURE__ */ jsx32("span", { className: "font-inter-tight text-black-800", style: { ...SOURCE, fontVariantNumeric: "tabular-nums" }, children: String(s.n).padStart(2, "0") }),
+          /* @__PURE__ */ jsx32("span", { className: "font-inter-tight text-white-300", style: TABLE_CELL_DENSE, children: /* @__PURE__ */ jsx32("a", { href: s.url, target: "_blank", rel: "noopener noreferrer", className: "hover:text-white transition-colors underline decoration-white/20 hover:decoration-white", children: s.publisher }) }),
+          /* @__PURE__ */ jsx32("span", { className: "font-inter-tight text-white", style: TABLE_CELL_DENSE, children: s.claim }),
+          /* @__PURE__ */ jsx32("span", { className: "font-inter-tight text-white-300 whitespace-nowrap", style: TABLE_CELL_DENSE, children: s.date })
+        ]
+      },
+      s.n
+    )) })
+  ] }) });
+}
+
+// design-system/src/components/rich-text/blocks/DataTable.tsx
+import { jsx as jsx33, jsxs as jsxs28 } from "react/jsx-runtime";
+function DataTable({
+  columns,
+  rows,
+  caption,
+  source,
+  dense = false,
+  minWidth = "36rem"
+}) {
+  const template = columns.map((c) => c.width ?? "minmax(0, 1fr)").join(" ");
+  const cellStyle = dense ? TABLE_CELL_DENSE : TABLE_CELL;
+  return /* @__PURE__ */ jsxs28("div", { className: "w-full", children: [
+    /* @__PURE__ */ jsx33("div", { style: { overflowX: "auto" }, children: /* @__PURE__ */ jsxs28("div", { style: { minWidth }, children: [
+      /* @__PURE__ */ jsx33(
+        "div",
+        {
+          className: "grid bg-black-400 rounded-t-1",
+          style: { gridTemplateColumns: template, padding: "1.5rem", columnGap: "1.5rem" },
+          children: columns.map((c) => /* @__PURE__ */ jsx33(
+            "span",
+            {
+              className: `font-inter-tight text-white-400${c.align === "right" ? " text-right" : ""}`,
+              style: TABLE_HEAD,
+              children: c.label
+            },
+            c.key
+          ))
+        }
+      ),
+      /* @__PURE__ */ jsx33("div", { className: "bg-black-300 rounded-b-1", style: { paddingInline: "1.5rem", paddingBottom: "1.5rem" }, children: rows.map((r, i) => /* @__PURE__ */ jsx33(
+        "div",
+        {
+          className: `grid${dense ? " items-start" : " items-center"}${i < rows.length - 1 ? " border-b border-dashed border-black-600" : ""}`,
+          style: {
+            gridTemplateColumns: template,
+            columnGap: "1.5rem",
+            paddingTop: "1.25rem",
+            paddingBottom: i < rows.length - 1 ? "1.25rem" : 0
+          },
+          children: r.cells.map((cell, j) => /* @__PURE__ */ jsx33(Cell, { cell, align: columns[j]?.align, style: cellStyle }, j))
+        },
+        i
+      )) })
+    ] }) }),
+    (caption || source) && /* @__PURE__ */ jsxs28("div", { className: "flex flex-col", style: { gap: "0.5rem", marginTop: "1rem" }, children: [
+      caption && /* @__PURE__ */ jsx33("p", { className: "font-inter-tight text-white-300", style: { ...TABLE_CELL_DENSE, margin: 0 }, children: caption }),
+      source && /* @__PURE__ */ jsx33("p", { className: "font-inter-tight text-black-800", style: { ...SOURCE, margin: 0 }, children: source })
+    ] })
+  ] });
+}
+function Cell({ cell, align, style }) {
+  if (typeof cell === "string") {
+    return /* @__PURE__ */ jsx33("span", { className: `font-inter-tight text-white${align === "right" ? " text-right" : ""}`, style, children: cell });
+  }
+  return /* @__PURE__ */ jsx33("span", { className: `flex${align === "right" ? " justify-end" : ""}`, children: /* @__PURE__ */ jsx33(TrendPill, { label: cell.pill, tone: cell.tone ?? "open" }) });
+}
+function TrendPill({ label, tone = "open" }) {
+  return /* @__PURE__ */ jsx33(
+    "span",
+    {
+      className: "inline-flex items-center justify-center font-inter-tight whitespace-nowrap rounded-full",
+      style: {
+        ...PILL,
+        height: "2rem",
+        paddingInline: "0.75rem",
+        background: `var(--status-${tone}-bg)`,
+        border: `1px solid var(--status-${tone}-border)`,
+        color: `var(--status-${tone})`
+      },
+      children: label
+    }
+  );
+}
+
+// design-system/src/components/rich-text/blocks/Extras.tsx
+import { jsx as jsx34, jsxs as jsxs29 } from "react/jsx-runtime";
+function Takeaway({ content }) {
+  return /* @__PURE__ */ jsx34(
+    "p",
+    {
+      className: "font-inter-tight font-medium text-large text-white w-full",
+      style: { margin: 0, paddingLeft: "1.5rem", paddingBlock: "0.25rem", borderLeft: "2px solid var(--accent-blue)" },
+      children: /* @__PURE__ */ jsx34(InlineText, { content })
+    }
+  );
+}
+var TONE_DOT = {
+  note: "var(--white-400)",
+  warning: "var(--status-soon)",
+  positive: "var(--status-open)"
+};
+function Callout({ tone = "note", title, content }) {
+  return /* @__PURE__ */ jsxs29("div", { className: "flex w-full bg-black-300 rounded-0.75", style: { padding: "1.25rem", gap: "0.75rem" }, children: [
+    /* @__PURE__ */ jsx34("span", { className: "block shrink-0 rounded-full", style: { width: "0.5rem", height: "0.5rem", marginTop: "0.5rem", background: TONE_DOT[tone] }, "aria-hidden": "true" }),
+    /* @__PURE__ */ jsxs29("div", { className: "flex flex-col", style: { gap: "0.375rem" }, children: [
+      title && /* @__PURE__ */ jsx34("p", { className: "font-inter-tight font-medium text-m text-white", style: { margin: 0 }, children: title }),
+      /* @__PURE__ */ jsx34("p", { className: "font-inter-tight font-normal text-s-med text-white-300", style: { margin: 0 }, children: /* @__PURE__ */ jsx34(InlineText, { content }) })
+    ] })
+  ] });
+}
+function List({ ordered = false, items }) {
+  const Tag2 = ordered ? "ol" : "ul";
+  return /* @__PURE__ */ jsx34(Tag2, { className: "flex flex-col w-full m-0 p-0", style: { gap: "0.625rem", listStyle: "none" }, children: items.map((it, i) => /* @__PURE__ */ jsxs29("li", { className: "flex", style: { gap: "0.75rem" }, children: [
+    ordered ? /* @__PURE__ */ jsx34("span", { className: "font-inter-tight font-medium text-xs text-black-900 shrink-0", style: { paddingTop: "0.3125rem", minWidth: "1.25rem", fontVariantNumeric: "tabular-nums" }, "aria-hidden": "true", children: String(i + 1).padStart(2, "0") }) : /* @__PURE__ */ jsx34("span", { className: "block shrink-0 rounded-full bg-white-400", style: { width: "0.375rem", height: "0.375rem", marginTop: "0.625rem" }, "aria-hidden": "true" }),
+    /* @__PURE__ */ jsx34("span", { className: "font-inter-tight font-normal text-m-reg text-white-300", children: /* @__PURE__ */ jsx34(InlineText, { content: it }) })
+  ] }, i)) });
+}
+function Quote({ content, cite, role }) {
+  return /* @__PURE__ */ jsxs29("figure", { className: "flex flex-col w-full", style: { margin: 0, gap: "1rem" }, children: [
+    /* @__PURE__ */ jsx34("blockquote", { className: "font-inter-tight font-medium text-xl text-white-200", style: { margin: 0 }, children: /* @__PURE__ */ jsx34(InlineText, { content }) }),
+    cite && /* @__PURE__ */ jsxs29("figcaption", { className: "flex items-center font-inter-tight font-medium text-s-med text-white-400", style: { gap: "0.5rem" }, children: [
+      /* @__PURE__ */ jsx34("span", { className: "block bg-white-400", style: { width: "1.5rem", height: "1px" }, "aria-hidden": "true" }),
+      /* @__PURE__ */ jsxs29("span", { children: [
+        cite,
+        role && /* @__PURE__ */ jsx34("span", { className: "text-black-900", children: ` \xB7 ${role}` })
+      ] })
+    ] })
+  ] });
+}
+function KeyValue({ rows }) {
+  return /* @__PURE__ */ jsx34("dl", { className: "w-full m-0 divide-y divide-border-subtle", children: rows.map((r) => /* @__PURE__ */ jsxs29("div", { className: "flex justify-between items-baseline", style: { gap: "1.5rem", paddingBlock: "0.75rem" }, children: [
+    /* @__PURE__ */ jsx34("dt", { className: "font-inter-tight font-medium text-s-med text-white-400 shrink-0", style: { margin: 0 }, children: r.key }),
+    /* @__PURE__ */ jsx34("dd", { className: "font-inter-tight font-medium text-s-med text-white text-right", style: { margin: 0, fontVariantNumeric: "tabular-nums" }, children: /* @__PURE__ */ jsx34(InlineText, { content: r.value }) })
+  ] }, r.key)) });
+}
+function Divider() {
+  return /* @__PURE__ */ jsx34("hr", { className: "w-full border-0 border-t border-border-subtle", style: { margin: 0 } });
+}
+
+// design-system/src/components/rich-text/RichText.tsx
+import { Fragment as Fragment8, jsx as jsx35, jsxs as jsxs30 } from "react/jsx-runtime";
+function RichText({ document: document2, renderers, after }) {
+  return /* @__PURE__ */ jsxs30(
+    "div",
+    {
+      className: "w-full bg-page-bg ps-t6-b12 flex flex-col items-center",
+      style: { paddingInline: "var(--padding-global)", gap: "clamp(3rem, 6vw, 5rem)" },
+      children: [
+        document2.sections.map((s) => /* @__PURE__ */ jsx35(Section, { section: s, renderers }, s.id)),
+        after && /* @__PURE__ */ jsx35("div", { className: "w-full mx-auto", style: { maxWidth: ARTICLE_MEASURE }, children: after })
+      ]
+    }
+  );
+}
+function Section({ section, renderers }) {
+  return /* @__PURE__ */ jsxs30(
+    "section",
+    {
+      id: section.id,
+      className: "w-full mx-auto flex flex-col",
+      style: { maxWidth: ARTICLE_MEASURE, scrollMarginTop: SCROLL_MARGIN },
+      children: [
+        /* @__PURE__ */ jsxs30("div", { className: "flex flex-col w-full", style: { gap: "1.5rem" }, children: [
+          /* @__PURE__ */ jsx35(DescTag, { number: section.number, label: section.label }),
+          section.title && /* The template's own h2 (36/600/120%/−0.02em), not `text-h3` — see ./typography.ts. */
+          /* @__PURE__ */ jsx35("h2", { className: "font-inter-tight text-white w-full", style: { ...H2, margin: 0 }, children: section.title })
+        ] }),
+        section.blocks.map((b, i) => {
+          const prev = i > 0 ? section.blocks[i - 1] : void 0;
+          return /* @__PURE__ */ jsx35(
+            "div",
+            {
+              className: "w-full",
+              style: {
+                marginTop: prev ? gapBetween(prev, b) : "2rem",
+                ...isWide(b) ? {
+                  width: `min(${WIDE_MEASURE}, calc(100vw - 2 * var(--padding-global)))`,
+                  marginLeft: "50%",
+                  transform: "translateX(-50%)"
+                } : {}
+              },
+              children: /* @__PURE__ */ jsx35(Block, { block: b, renderers })
+            },
+            i
+          );
+        })
+      ]
+    }
+  );
+}
+function isWide(b) {
+  return (b.type === "table" || b.type === "sources" || b.type === "custom" || b.type === "image") && b.wide === true;
+}
+function gapBetween(prev, cur) {
+  const flowing = (t) => t === "paragraph" || t === "list";
+  if (flowing(prev.type) && flowing(cur.type)) return "1rem";
+  if (cur.type === "heading") return "2.5rem";
+  if (prev.type === "heading") return "1rem";
+  return "2rem";
+}
+function Block({ block, renderers }) {
+  switch (block.type) {
+    case "lead":
+      return /* @__PURE__ */ jsx35(Lead, { paragraphs: block.paragraphs });
+    case "paragraph":
+      return /* @__PURE__ */ jsx35(Paragraph, { content: block.content });
+    case "heading":
+      return /* @__PURE__ */ jsx35(SubHeading, { text: block.text, id: block.id });
+    case "facts":
+      return /* @__PURE__ */ jsx35(FactGrid, { items: block.items });
+    case "image":
+      return /* @__PURE__ */ jsx35(
+        Figure,
+        {
+          src: block.src,
+          alt: block.alt,
+          width: block.width,
+          height: block.height,
+          caption: block.caption,
+          source: block.source,
+          maxHeight: block.maxHeight
+        }
+      );
+    case "deal":
+      return /* @__PURE__ */ jsx35(DealSpotlight, { logo: block.logo, company: block.company, round: block.round, statement: block.statement, figures: block.figures, link: block.link });
+    case "glossary":
+      return /* @__PURE__ */ jsx35(Glossary, { entries: block.entries });
+    case "sources":
+      return /* @__PURE__ */ jsx35(SourcesTable, { rows: block.rows });
+    case "table":
+      return /* @__PURE__ */ jsx35(
+        DataTable,
+        {
+          columns: block.columns,
+          rows: block.rows,
+          caption: block.caption,
+          source: block.source,
+          dense: block.dense,
+          minWidth: block.minWidth
+        }
+      );
+    case "faq":
+      return /* @__PURE__ */ jsx35(FAQ, { items: block.items, variant: "article" });
+    case "takeaway":
+      return /* @__PURE__ */ jsx35(Takeaway, { content: block.content });
+    case "callout":
+      return /* @__PURE__ */ jsx35(Callout, { tone: block.tone, title: block.title, content: block.content });
+    case "list":
+      return /* @__PURE__ */ jsx35(List, { ordered: block.ordered, items: block.items });
+    case "quote":
+      return /* @__PURE__ */ jsx35(Quote, { content: block.content, cite: block.cite, role: block.role });
+    case "keyValue":
+      return /* @__PURE__ */ jsx35(KeyValue, { rows: block.rows });
+    case "divider":
+      return /* @__PURE__ */ jsx35(Divider, {});
+    case "custom": {
+      const render = renderers?.[block.id];
+      if (!render) {
+        if (import.meta.env?.DEV) console.warn(`[rich-text] no renderer for custom block "${block.id}"`);
+        return null;
+      }
+      return /* @__PURE__ */ jsx35(Fragment8, { children: render() });
+    }
+  }
+}
+
+// design-system/src/components/rich-text/blocks/ArticleHero.tsx
+import { jsx as jsx36, jsxs as jsxs31 } from "react/jsx-runtime";
+function ArticleHero({ data }) {
+  const { breadcrumb, author, published, readingTime, h1, lead, topics } = data;
+  return /* @__PURE__ */ jsxs31(
+    "section",
+    {
+      className: "w-full bg-page-bg flex flex-col items-center",
+      style: {
+        paddingTop: "clamp(2.5rem, 5vw, 4rem)",
+        paddingBottom: "clamp(2.5rem, 5vw, 4rem)",
+        paddingInline: "var(--padding-global)",
+        gap: "clamp(2rem, 4vw, 4rem)"
+      },
+      children: [
+        /* @__PURE__ */ jsx36("nav", { "aria-label": "Breadcrumb", className: "flex flex-wrap items-center justify-center font-inter-tight font-medium text-s-med text-white-400", style: { gap: "0.5rem" }, children: breadcrumb.map((c, i) => {
+          const last = i === breadcrumb.length - 1;
+          return /* @__PURE__ */ jsxs31("span", { className: "inline-flex items-center", style: { gap: "0.5rem" }, children: [
+            c.href && !last ? /* @__PURE__ */ jsx36("a", { href: c.href, className: "hover:text-white transition-colors", children: c.label }) : /* @__PURE__ */ jsx36("span", { className: last ? "text-white-200" : void 0, "aria-current": last ? "page" : void 0, children: c.label }),
+            !last && /* @__PURE__ */ jsx36("span", { "aria-hidden": "true", children: "/" })
+          ] }, `${c.label}-${i}`);
+        }) }),
+        /* @__PURE__ */ jsxs31("div", { className: "flex flex-col items-center w-full", style: { gap: "2rem" }, children: [
+          /* @__PURE__ */ jsxs31(
+            "div",
+            {
+              className: "flex flex-wrap items-center justify-center bg-black-300 rounded-0.75",
+              style: { padding: "0.75rem", gap: "clamp(1rem, 4vw, 4rem)" },
+              children: [
+                /* @__PURE__ */ jsxs31("div", { className: "flex items-center", style: { gap: "0.75rem" }, children: [
+                  /* @__PURE__ */ jsx36(
+                    "img",
+                    {
+                      src: author.photo,
+                      alt: "",
+                      width: 80,
+                      height: 80,
+                      loading: "eager",
+                      decoding: "async",
+                      className: "rounded-full object-cover shrink-0",
+                      style: { width: "2.5rem", height: "2.5rem" }
+                    }
+                  ),
+                  /* @__PURE__ */ jsxs31("div", { className: "flex flex-col", style: { gap: "0.125rem" }, children: [
+                    author.href ? /* @__PURE__ */ jsx36("a", { href: author.href, className: "font-inter-tight font-medium text-s-med text-white-200 hover:text-white transition-colors whitespace-nowrap", children: author.name }) : /* @__PURE__ */ jsx36("span", { className: "font-inter-tight font-medium text-s-med text-white-200 whitespace-nowrap", children: author.name }),
+                    /* @__PURE__ */ jsx36("span", { className: "font-inter-tight font-medium text-xs text-white-400 whitespace-nowrap", children: author.role })
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxs31("p", { className: "font-inter-tight font-medium text-xs text-white-400 whitespace-nowrap", style: { margin: 0, paddingRight: "0.25rem" }, children: [
+                  published,
+                  " \xB7 ",
+                  readingTime
+                ] })
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxs31("div", { className: "flex flex-col items-center text-center w-full", style: { maxWidth: HERO_MEASURE, gap: "1.5rem" }, children: [
+            /* @__PURE__ */ jsx36(
+              "h1",
+              {
+                className: "font-inter-tight font-semibold text-transparent gradient-text bg-clip-text [-webkit-background-clip:text] w-full",
+                style: {
+                  margin: 0,
+                  backgroundImage: "var(--gradient-headline)",
+                  /* 48px in the macro; no token sits there — see the note above. */
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.02em",
+                  /* line-height 0.95 clips descenders against the background-clip box; the same
+                     0.15em hug every other gradient h1 on the site uses. */
+                  paddingBottom: "0.15em",
+                  overflow: "visible"
+                },
+                children: h1
+              }
+            ),
+            /* @__PURE__ */ jsx36("p", { className: "font-inter-tight font-normal text-paragraph text-white-400 w-full", style: { margin: 0 }, children: lead })
+          ] }),
+          topics.length > 0 && /* @__PURE__ */ jsx36("ul", { className: "flex flex-wrap items-center justify-center m-0 p-0", style: { gap: "0.5rem", listStyle: "none" }, children: topics.map((t) => /* @__PURE__ */ jsx36("li", { children: /* @__PURE__ */ jsx36(Tag, { variant: "topic", label: t }) }, t)) })
+        ] })
+      ]
+    }
+  );
+}
+
+// design-system/src/components/rich-text/blocks/SubscribeBand.tsx
+import { useRef as useRef7, useState as useState9 } from "react";
+
+// design-system/src/lib/attribution.ts
+var CLICK_ID_COOKIES = {
+  gclid: "_ax_gclid",
+  gbraid: "_ax_gbraid",
+  wbraid: "_ax_wbraid",
+  fbclid: "_fbc_raw"
+};
+var FBC_COOKIE = "_fbc";
+var NINETY_DAYS_SECONDS = 90 * 24 * 60 * 60;
+function readCookie(name) {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+function gaClientId() {
+  const raw = readCookie("_ga");
+  if (!raw) return "";
+  const parts = raw.split(".");
+  return parts.length >= 4 ? parts.slice(2).join(".") : "";
+}
+function gaSessionId() {
+  const raw = readCookie("_ga_71VV1ZPV21");
+  if (!raw) return "";
+  const parts = raw.split(".");
+  return parts.length >= 3 ? parts[2] : "";
+}
+function mixpanelDistinctId() {
+  try {
+    const mp = window.mixpanel;
+    return mp?.get_distinct_id?.() ?? "";
+  } catch {
+    return "";
+  }
+}
+function collectAttribution() {
+  const consent = readConsent();
+  const marketing = consent?.marketing === true;
+  return {
+    gclid: readCookie(CLICK_ID_COOKIES.gclid),
+    gbraid: readCookie(CLICK_ID_COOKIES.gbraid),
+    wbraid: readCookie(CLICK_ID_COOKIES.wbraid),
+    fbclid: readCookie(CLICK_ID_COOKIES.fbclid),
+    fbc: readCookie(FBC_COOKIE),
+    fbp: readCookie("_fbp"),
+    ga_client_id: gaClientId(),
+    ga_session_id: gaSessionId(),
+    mp_distinct_id: mixpanelDistinctId(),
+    event_source_url: typeof location !== "undefined" ? location.href : "",
+    user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    marketing_consent: marketing,
+    consent_ad_user_data: marketing,
+    consent_ad_personalization: marketing
+  };
+}
+
+// design-system/src/lib/submitSubscription.ts
+function readUtm2() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    source: params.get("utm_source") ?? "",
+    medium: params.get("utm_medium") ?? "",
+    campaign: params.get("utm_campaign") ?? "",
+    term: params.get("utm_term") ?? "",
+    content: params.get("utm_content") ?? ""
+  };
+}
+async function submitSubscription(input) {
+  trackFormSubmit("newsletter", { company_slug: input.companySlug });
+  const utm = readUtm2();
+  const payload = {
+    email: input.email,
+    // CRM contract v1.2: `intent` splits the newsletter list from sales-bound enquiries —
+    // "subscribe" for a plain mailing signup, "application" for anything a salesperson must
+    // work. `subscribe_companies` is a dictionary keyed by Supabase product id, so the CRM
+    // can attribute the subscriber to a company without matching on a display name.
+    intent: "subscribe",
+    // Company block only when there IS a company. An editorial subscriber followed no company,
+    // and `{"undefined": undefined}` would have filed one against a product id that cannot exist.
+    ...input.productId != null ? {
+      subscribe_companies: { [String(input.productId)]: input.companyName },
+      company_slug: input.companySlug,
+      company_name: input.companyName
+    } : {},
+    ...input.role ? { role: input.role } : {},
+    ...input.cluster ? { cluster: input.cluster } : {},
+    // source_l2 is a CLOSED dictionary the CRM validates against — for source_l1 "organic"
+    // it accepts only seo | telegram | youtube | linkedin | direct. This used to send
+    // "site", which is not in it, so every subscription came back
+    // 400 unknown_source_l2 and nothing ever reached the CRM (found 2026-08-04 by posting
+    // to the webhook directly). Reuse submitLead's classifier so both forms map UTMs the
+    // same way and fall back to a legal value.
+    ...classifySource(utm.source, utm.medium),
+    // l3 is free-form, so the source page stays visible to a manager without opening the lead.
+    source_l3: input.sourceL3 ?? `company-page:${input.companySlug}`,
+    utm,
+    page_path: window.location.pathname,
+    referrer: document.referrer || "",
+    // The ad-attribution set, nested per the landing-tracking standard §2 (the nested form is
+    // the one it prefers for new code, so these never mix with the lead's own fields). Without
+    // it the CRM's later quality verdict reaches Meta, Google Ads, GA4 and Mixpanel with nothing
+    // to tie it to an ad — the campaign returns 200 and reports nothing. `client_ip` is
+    // deliberately absent: the server reads it from the connection (§7).
+    attribution: collectAttribution()
+  };
+  try {
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      trackFormError("newsletter", data.error ?? `http_${res.status}`);
+      return { ok: false, error: data.error ?? `http_${res.status}` };
+    }
+    trackEvent("newsletter_signup", { company: input.companySlug ?? input.sourceL3 ?? "unknown" });
+    trackFormComplete("newsletter", { company_slug: input.companySlug });
+    pushFormSubmit("newsletter_signup");
+    identifyLead(input.email, input.companyName ? { companies_followed: input.companyName } : void 0);
+    return { ok: true, action: data.action };
+  } catch {
+    trackFormError("newsletter", "network_error");
+    return { ok: false, error: "network_error" };
+  }
+}
+
+// design-system/src/components/rich-text/blocks/SubscribeBand.tsx
+import { jsx as jsx37, jsxs as jsxs32 } from "react/jsx-runtime";
+function SubscribeBand({ copy, source }) {
+  const [email, setEmail] = useState9("");
+  const [error, setError] = useState9();
+  const [submitted, setSubmitted] = useState9(false);
+  const started = useRef7(false);
+  function onFocus() {
+    if (started.current) return;
+    started.current = true;
+    trackFormStart("newsletter");
+  }
+  function onSubmit(ev) {
+    ev.preventDefault();
+    if (!email.trim()) return setError("Enter your email");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError("That does not look like an email");
+    setError(void 0);
+    void submitSubscription({ email, cluster: "educational", sourceL3: source });
+    setSubmitted(true);
+  }
+  return /* @__PURE__ */ jsxs32(
+    "section",
+    {
+      id: "subscribe",
+      className: "w-full bg-page-bg flex flex-col items-center",
+      style: { paddingBlock: "clamp(3rem, 6vw, 5rem)", paddingInline: "var(--padding-global)", gap: "2.5rem", scrollMarginTop: "6rem" },
+      children: [
+        /* @__PURE__ */ jsxs32("div", { className: "flex flex-col items-center text-center w-full", style: { gap: "1.5rem" }, children: [
+          /* @__PURE__ */ jsx37(
+            "h2",
+            {
+              className: "font-inter-tight text-white w-full",
+              style: { margin: 0, maxWidth: "36.875rem", fontSize: "3rem", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em" },
+              children: copy.heading
+            }
+          ),
+          /* @__PURE__ */ jsx37("p", { className: "font-inter-tight text-white-300 w-full", style: { ...BODY, margin: 0, maxWidth: "37.5rem" }, children: copy.body })
+        ] }),
+        submitted ? /* @__PURE__ */ jsx37("div", { className: "w-full", style: { maxWidth: "37.5rem" }, children: /* @__PURE__ */ jsx37(
+          QuizSuccessState,
+          {
+            heading: "You're on the list.\nFirst issue lands within two weeks.",
+            button: { label: "Back to the top", onClick: () => window.scrollTo({ top: 0, behavior: "smooth" }) }
+          }
+        ) }) : /* @__PURE__ */ jsxs32("form", { onSubmit, onFocus, noValidate: true, className: "flex flex-col items-start w-full", style: { gap: "1rem", maxWidth: "31.875rem" }, children: [
+          /* @__PURE__ */ jsxs32("div", { className: "flex flex-col sm:flex-row w-full", style: { gap: "0.5rem" }, children: [
+            /* @__PURE__ */ jsxs32("div", { className: "flex flex-col flex-1", style: { gap: "0.375rem" }, children: [
+              /* @__PURE__ */ jsx37(
+                "input",
+                {
+                  type: "email",
+                  required: true,
+                  autoComplete: "email",
+                  inputMode: "email",
+                  "aria-label": "Email address",
+                  "aria-invalid": !!error,
+                  placeholder: "yourmail@gmail.com",
+                  value: email,
+                  onChange: (e) => setEmail(e.target.value),
+                  className: "w-full font-inter-tight text-white placeholder:text-white-400 bg-black-400 rounded-1 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+                  style: { ...BODY, height: "3.625rem", paddingInline: "1rem", border: error ? "1px solid var(--status-closed)" : "1px solid transparent" }
+                }
+              ),
+              error && /* @__PURE__ */ jsx37("span", { className: "font-inter-tight font-medium text-xs", style: { color: "var(--status-closed)" }, children: error })
+            ] }),
+            /* @__PURE__ */ jsx37(BtnOwn, { type: "submit", size: "M", icon: "/icons/Email.svg", className: "w-full sm:w-auto shrink-0", children: "Subscribe" })
+          ] }),
+          /* @__PURE__ */ jsxs32("p", { className: "font-inter-tight font-normal text-xs text-white-400 w-full", style: { margin: 0 }, children: [
+            copy.note,
+            " By subscribing you agree that Axevil Capital, LLC will process your email to send the newsletter, as described in the",
+            " ",
+            /* @__PURE__ */ jsx37("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
+            ". Read the",
+            " ",
+            /* @__PURE__ */ jsx37("a", { href: "/research", className: "underline hover:text-white transition-colors", children: "published archive" }),
+            " first if you like."
+          ] })
+        ] })
+      ]
+    }
+  );
+}
+
+// design-system/src/components/rich-text/blocks/PublicationGrid.tsx
+import { motion as motion9 } from "framer-motion";
+import { jsx as jsx38, jsxs as jsxs33 } from "react/jsx-runtime";
+function PublicationGrid({ items }) {
+  return /* @__PURE__ */ jsx38(
+    "ul",
+    {
+      className: "publication-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full m-0 p-0",
+      style: { columnGap: "2.5rem", rowGap: "clamp(2.5rem, 5vw, 3.5rem)", listStyle: "none" },
+      children: items.map((it, i) => /* @__PURE__ */ jsx38(
+        motion9.li,
+        {
+          className: "flex",
+          initial: { opacity: 0, y: "1.5rem", filter: "blur(8px)" },
+          whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.6, delay: Math.min(i, 3) * 0.1, ease: [0.22, 1, 0.36, 1] },
+          children: /* @__PURE__ */ jsxs33(
+            "a",
+            {
+              href: it.href,
+              className: "group flex flex-col w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+              style: { textDecoration: "none", gap: "1.25rem" },
+              children: [
+                it.cover && /* @__PURE__ */ jsx38("div", { className: "relative w-full overflow-hidden rounded-0.5 border border-black-600", style: { aspectRatio: "3 / 2" }, children: /* @__PURE__ */ jsx38(
+                  "img",
+                  {
+                    src: it.cover.src,
+                    alt: it.cover.alt,
+                    width: it.cover.width,
+                    height: it.cover.height,
+                    loading: "lazy",
+                    decoding: "async",
+                    className: "absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  }
+                ) }),
+                /* @__PURE__ */ jsxs33("div", { className: "flex flex-col flex-1 justify-between w-full", style: { gap: "1.5rem" }, children: [
+                  /* @__PURE__ */ jsxs33("div", { className: "flex flex-col", style: { gap: "1.5rem" }, children: [
+                    /* @__PURE__ */ jsx38("span", { className: "font-inter-tight text-black-800", style: CARD_META, children: it.meta.filter(Boolean).join(" \xB7 ") }),
+                    /* @__PURE__ */ jsxs33("div", { className: "flex flex-col", style: { gap: "0.75rem" }, children: [
+                      /* @__PURE__ */ jsx38("span", { className: "font-inter-tight text-white", style: CARD_TITLE, children: it.title }),
+                      /* @__PURE__ */ jsx38("span", { className: "font-inter-tight text-white-400", style: BODY, children: it.summary })
+                    ] })
+                  ] }),
+                  it.byline && /* @__PURE__ */ jsxs33("div", { className: "flex items-center", style: { gap: "0.625rem" }, children: [
+                    /* @__PURE__ */ jsx38(
+                      "img",
+                      {
+                        src: it.byline.photo,
+                        alt: "",
+                        width: 72,
+                        height: 72,
+                        loading: "lazy",
+                        decoding: "async",
+                        "aria-hidden": "true",
+                        className: "rounded-full object-cover shrink-0",
+                        style: { width: "2.25rem", height: "2.25rem" }
+                      }
+                    ),
+                    /* @__PURE__ */ jsx38("span", { className: "font-inter-tight text-white", style: TERM, children: it.byline.name })
+                  ] })
+                ] })
+              ]
+            }
+          )
+        },
+        it.href
+      ))
+    }
+  );
 }
 
 // design-system/src/components/preload-devices.tsx
@@ -3037,30 +4014,52 @@ var PRELOAD_FADE_IN_VIEW_MOTION = {
   transition: TRANSITION
 };
 export {
+  ArticleHero,
   BgFeatures,
   BtnOwn,
   COUNTRIES,
+  Callout,
   CtaForm,
   CtaFormNewsletter,
+  DataTable,
+  DealSpotlight,
   DescTag,
+  Divider,
   HeroEyebrow as DynamicGreenBadge,
   FAQ,
+  FactGrid,
   FadeIn,
+  Figure,
   Footer,
   Form,
+  Glossary,
   HeroEyebrow,
   IllCards,
+  InlineText,
+  KeyValue,
+  Lead,
+  List,
   Nav,
   NavDropdown,
   PRELOAD_DEVICES_MOTION,
   PRELOAD_FADE_IN_VIEW_MOTION,
   PRELOAD_IN_VIEW_MOTION,
   PageEntry,
+  Paragraph,
   PhoneField,
+  PublicationGrid,
   Quiz,
+  Quote,
+  RichText,
+  Section as RichTextSection,
   SearchInput,
   SectionHeading,
   SliderCard,
+  SourcesTable,
   StatusPill,
-  Tag
+  SubHeading,
+  SubscribeBand,
+  Tag,
+  Takeaway,
+  TrendPill
 };

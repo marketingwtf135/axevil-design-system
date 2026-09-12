@@ -253,6 +253,33 @@
    spec; do not "fix" it back to 600 from the spec table alone. */
 .text-h3 { font-weight: 500 !important; }
 
+/* Publication grid (rich-text PublicationGrid, Figma 3245:5623) — a vertical rule between
+   the columns. The macro has three fixed dividers; the real grid is content-driven and wraps,
+   so the rule is drawn per row: every card that is not first in its row gets a left border.
+
+   In CSS rather than in the JSX because it is an :nth-child rule that changes with the
+   breakpoint — two columns at md, three at lg — and stacking Tailwind's md:/lg: variants of
+   nth-child selectors against each other relies on emitted-CSS order to resolve.
+
+   The 2.5rem padding pairs with the grid's 2.5rem column gap, centring the line in a 5rem
+   gutter. */
+@media (min-width: 768px) {
+  .publication-grid > li:not(:nth-child(2n + 1)) {
+    border-left: 1px solid var(--black-600);
+    padding-left: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .publication-grid > li {
+    border-left: 1px solid var(--black-600);
+    padding-left: 2.5rem;
+  }
+  .publication-grid > li:nth-child(3n + 1) {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
 /* -- Gradient text utility -- */
 .text-acc-gradient {
   background: var(--acc-gradient);
