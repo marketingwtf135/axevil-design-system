@@ -262,19 +262,23 @@
    nth-child selectors against each other relies on emitted-CSS order to resolve.
 
    The 2.5rem padding pairs with the grid's 2.5rem column gap, centring the line in a 5rem
-   gutter. */
+   gutter.
+
+   `.publication-grid--plaque` opts out (client, 14.09.2026, on /help/how-it-works). When each
+   card sits on its own black-300 panel the panel edge already separates the columns, and a rule
+   in the gutter as well reads as a second, competing border. /learn and /authors keep it. */
 @media (min-width: 768px) {
-  .publication-grid > li:not(:nth-child(2n + 1)) {
+  .publication-grid:not(.publication-grid--plaque) > li:not(:nth-child(2n + 1)) {
     border-left: 1px solid var(--black-600);
     padding-left: 2.5rem;
   }
 }
 @media (min-width: 1024px) {
-  .publication-grid > li {
+  .publication-grid:not(.publication-grid--plaque) > li {
     border-left: 1px solid var(--black-600);
     padding-left: 2.5rem;
   }
-  .publication-grid > li:nth-child(3n + 1) {
+  .publication-grid:not(.publication-grid--plaque) > li:nth-child(3n + 1) {
     border-left: 0;
     padding-left: 0;
   }

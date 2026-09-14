@@ -99,8 +99,20 @@ interface BtnOwnProps {
     /** Legacy prop — no-op now (secondary is borderless by default). Kept so existing call-sites compile. */
     noBorder?: boolean;
     disabled?: boolean;
+    /**
+     * Renders an `<a>` instead of a `<button>`, with the same fill, radius, hover and focus ring.
+     *
+     * Added for the Help Center, whose per-collection CTA is a navigation ("Browse private
+     * companies", "Legal disclosures") rather than an action. A link has to BE a link: the SPA
+     * click interceptor in App.tsx only upgrades real anchors, and a button that navigates is not
+     * reachable the way a link is — no middle-click, no copy-address, and the wrong role announced.
+     * `Tag` already carries the same href/onClick pair for the same reason.
+     */
+    href?: string;
+    /** External target. Adds `rel="noopener noreferrer"`. Only meaningful with `href`. */
+    external?: boolean;
 }
-declare function BtnOwn({ children, className, style, type, onClick, hideIcon, icon, size, variant, disabled, }: BtnOwnProps): react_jsx_runtime.JSX.Element;
+declare function BtnOwn({ children, className, style, type, onClick, hideIcon, icon, size, variant, disabled, href, external, }: BtnOwnProps): react_jsx_runtime.JSX.Element;
 
 /**
  * <CtaForm> — Section CTA block from Figma 1225:5717 (Wealth Managers final block).
@@ -169,8 +181,13 @@ declare function CtaFormNewsletter({ buttonLabel, buttonIcon, placeholder, succe
  * Token-driven (text-l + text-neutral-30) so it scales with the responsive type system.
  */
 interface DescTagProps {
-    /** Numeric prefix like "1.0", "2.0" — rendered with reduced opacity */
-    number: string | number;
+    /**
+     * Numeric prefix like "1.0", "2.0" — rendered with reduced opacity.
+     *
+     * Optional since 14.09.2026: a section of a numbered document has one, a standalone block of
+     * page chrome does not, and inventing a sequence for the latter reads as a broken reference.
+     */
+    number?: string | number;
     /** The label text — rendered with higher opacity */
     label: string;
     /** Optional alignment class override (e.g. "items-center" for centered headings) */
@@ -258,6 +275,26 @@ interface IllCardsProps {
     hideImages?: boolean;
 }
 declare function IllCards({ cards, className, objectPosition, cardHeight, titleSize, imageHeight, hideImages, }: IllCardsProps): react_jsx_runtime.JSX.Element;
+
+interface LinkblockItem {
+    label: ReactNode;
+    href: string;
+}
+interface LinkblockCardProps {
+    /** Small line above the heading — "4 articles", a date, a count. */
+    meta?: ReactNode;
+    title: string;
+    /** The heading is a link when the group has a page of its own. */
+    href?: string;
+    summary?: ReactNode;
+    links: LinkblockItem[];
+    /** Text of the plus-link at the foot. Omitted → no footer link. */
+    cta?: string;
+    /** Where the plus-link goes; defaults to `href`. */
+    ctaHref?: string;
+    className?: string;
+}
+declare function LinkblockCard({ meta, title, href, summary, links, cta, ctaHref, className, }: LinkblockCardProps): react_jsx_runtime.JSX.Element;
 
 /**
  * Nav dropdown overlay — desktop-only. Hovers under the "Invest" or "Company"
@@ -884,6 +921,7 @@ declare function TrendPill({ label, tone }: {
     tone?: 'open' | 'closed' | 'soon';
 }): react_jsx_runtime.JSX.Element;
 
+type PublicationGridVariant = 'bare' | 'plaque';
 interface PublicationCard {
     href: string;
     /** Meta row cells — category, date, language. Joined with a middot; empty cells leave no
@@ -913,8 +951,18 @@ interface PublicationCard {
  * A vertical rule parts the columns, drawn per row rather than as the macro's three fixed
  * dividers: the count is content-driven and the grid wraps. Three per row at lg, two at md.
  */
-declare function PublicationGrid({ items }: {
+/**
+ * `plaque` — each card on its own black-300 panel with 1.5rem of padding and a 0.5rem lift on
+ * hover (client, 14.09.2026, on /help/how-it-works). The bare variant is the macro's own card
+ * and stays the default: /learn and /authors draw them on the page ground with a rule between
+ * columns, and a panel there would be a redesign of a signed-off layout.
+ *
+ * The column gap tightens on plaques — the panels already separate the cards, so the macro's
+ * 2.5rem trough between them reads as a hole.
+ */
+declare function PublicationGrid({ items, variant, }: {
     items: PublicationCard[];
+    variant?: PublicationGridVariant;
 }): react_jsx_runtime.JSX.Element;
 
 /**
@@ -1019,4 +1067,4 @@ declare const PRELOAD_FADE_IN_VIEW_MOTION: {
     };
 };
 
-export { type ArticleAuthor, ArticleHero, type ArticleHeroData, BgFeatures, BtnOwn, COUNTRIES, Callout, type Crumb, CtaForm, CtaFormNewsletter, DataTable, type DealFigure, DealSpotlight, DescTag, Divider, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FactGrid, type FactItem, FadeIn, type FaqEntry, Figure, Footer, Form, Glossary, type GlossaryEntry, HeroEyebrow, type IllCard, IllCards, type Inline, type InlineNode, InlineText, KeyValue, Lead, List, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, Paragraph, PhoneField, type PublicationCard, PublicationGrid, Quiz, Quote, RichText, type RichTextBlock, type RichTextDocument, Section as RichTextSection, SearchInput, SectionHeading, SliderCard, type SourceRow, SourcesTable, type StatusKind, StatusPill, SubHeading, SubscribeBand, type SubscribeCopy, type TableCell, type TableColumn, type TableRow, Tag, type TagSize, type TagVariant, Takeaway, TrendPill };
+export { type ArticleAuthor, ArticleHero, type ArticleHeroData, BgFeatures, BtnOwn, COUNTRIES, Callout, type Crumb, CtaForm, CtaFormNewsletter, DataTable, type DealFigure, DealSpotlight, DescTag, Divider, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FactGrid, type FactItem, FadeIn, type FaqEntry, Figure, Footer, Form, Glossary, type GlossaryEntry, HeroEyebrow, type IllCard, IllCards, type Inline, type InlineNode, InlineText, KeyValue, Lead, LinkblockCard, type LinkblockCardProps, type LinkblockItem, List, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, Paragraph, PhoneField, type PublicationCard, PublicationGrid, Quiz, Quote, RichText, type RichTextBlock, type RichTextDocument, Section as RichTextSection, SearchInput, SectionHeading, SliderCard, type SourceRow, SourcesTable, type StatusKind, StatusPill, SubHeading, SubscribeBand, type SubscribeCopy, type TableCell, type TableColumn, type TableRow, Tag, type TagSize, type TagVariant, Takeaway, TrendPill };
