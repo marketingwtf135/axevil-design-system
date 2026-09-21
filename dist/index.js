@@ -203,6 +203,8 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
         /* @__PURE__ */ jsx2("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ jsx2(
           "img",
           {
+            width: 207,
+            height: 32,
             src: "/logos/press/footer-logo.svg",
             alt: "AXEVIL",
             className: "footer-logo",
@@ -221,6 +223,8 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
                 /* @__PURE__ */ jsx2(
                   "img",
                   {
+                    width: 24,
+                    height: 24,
                     src: "/icons/Email.svg",
                     alt: "",
                     "aria-hidden": "true",
@@ -595,6 +599,8 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
               /* @__PURE__ */ jsx4("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "shrink-0", children: /* @__PURE__ */ jsx4(
                 "img",
                 {
+                  width: 207,
+                  height: 32,
                   src: "/logos/press/footer-logo.svg",
                   alt: "AXEVIL",
                   className: "w-[7.5rem] h-[1.125rem] lg:w-[9.6875rem] lg:h-6"
@@ -2579,6 +2585,8 @@ Inquiry type: ${inquiryLabel}
                     /* @__PURE__ */ jsx16(
                       "img",
                       {
+                        width: 24,
+                        height: 24,
                         src: "/icons/Email.svg",
                         alt: "",
                         "aria-hidden": "true",
@@ -2934,7 +2942,7 @@ function SearchInput({
             style: { padding: 0, border: "none" }
           }
         ),
-        /* @__PURE__ */ jsx22("span", { className: "flex shrink-0 items-center", style: { paddingLeft: "0.75rem" }, children: /* @__PURE__ */ jsx22("img", { src: "/icons/Search.svg", alt: "", "aria-hidden": "true", style: { width: "1.125rem", height: "1.125rem", opacity: 0.6 } }) })
+        /* @__PURE__ */ jsx22("span", { className: "flex shrink-0 items-center", style: { paddingLeft: "0.75rem" }, children: /* @__PURE__ */ jsx22("img", { width: 24, height: 24, src: "/icons/Search.svg", alt: "", "aria-hidden": "true", style: { width: "1.125rem", height: "1.125rem", opacity: 0.6 } }) })
       ]
     }
   );
@@ -3013,6 +3021,8 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           /* @__PURE__ */ jsx24(
             "img",
             {
+              width: 930,
+              height: 930,
               src: "/pages/home/block09/bg-speaker-gradient.png",
               alt: "",
               "aria-hidden": "true",
