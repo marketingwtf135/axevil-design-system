@@ -140,10 +140,19 @@
   --container-medium: 90rem;
 
   /* -- Gradients --
-     Single canonical headline gradient (~21 h1/h2 across blocks/CS/RI/WM).
-     `--acc-gradient` is an alias kept for the .text-acc-gradient utility. */
-  --gradient-headline: linear-gradient(94deg, #CBCBCB 4.07%, #FFF 49.51%, #CBCBCB 94.94%);
-  --gradient-headline-narrow: linear-gradient(94deg, #CBCBCB 2.09%, #FFF 49.02%, #CBCBCB 95.95%);
+     THE headline gradient. One value for every h1/h2 on every AXEVIL surface (~40 call
+     sites across blocks / CompanyStock / Retail / Wealth / Help / Research). Client set the
+     stops on 21.09.2026; before that the grey ends sat at 4.07% / 94.94%, which left a
+     wider grey shoulder and a slightly dimmer headline.
+
+     Apply it through the .gradient-text or .text-acc-gradient utility, never by pasting the
+     linear-gradient() into a component — that is how the two strays at #A2A2A2 survived
+     three redesigns of this token.
+
+     `--gradient-headline-narrow` and `--acc-gradient` are aliases, kept so existing call
+     sites keep resolving. They are the same value; do not give them a value of their own. */
+  --gradient-headline: linear-gradient(94deg, #CBCBCB 2.09%, #FFF 49.02%, #CBCBCB 95.95%);
+  --gradient-headline-narrow: var(--gradient-headline);
   --acc-gradient: var(--gradient-headline);
 
   /* -- Chart palette -- (CSTrackPrice line chart) */

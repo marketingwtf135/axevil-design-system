@@ -337,11 +337,14 @@ declare function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave 
  * Default animation: opacity 0 → 1 over 0.5s easeOut. Override via the
  * standard motion props (`initial`, `animate`, `transition`).
  *
- * The fade-in was 1.5s until 2026-08-04. On a first visit that read as a considered
- * reveal, but on every subsequent route change it stacked on top of the 0.4s exit — a
- * combined ~2s before the new page was fully legible, which the client read as a
- * preloader rather than a transition. 0.5s in / 0.35s out keeps the crossfade smooth
- * while the destination lands almost immediately.
+ * The fade-in was 1.5s until 2026-08-04, then 0.5s in / 0.35s out. Because AnimatePresence
+ * runs `mode="wait"`, the two are SERIAL, not overlapping: 0.85s passed between the old page
+ * starting to leave and the new one being legible, and a transition that long stops reading as
+ * a transition and starts reading as a wait. 0.18s out / 0.28s in (21.09.2026) puts the whole
+ * crossfade under half a second, which is the range Linear and Resend sit in.
+ *
+ * These are the only two durations in the route transition — if it ever feels slow again,
+ * change them here rather than adding a delay somewhere else.
  *
  * Also carries a default `exit` (opacity → 0, 0.4s) so that when App.tsx's route
  * switch is wrapped in `<AnimatePresence>`, the page being NAVIGATED AWAY FROM fades
