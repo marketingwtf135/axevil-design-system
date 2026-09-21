@@ -334,22 +334,18 @@ declare function NavDropdown({ items, open, onClose, onMouseEnter, onMouseLeave 
  * PageEntry — standard `<main>` wrapper with a fade-in.
  * Drop-in replacement for `<main>` at the top of any page component.
  *
- * Default animation: opacity 0 → 1 over 0.5s easeOut. Override via the
- * standard motion props (`initial`, `animate`, `transition`).
+ * No animation. A page renders at full opacity on its first painted frame.
  *
- * The fade-in was 1.5s until 2026-08-04, then 0.5s in / 0.35s out. Because AnimatePresence
- * runs `mode="wait"`, the two are SERIAL, not overlapping: 0.85s passed between the old page
- * starting to leave and the new one being legible, and a transition that long stops reading as
- * a transition and starts reading as a wait. 0.18s out / 0.28s in (21.09.2026) puts the whole
- * crossfade under half a second, which is the range Linear and Resend sit in.
+ * It used to fade in: 1.5s until 2026-08-04, then 0.5s/0.35s, then 0.28s/0.18s. Each round
+ * made the transition shorter but none of them removed what the client kept reporting as
+ * flicker, because the page-level fade was only one of the things moving at load — see
+ * FadeIn and use-blur-reveal, which were hiding content AFTER the browser had already painted
+ * it. With those fixed and this fade gone, a route change is a straight content swap under a
+ * header that never moves, which is what "seamless" actually means here.
  *
- * These are the only two durations in the route transition — if it ever feels slow again,
- * change them here rather than adding a delay somewhere else.
- *
- * Also carries a default `exit` (opacity → 0, 0.4s) so that when App.tsx's route
- * switch is wrapped in `<AnimatePresence>`, the page being NAVIGATED AWAY FROM fades
- * out instead of being unmounted instantly — the abrupt cut + a slow 1.5s fade-in on
- * top of it was reading as a lag/stutter on every route change (2026-07-25 feedback).
+ * The motion.main wrapper is kept (rather than a plain <main>) so a page can still opt into
+ * its own animation by passing initial/animate, and so re-enabling a global one is a
+ * two-line change here.
  *
  * Hero-specific reveals (device illustrations, video backgrounds) live inside
  * their own components and stagger after this wrapper completes via their own

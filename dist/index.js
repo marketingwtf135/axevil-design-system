@@ -1,11 +1,13 @@
 // design-system/src/components/FadeIn.tsx
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { jsx } from "react/jsx-runtime";
 function FadeIn({ children, className = "" }) {
   const ref = useRef(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) return;
     el.style.opacity = "0";
     el.style.transform = "translateY(0.5rem)";
     el.style.transition = "opacity 400ms ease-out, transform 400ms ease-out";
@@ -311,7 +313,7 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
 }
 
 // design-system/src/components/Nav.tsx
-import { useState as useState2, useEffect as useEffect2 } from "react";
+import { useState as useState2, useEffect } from "react";
 
 // design-system/src/components/btn-own.tsx
 import { useState } from "react";
@@ -523,7 +525,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
   const cta = onCtaClick ?? (() => window.dispatchEvent(new CustomEvent("open-quiz")));
   const navLinks = links ?? NAV_LINKS;
   const [menuOpen, setMenuOpen] = useState2(false);
-  useEffect2(() => {
+  useEffect(() => {
     const close = () => setMenuOpen(false);
     window.addEventListener("popstate", close);
     window.addEventListener("pushstate", close);
@@ -532,14 +534,14 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
       window.removeEventListener("pushstate", close);
     };
   }, []);
-  useEffect2(() => {
+  useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
   const [hidden, setHidden] = useState2(false);
-  useEffect2(() => {
+  useEffect(() => {
     let lastY = window.scrollY;
     let downAccum = 0;
     let upAccum = 0;
@@ -568,7 +570,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const [mounted, setMounted] = useState2(false);
-  useEffect2(() => {
+  useEffect(() => {
     setMounted(true);
   }, []);
   return /* @__PURE__ */ jsxs3(Fragment4, { children: [
@@ -689,7 +691,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
 }
 
 // design-system/src/components/Quiz.tsx
-import { useState as useState5, useEffect as useEffect4 } from "react";
+import { useState as useState5, useEffect as useEffect3 } from "react";
 import { motion as motion3, AnimatePresence as AnimatePresence2 } from "framer-motion";
 
 // design-system/src/components/quiz-overlay.tsx
@@ -855,7 +857,7 @@ function Field({
 }
 
 // design-system/src/components/phone-field.tsx
-import { useEffect as useEffect3, useMemo, useRef as useRef2, useState as useState3 } from "react";
+import { useEffect as useEffect2, useMemo, useRef as useRef2, useState as useState3 } from "react";
 import { motion as motion2, AnimatePresence } from "framer-motion";
 import { jsx as jsx8, jsxs as jsxs6 } from "react/jsx-runtime";
 var COUNTRIES = [
@@ -1148,7 +1150,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
   const touchedRef = useRef2(false);
   const selected = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
   const filtered = useMemo(() => filterCountries(query), [query]);
-  useEffect3(() => {
+  useEffect2(() => {
     function onClickOutside(e) {
       if (ref.current && !ref.current.contains(e.target)) {
         setOpen(false);
@@ -1158,7 +1160,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
-  useEffect3(() => {
+  useEffect2(() => {
     let cancelled = false;
     detectCountryByIp().then((code) => {
       if (cancelled || touchedRef.current || !code) return;
@@ -1168,7 +1170,7 @@ function PhoneField({ value, onChange, countryCode, onCountryChange, error, heig
       cancelled = true;
     };
   }, []);
-  useEffect3(() => {
+  useEffect2(() => {
     if (open) searchRef.current?.focus();
   }, [open]);
   function selectCountry(code) {
@@ -1571,7 +1573,7 @@ function QuizLeadForm({ onClose, onSubmit }) {
 import { jsx as jsx10, jsxs as jsxs8 } from "react/jsx-runtime";
 function useIsBelowLg() {
   const [below, setBelow] = useState5(() => window.innerWidth < 1024);
-  useEffect4(() => {
+  useEffect3(() => {
     const handler = () => setBelow(window.innerWidth < 1024);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
@@ -1668,7 +1670,7 @@ function Quiz({ onClose }) {
   const [q2, setQ2] = useState5(null);
   const [step, setStep] = useState5("questions");
   const isBelowLg = useIsBelowLg();
-  useEffect4(() => {
+  useEffect3(() => {
     if (step !== "questions") return;
     const pInt = setInterval(() => setProgress((p) => Math.min(p + 0.5, 100)), 50);
     const sInt = setInterval(() => {
@@ -1885,7 +1887,7 @@ function Quiz({ onClose }) {
 }
 
 // design-system/src/components/bg-features.tsx
-import { useEffect as useEffect5, useRef as useRef4 } from "react";
+import { useEffect as useEffect4, useRef as useRef4 } from "react";
 import { motion as motion4 } from "framer-motion";
 import { jsx as jsx11, jsxs as jsxs9 } from "react/jsx-runtime";
 function BgFeatures({
@@ -1898,7 +1900,7 @@ function BgFeatures({
   animationDuration = 30
 } = {}) {
   const ref = useRef4(null);
-  useEffect5(() => {
+  useEffect4(() => {
     if (!spotlight) return;
     const el = ref.current;
     if (!el) return;
@@ -2213,7 +2215,7 @@ function FAQ({ items, className = "", variant = "default" }) {
 
 // design-system/src/components/form.tsx
 import { AnimatePresence as AnimatePresence4, motion as motion6 } from "framer-motion";
-import { useEffect as useEffect6, useRef as useRef6, useState as useState8 } from "react";
+import { useEffect as useEffect5, useRef as useRef6, useState as useState8 } from "react";
 
 // design-system/src/lib/navigate.ts
 function navigate(path) {
@@ -2246,7 +2248,7 @@ function Dropdown({
   const ref = useRef6(null);
   const selected = options.find((o) => o.value === value);
   const fill = background ?? "var(--black-500)";
-  useEffect6(() => {
+  useEffect5(() => {
     function onClickOutside(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
@@ -2878,10 +2880,13 @@ function PageEntry({
   children,
   className = "",
   style,
-  initial = { opacity: 0 },
-  animate = { opacity: 1 },
-  exit = { opacity: 0, transition: { duration: 0.18, ease: [0.4, 0, 0.2, 1] } },
-  transition = { duration: 0.28, ease: [0.4, 0, 0.2, 1] },
+  /* No entry fade, no exit fade (client, 21.09.2026: "убери fade in анимации при загрузке").
+     `initial={false}` tells Framer to mount straight into the final state instead of playing
+     in from one, so the page is fully opaque on its very first painted frame. */
+  initial = false,
+  animate = void 0,
+  exit = void 0,
+  transition = void 0,
   ...rest
 }) {
   return /* @__PURE__ */ jsx21(

@@ -87,9 +87,11 @@ var import_react = require("react");
 var import_jsx_runtime = require("react/jsx-runtime");
 function FadeIn({ children, className = "" }) {
   const ref = (0, import_react.useRef)(null);
-  (0, import_react.useEffect)(() => {
+  (0, import_react.useLayoutEffect)(() => {
     const el = ref.current;
     if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) return;
     el.style.opacity = "0";
     el.style.transform = "translateY(0.5rem)";
     el.style.transition = "opacity 400ms ease-out, transform 400ms ease-out";
@@ -2962,10 +2964,13 @@ function PageEntry({
   children,
   className = "",
   style,
-  initial = { opacity: 0 },
-  animate = { opacity: 1 },
-  exit = { opacity: 0, transition: { duration: 0.18, ease: [0.4, 0, 0.2, 1] } },
-  transition = { duration: 0.28, ease: [0.4, 0, 0.2, 1] },
+  /* No entry fade, no exit fade (client, 21.09.2026: "убери fade in анимации при загрузке").
+     `initial={false}` tells Framer to mount straight into the final state instead of playing
+     in from one, so the page is fully opaque on its very first painted frame. */
+  initial = false,
+  animate = void 0,
+  exit = void 0,
+  transition = void 0,
   ...rest
 }) {
   return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
