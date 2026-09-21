@@ -28,5 +28,5 @@ content: ['./index.html', './src/**/*.{ts,tsx}', './node_modules/@axevil/design-
 ```
 
 > **Assets:** some components (`Nav`, `BtnOwn`, `Quiz`, `CtaFormNewsletter`) reference
-> runtime asset paths like `/img/logos/footer-logo.svg` and `/icons/*.svg`. Consumers must
+> runtime asset paths like `/logos/press/footer-logo.svg` and `/icons/*.svg`. Consumers must
 > serve those from their own `public/`. See `assets-manifest.json` for the required list.

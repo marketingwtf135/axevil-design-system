@@ -203,7 +203,7 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
         /* @__PURE__ */ jsx2("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "inline-block", children: /* @__PURE__ */ jsx2(
           "img",
           {
-            src: "/img/logos/footer-logo.svg",
+            src: "/logos/press/footer-logo.svg",
             alt: "AXEVIL",
             className: "footer-logo",
             style: { width: "12.9375rem", height: "2rem", objectFit: "contain", objectPosition: "left" }
@@ -595,7 +595,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
               /* @__PURE__ */ jsx4("a", { href: logoHref, "aria-label": "AXEVIL Capital", className: "shrink-0", children: /* @__PURE__ */ jsx4(
                 "img",
                 {
-                  src: "/img/logos/footer-logo.svg",
+                  src: "/logos/press/footer-logo.svg",
                   alt: "AXEVIL",
                   className: "w-[7.5rem] h-[1.125rem] lg:w-[9.6875rem] lg:h-6"
                 }
@@ -1587,7 +1587,7 @@ var SLIDES = [
     heading: "Pre-IPO leaders.\nNo middlemen.",
     subheading: null,
     body: "The most sought-after private companies of our era \u2014 the ones reshaping the technology of the next decade.",
-    img: "/img/ill/ill-qwiz-01.webp",
+    img: "/shared/ill/ill-qwiz-01.webp",
     // §12.1: SpaceX listed in June 2026, xAI was absorbed into it in February — neither belongs
     // in a caption about private companies in the portfolio.
     caption: "Anthropic, OpenAI, Anduril, Stripe, Cursor \u2014 and 30 more top companies in portfolio",
@@ -1598,7 +1598,7 @@ var SLIDES = [
     heading: "Capital secured by\nregulated structure",
     subheading: null,
     body: "Every deal is structured through a dedicated SPV under SEC regulation \u2014\nfully transparent, with annual reporting.",
-    img: "/img/ill/ill-qwiz-02.webp",
+    img: "/shared/ill/ill-qwiz-02.webp",
     caption: "You receive equity documented to the same standards as leading venture capital funds \u2014 institutional-grade ownership.",
     label: "Capital secured"
   },
@@ -1607,7 +1607,7 @@ var SLIDES = [
     heading: "Real access. Verified twice",
     subheading: "Structural",
     body: "Before a deal goes live on the platform, we run two independent reviews:\nactual allocation access, jurisdiction, SPV feasibility, liquidity.",
-    img: "/img/ill/ill-qwiz-03.webp",
+    img: "/shared/ill/ill-qwiz-03.webp",
     caption: "Actual allocation access, jurisdiction, SPV feasibility, liquidity\nIf either side doesn't add up \u2014 no deal, no matter how attractive the company.",
     label: "Real access"
   }
@@ -1869,7 +1869,7 @@ function Quiz({ onClose }) {
               heading: "Get Pre-IPO Directly\nInto Your Pocket",
               button: { label: "Download Axevil App", icon: "/icons/Download.svg", href: "https://axevil.app.link/web?~campaign=new_main" },
               onClose,
-              illustration: "/img/ill/quiz-success-app-devices.png"
+              illustration: "/shared/ill/quiz-success-app-devices.png"
             }
           ) }, "success-app"),
           step === "success-thanks" && /* @__PURE__ */ jsx10(QuizOverlay, { children: /* @__PURE__ */ jsx10(
@@ -1912,7 +1912,7 @@ function BgFeatures({
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
   }, [spotlight]);
-  const bgImage = "url(/img/about/bg-features.png)";
+  const bgImage = "url(/pages/about/bg-features.png)";
   const spotlightMask = `radial-gradient(circle ${spotlightSize} at var(--mx, 50%) var(--my, 50%), black 0%, transparent 70%)`;
   return /* @__PURE__ */ jsxs9(
     "div",
@@ -3013,7 +3013,7 @@ function SliderCard({ name, role, description, photo, linkedin, className = "" }
           /* @__PURE__ */ jsx24(
             "img",
             {
-              src: "/img/block09/bg-speaker-gradient.png",
+              src: "/pages/home/block09/bg-speaker-gradient.png",
               alt: "",
               "aria-hidden": "true",
               loading: "lazy",
