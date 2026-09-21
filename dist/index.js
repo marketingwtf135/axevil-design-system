@@ -65,6 +65,9 @@ function handleMailClick(event, { to, cc, subject }) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
+// design-system/src/lib/featureFlags.ts
+var HELP_CENTER_ENABLED = false;
+
 // design-system/src/components/Footer.tsx
 import { Fragment as Fragment2, jsx as jsx2, jsxs } from "react/jsx-runtime";
 var OFFICES = [
@@ -108,14 +111,19 @@ var NAV_COLUMNS = [
     { label: "Pre-IPO explained", href: "/learn/what-is-pre-ipo-investing" }
   ] },
   /* Help Center. Its own spec asks for a footer column with these four entries (ТЗ §1), and the
-     same reasoning as the educational cluster above applies: the footer is the link that
-     survives every later redesign of the header. */
-  { heading: "Help", items: [
+       same reasoning as the educational cluster above applies: the footer is the link that
+       survives every later redesign of the header.
+  
+       The whole column is gated with the cluster: with HELP_CENTER_ENABLED off all four hrefs
+       404, and four dead links in a site-wide footer is four on every page. The column drops
+       out entirely rather than emptying, so the footer re-flows to its remaining headings
+       instead of leaving a blank slot. See design-system/src/lib/featureFlags.ts. */
+  ...HELP_CENTER_ENABLED ? [{ heading: "Help", items: [
     { label: "Get started", href: "/help/get-started" },
     { label: "How it works", href: "/help/how-it-works" },
     { label: "FAQ", href: "/help/faq" },
     { label: "Help Center", href: "/help" }
-  ] },
+  ] }] : [],
   { heading: "Company", items: [
     { label: "About Us", href: "/about-us" },
     { label: "Team", href: "/team" },
@@ -502,10 +510,13 @@ var NAV_LINKS = [
   { label: "About", href: "/about-us" },
   { label: "Team", href: "/team" },
   /* Help Center, added with the cluster (ТЗ Help Center §1, §10 acceptance): the header is one
-     of the two links its own spec requires, and the help centre is the only indexable part of
-     the site aimed at informational search — an orphan help centre earns nothing. Fifth of the
-     seven links this bar holds without wrapping. */
-  { label: "Help", href: "/help" },
+       of the two links its own spec requires, and the help centre is the only indexable part of
+       the site aimed at informational search — an orphan help centre earns nothing. Fifth of the
+       seven links this bar holds without wrapping.
+  
+       Gated with the cluster itself: with HELP_CENTER_ENABLED off, /help 404s, and a header link
+       to a 404 is worse than no link at all. See design-system/src/lib/featureFlags.ts. */
+  ...HELP_CENTER_ENABLED ? [{ label: "Help", href: "/help" }] : [],
   { label: "Contact", href: "/contacts" }
 ];
 function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, hideBurger = false } = {}) {
