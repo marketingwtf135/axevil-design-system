@@ -84,7 +84,7 @@ const tokens = {
     // express, because that pair keeps text-M's -0.02em and its responsive line-height.
     'm-reg':  ['var(--font-m)',  { lineHeight: '1.4',  letterSpacing: 'normal', fontWeight: '400' }],
     'l':      ['var(--font-l)',  { lineHeight: '1.35', letterSpacing: '-0.02em' }],          // text-L
-    'large':  ['var(--font-large)', { lineHeight: '1.3', letterSpacing: '-0.02em' }],        // text-large
+    'large':  ['var(--font-large)', { lineHeight: '1.35', letterSpacing: '-0.02em' }],       // text-large — 135% per client 22.09.2026
     'paragraph':   ['var(--font-paragraph)', { lineHeight: 'var(--lh-paragraph)', letterSpacing: 'var(--ls-paragraph)', fontWeight: '400' }], // paragraph
     'btn':         ['var(--font-btn)', { lineHeight: '1.1',  letterSpacing: 'var(--ls-btn)' }],      // text-btn
     'xl':     ['var(--font-xl)', { lineHeight: '1.3',  letterSpacing: '-0.02em' }],          // text-XL

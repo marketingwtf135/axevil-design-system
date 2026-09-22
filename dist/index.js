@@ -50,7 +50,7 @@ function FadeIn({ children, className = "" }) {
 }
 
 // design-system/src/components/Footer.tsx
-import { Fragment } from "react";
+import { Fragment, useId, useState } from "react";
 
 // design-system/src/lib/openMailComposer.ts
 function mailtoHref({ to, cc, subject }) {
@@ -100,17 +100,25 @@ var NAV_COLUMNS = [
   /* Invest column removed per client feedback 2026-07-08. The Platform column below was added
      2026-08-18 (technical-SEO brief §7.1): /retail-investors, /wealth-managers and the research
      hub had no inbound internal link anywhere on the site, so no crawler could reach them by
-     following links and no visitor could find them without the address. They are in the header
-     too now — this is the second path, and the one that survives a header redesign. */
+     following links and no visitor could find them without the address. (The line that used to
+     stand here said they were in the header too; NAV_LINKS has never carried them, and as of
+     22.09.2026 all but Market Intelligence are parked below anyway.) */
   { heading: "Platform", items: [
-    { label: "Market Intelligence", href: "/companies" },
-    { label: "For investors", href: "/retail-investors" },
-    { label: "For advisors", href: "/wealth-managers" },
-    { label: "Research", href: "/research" },
-    /* Educational cluster. Its spec is blunt about this: a page with no inbound links does not
-       count as published, and the site-wide footer is the one link that survives every later
-       redesign of the header. Points at the first article until the section index exists. */
-    { label: "Pre-IPO explained", href: "/learn/what-is-pre-ipo-investing" }
+    { label: "Market Intelligence", href: "/companies" }
+    // { label: 'For investors',       href: '/retail-investors' },
+    // { label: 'For advisors',        href: '/wealth-managers' },
+    /* The four entries above and below are PARKED, not deleted (client 22.09.2026 — «пока
+           скрываем страницы»). Every page still builds and still answers at its URL; they simply
+           have no footer entry while they are held back. Uncomment a line to restore it.
+    
+           Worth knowing before this sits here for months: this column was the whole reason the
+           four had a site-wide inbound link (added 2026-08-18, technical-SEO brief §7.1 — the
+           header carries none of them). With it gone, /retail-investors, /wealth-managers,
+           /research and /learn/what-is-pre-ipo-investing are reachable only from inside the Help
+           Center and from each other, so crawlers will treat them as orphans. That is the
+           intended trade while the pages are hidden. */
+    // { label: 'Research',            href: '/research' },
+    // { label: 'Pre-IPO explained',   href: '/learn/what-is-pre-ipo-investing' },
   ] },
   /* Help Center. Its own spec asks for a footer column with these four entries (ТЗ §1), and the
        same reasoning as the educational cluster above applies: the footer is the link that
@@ -177,12 +185,56 @@ var COMPLIANCE_BLOCKS = [
   ],
   ["The Company works exclusively with qualified investors who possess the necessary knowledge, experience, and financial capacity to assess risks and invest in high-risk instruments. This asset class involves elevated risks, volatility, and illiquidity. Investors must be prepared to accept the possibility of total loss of invested capital as well as lack of liquidity."],
   ["NOTIFICATION OF INVESTMENT RISKS AND STATUS OF THE COMPANY'S ACTIVITIES"],
-  // Per-jurisdiction notices (US/UAE/Italy/UK/Sweden/Switzerland) removed 2026-07-25 per
-  // client: they duplicate /disclosures (LegalDisclosures.tsx) — the footer keeps only
-  // this one general paragraph, everything else lives on that page.
+  // Per-jurisdiction notices (US/UAE/Italy/UK/Sweden/Switzerland) were dropped 2026-07-25 as a
+  // duplicate of /disclosures, then RESTORED 2026-09-22 per client: the footer carries the
+  // macro's full text again, collapsed to the macro's 10rem clamp behind "See full text"
+  // (Figma 3573:8347). /disclosures still hosts the same copy as a standalone page.
   [
+    "FOR ALL INVESTORS GENERALLY:",
     "The Company's activities focus on attracting investments in mature venture projects at the stage of sustainable business development, close to IPO exit.",
     "The Company does not guarantee profit generation. Investments involve risks, including the possibility of returns below expectations, which cannot be guaranteed."
+  ],
+  [
+    "NOTICE TO INVESTORS IN THE UNITED STATES:",
+    "\u2014 Investment interest offerings are conducted as private placements and are not subject to registration under US securities laws.",
+    "\u2014 Available only to accredited investors.",
+    "\u2014 Such securities may have transfer and resale restrictions.",
+    "\u2014 Investments carry a high level of financial risk.",
+    "\u2014 Independent legal, tax, and financial consultation is strongly recommended before making investment decisions."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED ARAB EMIRATES (UAE):",
+    "\u2014 Investment interest offerings are not public in the UAE.",
+    "\u2014 Directed only to qualified institutional investors.",
+    "\u2014 Interests are not registered or approved by the UAE Central Bank, SCA, or other regulators."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF ITALY:",
+    "\u2014 Interest offerings are not authorized by Italian regulators under Decreto Legislativo No. 58/1998.",
+    "\u2014 Interests may not be offered, distributed, or sold to the general public."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED KINGDOM:",
+    "\u2014 SPVs constitute unregulated collective investment schemes under FSMA 2000.",
+    '\u2014 Promotion is restricted and permitted only to "relevant persons" within the meaning of Financial Promotion Order 2005 (Articles 19(5), 49(2)(a)-(d)).',
+    "\u2014 Most standard protections of the UK regulatory system do not apply.",
+    "\u2014 Compensation under the UK Financial Services Compensation Scheme is not provided."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWEDEN:",
+    "\u2014 The partnership is not an investment fund under the Swedish Investment Funds Act (2004:46).",
+    "\u2014 The offering is not subject to registration under the Swedish Financial Instruments Trading Act (1991:980).",
+    "\u2014 Interests are not approved and will not be approved by the Swedish Financial Supervisory Authority."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWITZERLAND:",
+    "\u2014 SPVs are not approved by FINMA as foreign collective investment schemes under Article 120 CISA. Interests may not be publicly offered or distributed in Switzerland.",
+    "\u2014 SPVs are not regulated by Swiss authorities.",
+    '\u2014 Interests are available only to "qualified investors" under CISA or a limited circle of persons without public offering.',
+    "\u2014 By continuing, you confirm that:",
+    "1. You qualify as an accredited/qualified investor under the laws of your jurisdiction (e.g., in the U.S. an annual income exceeding $200,000 individually or $300,000 jointly, or net worth above $1 million, excluding primary residence).",
+    "2. You are legally permitted to access this information in your jurisdiction.",
+    "3. You understand that private investments involve a high degree of risk, including the risk of total loss of capital."
   ]
 ];
 var COPYRIGHT = "Axevil Capital 2021\u22122026 \u2014 All Rights Reserved";
@@ -197,6 +249,8 @@ var DEFAULT_COMPLIANCE = /* @__PURE__ */ jsx2(Fragment2, { children: COMPLIANCE_
   ] }, li))
 ] }, bi)) });
 function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {}) {
+  const [expanded, setExpanded] = useState(false);
+  const complianceId = useId();
   return /* @__PURE__ */ jsx2("footer", { className: "w-full bg-page-bg border-t border-outline-100", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto w-full container-px max-w-content flex flex-col gap-spacing-2 py-10 md:py-12 lg:pt-16 lg:pb-12", children: [
     /* @__PURE__ */ jsxs("div", { className: "flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 pb-spacing-2 border-b border-outline-100", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
@@ -298,29 +352,60 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
         )
       )
     ] }),
-    /* @__PURE__ */ jsxs(
-      "p",
-      {
-        className: "font-inter-tight font-medium text-xs text-black-800 w-full",
-        style: { wordBreak: "break-word" },
-        children: [
-          compliance,
-          compliance && /* @__PURE__ */ jsxs(Fragment2, { children: [
-            /* @__PURE__ */ jsx2("br", {}),
-            /* @__PURE__ */ jsx2("br", {})
-          ] }),
-          COPYRIGHT
-        ]
-      }
-    )
+    /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-spacing-1.5 w-full", children: [
+      compliance && /* @__PURE__ */ jsxs(Fragment2, { children: [
+        /* @__PURE__ */ jsx2(
+          "p",
+          {
+            id: complianceId,
+            className: "font-inter-tight font-medium text-xs text-black-800 w-full overflow-hidden",
+            style: { wordBreak: "break-word", maxHeight: expanded ? "none" : "10rem" },
+            children: compliance
+          }
+        ),
+        /* @__PURE__ */ jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => setExpanded((e) => !e),
+            "aria-expanded": expanded,
+            "aria-controls": complianceId,
+            className: "flex items-center gap-2 self-start font-inter-tight font-medium text-s-med text-white-200 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+            children: [
+              expanded ? "Hide full text" : "See full text",
+              /* @__PURE__ */ jsx2(
+                "svg",
+                {
+                  width: "12",
+                  height: "12",
+                  viewBox: "0 0 12 12",
+                  fill: "none",
+                  "aria-hidden": "true",
+                  className: `shrink-0 transition-transform duration-300 ease-in-out ${expanded ? "rotate-45" : ""}`,
+                  children: /* @__PURE__ */ jsx2("path", { d: "M6 1V11M1 6H11", stroke: "currentColor", strokeLinecap: "round" })
+                }
+              )
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsx2(
+        "p",
+        {
+          className: "font-inter-tight font-medium text-xs text-black-800 w-full",
+          style: { wordBreak: "break-word" },
+          children: COPYRIGHT
+        }
+      )
+    ] })
   ] }) });
 }
 
 // design-system/src/components/Nav.tsx
-import { useState as useState2, useEffect } from "react";
+import { useState as useState3, useEffect } from "react";
 
 // design-system/src/components/btn-own.tsx
-import { useState } from "react";
+import { useState as useState2 } from "react";
 
 // design-system/src/lib/mixpanel.ts
 import mixpanel from "mixpanel-browser";
@@ -423,7 +508,7 @@ function BtnOwn({
   href,
   external = false
 }) {
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState2(false);
   const sizeStyle = size ? SIZE_STYLES[size] : {};
   const variantStyle = VARIANT_BASE[variant];
   const iconSrc = icon ?? "/icons/Key.svg";
@@ -528,7 +613,7 @@ var NAV_LINKS = [
 function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, hideBurger = false } = {}) {
   const cta = onCtaClick ?? (() => window.dispatchEvent(new CustomEvent("open-quiz")));
   const navLinks = links ?? NAV_LINKS;
-  const [menuOpen, setMenuOpen] = useState2(false);
+  const [menuOpen, setMenuOpen] = useState3(false);
   useEffect(() => {
     const close = () => setMenuOpen(false);
     window.addEventListener("popstate", close);
@@ -544,7 +629,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
-  const [hidden, setHidden] = useState2(false);
+  const [hidden, setHidden] = useState3(false);
   useEffect(() => {
     let lastY = window.scrollY;
     let downAccum = 0;
@@ -573,7 +658,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  const [mounted, setMounted] = useState2(false);
+  const [mounted, setMounted] = useState3(false);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -620,6 +705,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   BtnOwn,
                   {
                     size: "S",
+                    hideIcon: true,
                     className: hideBurger ? "hidden" : "hidden sm:flex lg:hidden",
                     onClick: cta,
                     children: ctaLabel
@@ -629,6 +715,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   BtnOwn,
                   {
                     size: "XS",
+                    hideIcon: true,
                     className: hideBurger ? "flex" : "hidden lg:flex",
                     onClick: cta,
                     children: ctaLabel
@@ -697,7 +784,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
 }
 
 // design-system/src/components/Quiz.tsx
-import { useState as useState5, useEffect as useEffect3 } from "react";
+import { useState as useState6, useEffect as useEffect3 } from "react";
 import { motion as motion3, AnimatePresence as AnimatePresence2 } from "framer-motion";
 
 // design-system/src/components/quiz-overlay.tsx
@@ -823,7 +910,7 @@ function QuizSuccessState({ heading, button, onClose, illustration }) {
 }
 
 // design-system/src/components/quiz-lead-form.tsx
-import { useRef as useRef3, useState as useState4 } from "react";
+import { useRef as useRef3, useState as useState5 } from "react";
 
 // design-system/src/components/form-field.tsx
 import { jsx as jsx7, jsxs as jsxs5 } from "react/jsx-runtime";
@@ -863,7 +950,7 @@ function Field({
 }
 
 // design-system/src/components/phone-field.tsx
-import { useEffect as useEffect2, useMemo, useRef as useRef2, useState as useState3 } from "react";
+import { useEffect as useEffect2, useMemo, useRef as useRef2, useState as useState4 } from "react";
 import { motion as motion2, AnimatePresence } from "framer-motion";
 import { jsx as jsx8, jsxs as jsxs6 } from "react/jsx-runtime";
 var COUNTRIES = [
@@ -1149,8 +1236,8 @@ function filterCountries(query) {
   return [...starts, ...contains];
 }
 function PhoneField({ value, onChange, countryCode, onCountryChange, error, height = "3.5rem", radius, placeholder = "Phone Number", hideCountryPicker = false }) {
-  const [open, setOpen] = useState3(false);
-  const [query, setQuery] = useState3("");
+  const [open, setOpen] = useState4(false);
+  const [query, setQuery] = useState4("");
   const ref = useRef2(null);
   const searchRef = useRef2(null);
   const touchedRef = useRef2(false);
@@ -1457,9 +1544,9 @@ async function submitLead(input) {
 // design-system/src/components/quiz-lead-form.tsx
 import { jsx as jsx9, jsxs as jsxs7 } from "react/jsx-runtime";
 function QuizLeadForm({ onClose, onSubmit }) {
-  const [data, setData] = useState4({ name: "", email: "", phone: "", countryCode: "us" });
-  const [errors, setErrors] = useState4({});
-  const [submitting, setSubmitting] = useState4(false);
+  const [data, setData] = useState5({ name: "", email: "", phone: "", countryCode: "us" });
+  const [errors, setErrors] = useState5({});
+  const [submitting, setSubmitting] = useState5(false);
   const startedRef = useRef3(false);
   function onFormFocus() {
     if (startedRef.current) return;
@@ -1578,7 +1665,7 @@ function QuizLeadForm({ onClose, onSubmit }) {
 // design-system/src/components/Quiz.tsx
 import { jsx as jsx10, jsxs as jsxs8 } from "react/jsx-runtime";
 function useIsBelowLg() {
-  const [below, setBelow] = useState5(() => window.innerWidth < 1024);
+  const [below, setBelow] = useState6(() => window.innerWidth < 1024);
   useEffect3(() => {
     const handler = () => setBelow(window.innerWidth < 1024);
     window.addEventListener("resize", handler);
@@ -1670,11 +1757,11 @@ function AnswerBtn({ opt, selected, onClick }) {
 }
 var Q1_PRINCIPAL_INDEX = 0;
 function Quiz({ onClose }) {
-  const [slide, setSlide] = useState5(0);
-  const [progress, setProgress] = useState5(0);
-  const [q1, setQ1] = useState5(null);
-  const [q2, setQ2] = useState5(null);
-  const [step, setStep] = useState5("questions");
+  const [slide, setSlide] = useState6(0);
+  const [progress, setProgress] = useState6(0);
+  const [q1, setQ1] = useState6(null);
+  const [q2, setQ2] = useState6(null);
+  const [step, setStep] = useState6("questions");
   const isBelowLg = useIsBelowLg();
   useEffect3(() => {
     if (step !== "questions") return;
@@ -2077,7 +2164,7 @@ function CtaForm({
 }
 
 // design-system/src/components/cta-form-newsletter.tsx
-import { useRef as useRef5, useState as useState6 } from "react";
+import { useRef as useRef5, useState as useState7 } from "react";
 import { jsx as jsx14, jsxs as jsxs12 } from "react/jsx-runtime";
 function CtaFormNewsletter({
   buttonLabel = "Subscribe",
@@ -2087,8 +2174,8 @@ function CtaFormNewsletter({
   onSubmit,
   className = ""
 }) {
-  const [email, setEmail] = useState6("");
-  const [submitted, setSubmitted] = useState6(false);
+  const [email, setEmail] = useState7("");
+  const [submitted, setSubmitted] = useState7(false);
   const startedRef = useRef5(false);
   function onFormFocus() {
     if (startedRef.current) return;
@@ -2152,12 +2239,12 @@ function CtaFormNewsletter({
 }
 
 // design-system/src/components/faq.tsx
-import { useState as useState7 } from "react";
+import { useState as useState8 } from "react";
 import { motion as motion5, AnimatePresence as AnimatePresence3 } from "framer-motion";
 import { jsx as jsx15, jsxs as jsxs13 } from "react/jsx-runtime";
 function FAQ({ items, className = "", variant = "default" }) {
   const article = variant === "article";
-  const [open, setOpen] = useState7(null);
+  const [open, setOpen] = useState8(null);
   return /* @__PURE__ */ jsx15("div", { className: `w-full flex flex-col ${className}`, children: items.map((item, i) => {
     const isOpen = open === i;
     return /* @__PURE__ */ jsxs13("div", { style: { borderBottom: "1px solid rgba(255,255,255,0.1)" }, children: [
@@ -2221,7 +2308,7 @@ function FAQ({ items, className = "", variant = "default" }) {
 
 // design-system/src/components/form.tsx
 import { AnimatePresence as AnimatePresence4, motion as motion6 } from "framer-motion";
-import { useEffect as useEffect5, useRef as useRef6, useState as useState8 } from "react";
+import { useEffect as useEffect5, useRef as useRef6, useState as useState9 } from "react";
 
 // design-system/src/lib/navigate.ts
 function navigate(path) {
@@ -2250,7 +2337,7 @@ function Dropdown({
   ariaLabel,
   background
 }) {
-  const [open, setOpen] = useState8(false);
+  const [open, setOpen] = useState9(false);
   const ref = useRef6(null);
   const selected = options.find((o) => o.value === value);
   const fill = background ?? "var(--black-500)";
@@ -2400,9 +2487,9 @@ function Form({
   subject = "Question from the website axevil.com",
   paddingClass = "padding-section-t6-b12"
 } = {}) {
-  const [data, setData] = useState8({ email: "", name: "", position: "", company: "", inquiry: "" });
-  const [errors, setErrors] = useState8({});
-  const [submitted, setSubmitted] = useState8(false);
+  const [data, setData] = useState9({ email: "", name: "", position: "", company: "", inquiry: "" });
+  const [errors, setErrors] = useState9({});
+  const [submitted, setSubmitted] = useState9(false);
   const startedRef = useRef6(false);
   function onFormFocus() {
     if (startedRef.current) return;
@@ -3847,7 +3934,7 @@ function ArticleHero({ data }) {
 }
 
 // design-system/src/components/rich-text/blocks/SubscribeBand.tsx
-import { useRef as useRef7, useState as useState9 } from "react";
+import { useRef as useRef7, useState as useState10 } from "react";
 
 // design-system/src/lib/attribution.ts
 var CLICK_ID_COOKIES = {
@@ -3978,9 +4065,9 @@ async function submitSubscription(input) {
 // design-system/src/components/rich-text/blocks/SubscribeBand.tsx
 import { jsx as jsx38, jsxs as jsxs33 } from "react/jsx-runtime";
 function SubscribeBand({ copy, source }) {
-  const [email, setEmail] = useState9("");
-  const [error, setError] = useState9();
-  const [submitted, setSubmitted] = useState9(false);
+  const [email, setEmail] = useState10("");
+  const [error, setError] = useState10();
+  const [submitted, setSubmitted] = useState10(false);
   const started = useRef7(false);
   function onFocus() {
     if (started.current) return;

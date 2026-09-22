@@ -184,17 +184,25 @@ var NAV_COLUMNS = [
   /* Invest column removed per client feedback 2026-07-08. The Platform column below was added
      2026-08-18 (technical-SEO brief §7.1): /retail-investors, /wealth-managers and the research
      hub had no inbound internal link anywhere on the site, so no crawler could reach them by
-     following links and no visitor could find them without the address. They are in the header
-     too now — this is the second path, and the one that survives a header redesign. */
+     following links and no visitor could find them without the address. (The line that used to
+     stand here said they were in the header too; NAV_LINKS has never carried them, and as of
+     22.09.2026 all but Market Intelligence are parked below anyway.) */
   { heading: "Platform", items: [
-    { label: "Market Intelligence", href: "/companies" },
-    { label: "For investors", href: "/retail-investors" },
-    { label: "For advisors", href: "/wealth-managers" },
-    { label: "Research", href: "/research" },
-    /* Educational cluster. Its spec is blunt about this: a page with no inbound links does not
-       count as published, and the site-wide footer is the one link that survives every later
-       redesign of the header. Points at the first article until the section index exists. */
-    { label: "Pre-IPO explained", href: "/learn/what-is-pre-ipo-investing" }
+    { label: "Market Intelligence", href: "/companies" }
+    // { label: 'For investors',       href: '/retail-investors' },
+    // { label: 'For advisors',        href: '/wealth-managers' },
+    /* The four entries above and below are PARKED, not deleted (client 22.09.2026 — «пока
+           скрываем страницы»). Every page still builds and still answers at its URL; they simply
+           have no footer entry while they are held back. Uncomment a line to restore it.
+    
+           Worth knowing before this sits here for months: this column was the whole reason the
+           four had a site-wide inbound link (added 2026-08-18, technical-SEO brief §7.1 — the
+           header carries none of them). With it gone, /retail-investors, /wealth-managers,
+           /research and /learn/what-is-pre-ipo-investing are reachable only from inside the Help
+           Center and from each other, so crawlers will treat them as orphans. That is the
+           intended trade while the pages are hidden. */
+    // { label: 'Research',            href: '/research' },
+    // { label: 'Pre-IPO explained',   href: '/learn/what-is-pre-ipo-investing' },
   ] },
   /* Help Center. Its own spec asks for a footer column with these four entries (ТЗ §1), and the
        same reasoning as the educational cluster above applies: the footer is the link that
@@ -261,12 +269,56 @@ var COMPLIANCE_BLOCKS = [
   ],
   ["The Company works exclusively with qualified investors who possess the necessary knowledge, experience, and financial capacity to assess risks and invest in high-risk instruments. This asset class involves elevated risks, volatility, and illiquidity. Investors must be prepared to accept the possibility of total loss of invested capital as well as lack of liquidity."],
   ["NOTIFICATION OF INVESTMENT RISKS AND STATUS OF THE COMPANY'S ACTIVITIES"],
-  // Per-jurisdiction notices (US/UAE/Italy/UK/Sweden/Switzerland) removed 2026-07-25 per
-  // client: they duplicate /disclosures (LegalDisclosures.tsx) — the footer keeps only
-  // this one general paragraph, everything else lives on that page.
+  // Per-jurisdiction notices (US/UAE/Italy/UK/Sweden/Switzerland) were dropped 2026-07-25 as a
+  // duplicate of /disclosures, then RESTORED 2026-09-22 per client: the footer carries the
+  // macro's full text again, collapsed to the macro's 10rem clamp behind "See full text"
+  // (Figma 3573:8347). /disclosures still hosts the same copy as a standalone page.
   [
+    "FOR ALL INVESTORS GENERALLY:",
     "The Company's activities focus on attracting investments in mature venture projects at the stage of sustainable business development, close to IPO exit.",
     "The Company does not guarantee profit generation. Investments involve risks, including the possibility of returns below expectations, which cannot be guaranteed."
+  ],
+  [
+    "NOTICE TO INVESTORS IN THE UNITED STATES:",
+    "\u2014 Investment interest offerings are conducted as private placements and are not subject to registration under US securities laws.",
+    "\u2014 Available only to accredited investors.",
+    "\u2014 Such securities may have transfer and resale restrictions.",
+    "\u2014 Investments carry a high level of financial risk.",
+    "\u2014 Independent legal, tax, and financial consultation is strongly recommended before making investment decisions."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED ARAB EMIRATES (UAE):",
+    "\u2014 Investment interest offerings are not public in the UAE.",
+    "\u2014 Directed only to qualified institutional investors.",
+    "\u2014 Interests are not registered or approved by the UAE Central Bank, SCA, or other regulators."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF ITALY:",
+    "\u2014 Interest offerings are not authorized by Italian regulators under Decreto Legislativo No. 58/1998.",
+    "\u2014 Interests may not be offered, distributed, or sold to the general public."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF THE UNITED KINGDOM:",
+    "\u2014 SPVs constitute unregulated collective investment schemes under FSMA 2000.",
+    '\u2014 Promotion is restricted and permitted only to "relevant persons" within the meaning of Financial Promotion Order 2005 (Articles 19(5), 49(2)(a)-(d)).',
+    "\u2014 Most standard protections of the UK regulatory system do not apply.",
+    "\u2014 Compensation under the UK Financial Services Compensation Scheme is not provided."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWEDEN:",
+    "\u2014 The partnership is not an investment fund under the Swedish Investment Funds Act (2004:46).",
+    "\u2014 The offering is not subject to registration under the Swedish Financial Instruments Trading Act (1991:980).",
+    "\u2014 Interests are not approved and will not be approved by the Swedish Financial Supervisory Authority."
+  ],
+  [
+    "NOTICE TO RESIDENTS OF SWITZERLAND:",
+    "\u2014 SPVs are not approved by FINMA as foreign collective investment schemes under Article 120 CISA. Interests may not be publicly offered or distributed in Switzerland.",
+    "\u2014 SPVs are not regulated by Swiss authorities.",
+    '\u2014 Interests are available only to "qualified investors" under CISA or a limited circle of persons without public offering.',
+    "\u2014 By continuing, you confirm that:",
+    "1. You qualify as an accredited/qualified investor under the laws of your jurisdiction (e.g., in the U.S. an annual income exceeding $200,000 individually or $300,000 jointly, or net worth above $1 million, excluding primary residence).",
+    "2. You are legally permitted to access this information in your jurisdiction.",
+    "3. You understand that private investments involve a high degree of risk, including the risk of total loss of capital."
   ]
 ];
 var COPYRIGHT = "Axevil Capital 2021\u22122026 \u2014 All Rights Reserved";
@@ -281,6 +333,8 @@ var DEFAULT_COMPLIANCE = /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_jsx
   ] }, li))
 ] }, bi)) });
 function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {}) {
+  const [expanded, setExpanded] = (0, import_react2.useState)(false);
+  const complianceId = (0, import_react2.useId)();
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("footer", { className: "w-full bg-page-bg border-t border-outline-100", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto w-full container-px max-w-content flex flex-col gap-spacing-2 py-10 md:py-12 lg:pt-16 lg:pb-12", children: [
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 md:gap-12 lg:gap-0 pb-spacing-2 border-b border-outline-100", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col shrink-0", style: { gap: "2rem" }, children: [
@@ -382,21 +436,52 @@ function Footer({ logoHref = "/", links, compliance = DEFAULT_COMPLIANCE } = {})
         )
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-      "p",
-      {
-        className: "font-inter-tight font-medium text-xs text-black-800 w-full",
-        style: { wordBreak: "break-word" },
-        children: [
-          compliance,
-          compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {})
-          ] }),
-          COPYRIGHT
-        ]
-      }
-    )
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-spacing-1.5 w-full", children: [
+      compliance && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          "p",
+          {
+            id: complianceId,
+            className: "font-inter-tight font-medium text-xs text-black-800 w-full overflow-hidden",
+            style: { wordBreak: "break-word", maxHeight: expanded ? "none" : "10rem" },
+            children: compliance
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+          "button",
+          {
+            type: "button",
+            onClick: () => setExpanded((e) => !e),
+            "aria-expanded": expanded,
+            "aria-controls": complianceId,
+            className: "flex items-center gap-2 self-start font-inter-tight font-medium text-s-med text-white-200 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
+            children: [
+              expanded ? "Hide full text" : "See full text",
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                "svg",
+                {
+                  width: "12",
+                  height: "12",
+                  viewBox: "0 0 12 12",
+                  fill: "none",
+                  "aria-hidden": "true",
+                  className: `shrink-0 transition-transform duration-300 ease-in-out ${expanded ? "rotate-45" : ""}`,
+                  children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("path", { d: "M6 1V11M1 6H11", stroke: "currentColor", strokeLinecap: "round" })
+                }
+              )
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+        "p",
+        {
+          className: "font-inter-tight font-medium text-xs text-black-800 w-full",
+          style: { wordBreak: "break-word" },
+          children: COPYRIGHT
+        }
+      )
+    ] })
   ] }) });
 }
 
@@ -704,6 +789,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   BtnOwn,
                   {
                     size: "S",
+                    hideIcon: true,
                     className: hideBurger ? "hidden" : "hidden sm:flex lg:hidden",
                     onClick: cta,
                     children: ctaLabel
@@ -713,6 +799,7 @@ function Nav({ links, logoHref = "/", ctaLabel = "Request access", onCtaClick, h
                   BtnOwn,
                   {
                     size: "XS",
+                    hideIcon: true,
                     className: hideBurger ? "flex" : "hidden lg:flex",
                     onClick: cta,
                     children: ctaLabel
