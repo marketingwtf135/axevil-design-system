@@ -93,6 +93,8 @@ interface BtnOwnProps {
     onClick?: () => void;
     hideIcon?: boolean;
     icon?: string;
+    /** Overrides the size-derived icon box (e.g. the /contacts submit's 18px mail, 25.09.2026). */
+    iconSize?: string;
     size?: 'M' | 'S' | 'XS';
     /** primary: white bg + dark text · secondary: black-400 bg + white text, hover → black-600 */
     variant?: Variant;
@@ -112,7 +114,7 @@ interface BtnOwnProps {
     /** External target. Adds `rel="noopener noreferrer"`. Only meaningful with `href`. */
     external?: boolean;
 }
-declare function BtnOwn({ children, className, style, type, onClick, hideIcon, icon, size, variant, disabled, href, external, }: BtnOwnProps): react_jsx_runtime.JSX.Element;
+declare function BtnOwn({ children, className, style, type, onClick, hideIcon, icon, iconSize: iconSizeProp, size, variant, disabled, href, external, }: BtnOwnProps): react_jsx_runtime.JSX.Element;
 
 /**
  * <CtaForm> — Section CTA block from Figma 1225:5717 (Wealth Managers final block).

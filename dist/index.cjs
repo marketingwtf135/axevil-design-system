@@ -587,6 +587,7 @@ function BtnOwn({
   onClick,
   hideIcon = false,
   icon,
+  iconSize: iconSizeProp,
   size,
   variant = "primary",
   disabled = false,
@@ -597,7 +598,7 @@ function BtnOwn({
   const sizeStyle = size ? SIZE_STYLES[size] : {};
   const variantStyle = VARIANT_BASE[variant];
   const iconSrc = icon ?? "/icons/Key.svg";
-  const iconSize = size === "XS" ? "0.875rem" : size === "S" ? "1rem" : "1.25rem";
+  const iconSize = iconSizeProp ?? (size === "XS" ? "0.875rem" : size === "S" ? "1rem" : "1.25rem");
   const iconFilter = variant === "primary" ? "brightness(0)" : "none";
   const hoverStyle = variant === "secondary" ? { background: hovered ? BLACK_600 : BLACK_400, transition: "background-color 0.5s ease-in-out" } : {};
   const hoverClass = variant === "primary" ? "hover:shadow-[0_0_24px_rgba(255,255,255,0.25)] hover:scale-[1.02]" : "";
@@ -2438,7 +2439,10 @@ function Dropdown({
   options,
   placeholder,
   ariaLabel,
-  background
+  background,
+  height = "3.75rem",
+  radius = "1rem",
+  placeholderColor = "rgba(255,255,255,0.35)"
 }) {
   const [open, setOpen] = (0, import_react11.useState)(false);
   const ref = (0, import_react11.useRef)(null);
@@ -2471,8 +2475,8 @@ function Dropdown({
         className: "flex items-center justify-between cursor-pointer select-none w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
         style: {
           background: fill,
-          height: "3.75rem",
-          borderRadius: "1rem",
+          height,
+          borderRadius: radius,
           padding: "0 1rem",
           border: "none"
         },
@@ -2481,7 +2485,7 @@ function Dropdown({
             "span",
             {
               className: "font-inter-tight font-medium text-m",
-              style: { color: selected ? "var(--white-100)" : "rgba(255,255,255,0.35)" },
+              style: { color: selected ? "var(--white-100)" : placeholderColor },
               children: selected ? selected.label : placeholder
             }
           ),
@@ -2514,7 +2518,7 @@ function Dropdown({
         className: "absolute left-0 right-0 z-[1000] overflow-hidden",
         style: {
           marginTop: "0.25rem",
-          borderRadius: "1rem",
+          borderRadius: radius,
           background: fill
         },
         children: options.map((opt, i) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
@@ -2548,18 +2552,28 @@ function Dropdown({
     ) })
   ] });
 }
-function InquiryDropdown({ value, onChange }) {
+function InquiryDropdown({
+  value,
+  onChange,
+  grid = false
+}) {
   return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
     Dropdown,
     {
       value,
       onChange,
       options: INQUIRY_OPTIONS,
-      placeholder: "Inquiry type (optional)",
-      ariaLabel: "Inquiry type"
+      placeholder: grid ? "Inquiry type" : "Inquiry type (optional)",
+      ariaLabel: "Inquiry type",
+      ...grid ? GRID_CONTROL : {}
     }
   );
 }
+var GRID_CONTROL = {
+  height: "3.625rem",
+  radius: "var(--rounded-0_75)",
+  placeholderColor: "var(--white-400)"
+};
 function SuccessState() {
   return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
     import_framer_motion6.motion.div,
@@ -2580,16 +2594,13 @@ function SuccessState() {
     }
   );
 }
-function Form({
-  number = "02",
-  label = "Leave a request",
-  title = "Send us a note.",
-  subtitle = "Tell us briefly what you need. We will reply within 24 hours.",
+function ContactRequestForm({
+  layout = "stack",
   recipient = "info@axevil.com",
   cc = "support@axevil.com",
-  subject = "Question from the website axevil.com",
-  paddingClass = "padding-section-t6-b12"
-} = {}) {
+  subject = "Question from the website axevil.com"
+}) {
+  const grid = layout === "grid";
   const [data, setData] = (0, import_react11.useState)({ email: "", name: "", position: "", company: "", inquiry: "" });
   const [errors, setErrors] = (0, import_react11.useState)({});
   const [submitted, setSubmitted] = (0, import_react11.useState)(false);
@@ -2642,6 +2653,136 @@ Inquiry type: ${inquiryLabel}
     window.location.href = `mailto:${recipient}?${params}`;
     setSubmitted(true);
   }
+  if (submitted) return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SuccessState, {});
+  const fieldProps = grid ? { height: GRID_CONTROL.height, radius: GRID_CONTROL.radius } : {};
+  const inputCls = (hasError) => grid ? inputClass(hasError).replace("placeholder:text-[rgba(255,255,255,0.35)]", "placeholder:text-white-400") : inputClass(hasError);
+  const half = grid ? "flex-1 min-w-0" : void 0;
+  const email = /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { ...fieldProps, className: half, error: errors.email, input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    "input",
+    {
+      type: "email",
+      required: true,
+      autoComplete: "email",
+      inputMode: "email",
+      "aria-label": "Email address",
+      placeholder: "your@email.com",
+      value: data.email,
+      onChange: (e) => setData((f) => ({ ...f, email: e.target.value })),
+      className: inputCls(!!errors.email)
+    }
+  ) });
+  const name = /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { ...fieldProps, className: half, error: errors.name, input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    "input",
+    {
+      type: "text",
+      required: true,
+      autoComplete: "name",
+      "aria-label": "Full name",
+      placeholder: "Full name",
+      value: data.name,
+      onChange: (e) => setData((f) => ({ ...f, name: e.target.value })),
+      className: inputCls(!!errors.name)
+    }
+  ) });
+  const position = /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { ...fieldProps, input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    "input",
+    {
+      type: "text",
+      autoComplete: "organization-title",
+      "aria-label": "Position",
+      placeholder: "Position",
+      value: data.position,
+      onChange: (e) => setData((f) => ({ ...f, position: e.target.value })),
+      className: inputCls(false)
+    }
+  ) });
+  const companyAndInquiry = /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: `flex flex-col sm:flex-row w-full ${grid ? "sm:items-start" : ""}`, style: { gap: "0.5rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { ...fieldProps, className: "flex-1 min-w-0", input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      "input",
+      {
+        type: "text",
+        autoComplete: "organization",
+        "aria-label": "Company",
+        placeholder: "Company",
+        value: data.company,
+        onChange: (e) => setData((f) => ({ ...f, company: e.target.value })),
+        className: inputCls(false)
+      }
+    ) }),
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "flex-1 min-w-0", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      InquiryDropdown,
+      {
+        grid,
+        value: data.inquiry,
+        onChange: (v) => setData((f) => ({ ...f, inquiry: v }))
+      }
+    ) })
+  ] });
+  const submit = /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    BtnOwn,
+    {
+      type: "submit",
+      icon: "/icons/Email.svg",
+      iconSize: grid ? "1.125rem" : "1.5rem",
+      className: "w-full",
+      style: grid ? { height: "3.625rem", padding: "1.25rem 1.5rem", borderRadius: "var(--rounded-0_75)" } : { height: "3.5rem", padding: "0.8125rem 1.5rem", borderRadius: "1rem", marginTop: "0.5rem" },
+      children: grid ? "Leave a Request" : "Leave a request"
+    }
+  );
+  const disclaimer = /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+    "p",
+    {
+      className: `font-inter-tight font-medium w-full ${grid ? "text-left" : "text-center"}`,
+      style: {
+        fontSize: "var(--font-xs)",
+        lineHeight: 1.3,
+        color: "var(--white-400)",
+        margin: 0,
+        marginTop: grid ? 0 : "0.5rem"
+      },
+      children: [
+        "We reply within 24 hours. By submitting this form, you agree that Axevil Capital, LLC will process the information you provide to respond to your enquiry, as described in the",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
+        "."
+      ]
+    }
+  );
+  if (grid) {
+    return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.75rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "flex flex-col w-full", style: { gap: "1.25rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "flex flex-col w-full", style: { gap: "0.75rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "flex flex-col sm:flex-row sm:items-start w-full", style: { gap: "0.5rem" }, children: [
+            email,
+            name
+          ] }),
+          companyAndInquiry,
+          position
+        ] }),
+        submit
+      ] }),
+      disclaimer
+    ] });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
+    email,
+    name,
+    position,
+    companyAndInquiry,
+    submit,
+    disclaimer
+  ] });
+}
+function Form({
+  number = "02",
+  label = "Leave a request",
+  title = "Send us a note.",
+  subtitle = "Tell us briefly what you need. We will reply within 24 hours.",
+  recipient = "info@axevil.com",
+  cc = "support@axevil.com",
+  subject = "Question from the website axevil.com",
+  paddingClass = "padding-section-t6-b12"
+} = {}) {
   return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
     "section",
     {
@@ -2693,119 +2834,7 @@ Inquiry type: ${inquiryLabel}
                 )
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: submitted ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SuccessState, {}) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { onSubmit: handleSubmit, onFocus: onFormFocus, noValidate: true, className: "flex flex-col w-full", style: { gap: "0.5rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { error: errors.email, input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                "input",
-                {
-                  type: "email",
-                  required: true,
-                  autoComplete: "email",
-                  inputMode: "email",
-                  "aria-label": "Email address",
-                  placeholder: "your@email.com",
-                  value: data.email,
-                  onChange: (e) => setData((f) => ({ ...f, email: e.target.value })),
-                  className: inputClass(!!errors.email)
-                }
-              ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { error: errors.name, input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                "input",
-                {
-                  type: "text",
-                  required: true,
-                  autoComplete: "name",
-                  "aria-label": "Full name",
-                  placeholder: "Full name",
-                  value: data.name,
-                  onChange: (e) => setData((f) => ({ ...f, name: e.target.value })),
-                  className: inputClass(!!errors.name)
-                }
-              ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                "input",
-                {
-                  type: "text",
-                  autoComplete: "organization-title",
-                  "aria-label": "Position",
-                  placeholder: "Position",
-                  value: data.position,
-                  onChange: (e) => setData((f) => ({ ...f, position: e.target.value })),
-                  className: inputClass(false)
-                }
-              ) }),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "flex flex-col sm:flex-row w-full", style: { gap: "0.5rem" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Field, { className: "flex-1", input: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                  "input",
-                  {
-                    type: "text",
-                    autoComplete: "organization",
-                    "aria-label": "Company",
-                    placeholder: "Company",
-                    value: data.company,
-                    onChange: (e) => setData((f) => ({ ...f, company: e.target.value })),
-                    className: inputClass(false)
-                  }
-                ) }),
-                /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "flex-1", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                  InquiryDropdown,
-                  {
-                    value: data.inquiry,
-                    onChange: (v) => setData((f) => ({ ...f, inquiry: v }))
-                  }
-                ) })
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
-                "button",
-                {
-                  type: "submit",
-                  className: "btn-own inline-flex items-center justify-center font-inter-tight font-semibold transition-all duration-300 ease-out hover:shadow-[0_0_24px_rgba(255,255,255,0.25)] hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white",
-                  style: {
-                    gap: "0.5rem",
-                    height: "3.5rem",
-                    padding: "0.8125rem 1.5rem",
-                    borderRadius: "1rem",
-                    fontSize: "var(--font-btn)",
-                    fontWeight: 600,
-                    background: "var(--white-100, #fff)",
-                    color: "var(--black-600, #202020)",
-                    border: "none",
-                    marginTop: "0.5rem"
-                  },
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                      "img",
-                      {
-                        width: 24,
-                        height: 24,
-                        src: "/icons/Email.svg",
-                        alt: "",
-                        "aria-hidden": "true",
-                        style: { width: "1.5rem", height: "1.5rem", filter: "brightness(0)" }
-                      }
-                    ),
-                    "Leave a request"
-                  ]
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
-                "p",
-                {
-                  className: "font-inter-tight font-medium text-center w-full",
-                  style: {
-                    fontSize: "var(--font-xs)",
-                    lineHeight: 1.3,
-                    color: "var(--white-400)",
-                    marginTop: "0.5rem"
-                  },
-                  children: [
-                    "We reply within 24 hours. By submitting this form, you agree that Axevil Capital, LLC will process the information you provide to respond to your enquiry, as described in the",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("a", { href: "/privacy", className: "underline hover:text-white transition-colors", children: "Privacy Policy" }),
-                    "."
-                  ]
-                }
-              )
-            ] }) })
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "flex flex-col items-center w-full", style: { maxWidth: "37.5rem", gap: "0.75rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ContactRequestForm, { layout: "stack", recipient, cc, subject }) })
           ]
         }
       )
