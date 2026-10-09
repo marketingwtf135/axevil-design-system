@@ -410,9 +410,46 @@ interface SearchInputProps {
     /** Accessible name. The field has no visible label, so this is the only one a reader gets. */
     ariaLabel: string;
     className?: string;
+    /** Merged onto the wrapper — e.g. a `maxWidth` where the field sits centred in a hero. */
+    style?: CSSProperties;
     autoFocus?: boolean;
 }
-declare function SearchInput({ value, onChange, placeholder, ariaLabel, className, autoFocus, }: SearchInputProps): react_jsx_runtime.JSX.Element;
+declare function SearchInput({ value, onChange, placeholder, ariaLabel, className, style, autoFocus, }: SearchInputProps): react_jsx_runtime.JSX.Element;
+
+/**
+ * SearchStroke — the Help Center's search line (Figma FilterBar › SearchInput, 3649:5595): a
+ * 344px row on a single 1px black-600 bottom stroke, the label in 14/500 white-400 on the left,
+ * the ⌘K chip and an 18px magnifier on the right.
+ *
+ * EXTRACTED 02.10.2026 from the trigger inside components/help/HelpSearch.tsx (client: «search
+ * stroke из help center возьми и поставь в learn. Занеси в компонент и назови search-stroke»).
+ * One look, two behaviours:
+ *   • `onOpen`           — a button: the Help Center opens its ⌘K dialog from it;
+ *   • `value`/`onChange` — a field: /learn filters its grid as you type, and ⌘K / Ctrl-K puts
+ *                          the caret in it.
+ * SearchInput (search-input.tsx) stays for the full-width filter fields (/companies); this is the
+ * compact hero search line.
+ */
+interface BaseProps {
+    /** What is being searched — the button text, or the field's placeholder. */
+    label: string;
+    /** Accessible name; defaults to `label`. */
+    ariaLabel?: string;
+    /** Show the ⌘K chip (and, in field mode, bind the shortcut). Default true. */
+    shortcut?: boolean;
+    className?: string;
+    style?: CSSProperties;
+}
+type SearchStrokeProps = (BaseProps & {
+    onOpen: () => void;
+    value?: never;
+    onChange?: never;
+}) | (BaseProps & {
+    value: string;
+    onChange: (v: string) => void;
+    onOpen?: never;
+});
+declare function SearchStroke(props: SearchStrokeProps): react_jsx_runtime.JSX.Element;
 
 interface SectionHeadingProps {
     /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */
@@ -600,6 +637,15 @@ interface FaqEntry {
     q: string;
     a: string;
 }
+/**
+ * A list item is a run of text, or a titled point: "Sourcing — a holder willing to sell…". The
+ * titled shape is what the help centre's steps and "what the structure buys you" lists actually
+ * are; before 2026-09-24 the title was the first sentence of a plain string and drew nothing.
+ */
+type ListItem = Inline | {
+    title: string;
+    body: Inline;
+};
 type RichTextBlock = 
 /** The short answer — the largest body type on the page, set once at the top (Figma "answer"). */
 {
@@ -669,19 +715,21 @@ type RichTextBlock =
     content: Inline;
 } | {
     type: 'callout';
-    tone?: 'note' | 'warning' | 'positive';
+    tone?: 'note' | 'warning' | 'danger';
     title?: string;
     content: Inline;
 } | {
     type: 'list';
     ordered?: boolean;
-    items: Inline[];
+    items: ListItem[];
 } | {
     type: 'quote';
     content: Inline;
     cite?: string;
     role?: string;
-} | {
+}
+/** Label / value rows. Renders as the glossary's definition list, without term anchors. */
+ | {
     type: 'keyValue';
     rows: {
         key: string;
@@ -689,6 +737,15 @@ type RichTextBlock =
     }[];
 } | {
     type: 'divider';
+}
+/** Next-step card — Figma "NextCard" (3246:4137). One per article, at the end; the whole card is the link. */
+ | {
+    type: 'next';
+    eyebrow: string;
+    title: string;
+    body: string;
+    href: string;
+    cta: string;
 }
 /**
  * Escape hatch for a bespoke figure (an SVG scheme, a timeline) that is code, not content.
@@ -698,7 +755,27 @@ type RichTextBlock =
     type: 'custom';
     id: string;
     wide?: boolean;
+}
+/**
+ * Interface screens on one panel, Linear-style: a phone screen in a hairline outline (no
+ * device body), a page of our site in a window outline. `flow` puts an arrow between the
+ * screens of one process — one process is one panel, never split. `title`/`text` sit at the
+ * bottom of the panel. Images come from scripts/help-screens.mjs.
+ */
+ | {
+    type: 'screens';
+    items: ScreenShot[];
+    flow?: boolean;
+    title?: string;
+    text?: string;
 };
+interface ScreenShot {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    caption?: string;
+}
 interface RichTextSection {
     /** Anchor id — the chapter navigation and scroll-spy key on it. */
     id: string;
@@ -880,9 +957,16 @@ declare function DealSpotlight({ logo, company, round, statement, figures, link,
  * parser and a screen reader get the term/definition pairing.
  *
  * Under 768px the term sits above its definition.
+ *
+ * Also the rendering behind the `keyValue` block (Extras.tsx): the same list without the
+ * `term-…` anchors, since "Signing" or "On entry" is a label, not a term anyone links to. The
+ * definition accepts inline marks for that caller; the glossary block's own entries stay plain.
  */
-declare function Glossary({ entries }: {
-    entries: GlossaryEntry[];
+declare function Glossary({ entries, anchors, }: {
+    entries: (Omit<GlossaryEntry, 'definition'> & {
+        definition: Inline;
+    })[];
+    anchors?: boolean;
 }): react_jsx_runtime.JSX.Element;
 
 declare function SourcesTable({ rows }: {
@@ -965,25 +1049,42 @@ declare function PublicationGrid({ items, variant, }: {
 }): react_jsx_runtime.JSX.Element;
 
 /**
- * Elements the macro does not draw, built in the same register so a page can use them without
- * looking like it left the template: a pulled statement, a callout, lists, a quotation, a
- * key/value strip, a rule. Each is one filled surface or one hairline — no strokes around
- * wide content, the rule every other block here follows.
+ * Elements outside the original "Template-report" macro. The help centre needed them before
+ * they were designed — 21 lists, 13 key/value blocks, 11 takeaways and 10 callouts across the
+ * sixteen launch articles (audit 2026-09-24) — and the client drew them the same day:
+ *
+ *   · Takeaway  → "KeyStatement" (3649:6156): a WHITE card, black statement, "Key point" eyebrow.
+ *                 The inverted panel is the one place the template leaves the dark ground.
+ *   · List      → ordered: "TableSources" (3649:6024) rows — № | title | body on hairlines, no
+ *                 header band; unordered: a dot and the text, as the wealth-managers accordion
+ *                 lists its features.
+ *   · KeyValue  → "Glossary" (3655:6160): the definition list, without the term anchors.
+ *   · Callout   → kept, dot colours from the status badges (open / soon / closed).
+ *   · Next      → "NextCard" (3246:4137), in ./NextCard.tsx.
+ *
+ * Body copy everywhere is BODY — `text-paragraph` at 1rem (client, same day). Each block is one
+ * filled surface or one hairline — no strokes around wide content, the rule the rest follow.
  */
-/** The one sentence a section is really about, pulled out of the prose. */
+/** The one sentence a section is really about — Figma "KeyStatement" (3649:6156). */
 declare function Takeaway({ content }: {
     content: Inline;
 }): react_jsx_runtime.JSX.Element;
-/** A note beside the prose — a caveat, a definition, a warning. */
+/** A note beside the prose — where to look (note), a caveat not to skip (warning), a hard stop (danger). */
 declare function Callout({ tone, title, content }: {
-    tone?: 'note' | 'warning' | 'positive';
+    tone?: 'note' | 'warning' | 'danger';
     title?: string;
     content: Inline;
 }): react_jsx_runtime.JSX.Element;
-/** Bulleted or numbered. Numbers are two-digit and dim, the way the webinar landings count. */
+/**
+ * Ordered — hairline rows on the "TableSources" grid (3649:6024): a dim two-digit number in a
+ * 3rem column, the item's title in a 12.5rem column where the list has titles, the body beside
+ * it. Under 768px the title sits above its body, the way the glossary folds.
+ *
+ * Unordered — a dot and the text; a titled point stacks its title over the body.
+ */
 declare function List({ ordered, items }: {
     ordered?: boolean;
-    items: Inline[];
+    items: ListItem[];
 }): react_jsx_runtime.JSX.Element;
 /** A quotation with attribution. Upright — there is no italic face — so weight and colour do the work. */
 declare function Quote({ content, cite, role }: {
@@ -991,7 +1092,12 @@ declare function Quote({ content, cite, role }: {
     cite?: string;
     role?: string;
 }): react_jsx_runtime.JSX.Element;
-/** Label / value rows — terms of a round, the parameters of a structure. */
+/**
+ * Label / value rows — the four lines of a fee structure, the three routes to an exit, what a
+ * document has to be read for. The same definition list as the glossary, without the term
+ * anchors: the label sits in the fixed column, the value beside it, left-aligned, a hairline
+ * between rows. See the note at the top of the file.
+ */
 declare function KeyValue({ rows }: {
     rows: {
         key: string;
@@ -1066,4 +1172,4 @@ declare const PRELOAD_FADE_IN_VIEW_MOTION: {
     };
 };
 
-export { type ArticleAuthor, ArticleHero, type ArticleHeroData, BgFeatures, BtnOwn, COUNTRIES, Callout, type Crumb, CtaForm, CtaFormNewsletter, DataTable, type DealFigure, DealSpotlight, DescTag, Divider, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FactGrid, type FactItem, FadeIn, type FaqEntry, Figure, Footer, Form, Glossary, type GlossaryEntry, HeroEyebrow, type IllCard, IllCards, type Inline, type InlineNode, InlineText, KeyValue, Lead, LinkblockCard, type LinkblockCardProps, type LinkblockItem, List, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, Paragraph, PhoneField, type PublicationCard, PublicationGrid, Quiz, Quote, RichText, type RichTextBlock, type RichTextDocument, Section as RichTextSection, SearchInput, SectionHeading, SliderCard, type SourceRow, SourcesTable, type StatusKind, StatusPill, SubHeading, SubscribeBand, type SubscribeCopy, type TableCell, type TableColumn, type TableRow, Tag, type TagSize, type TagVariant, Takeaway, TrendPill };
+export { type ArticleAuthor, ArticleHero, type ArticleHeroData, BgFeatures, BtnOwn, COUNTRIES, Callout, type Crumb, CtaForm, CtaFormNewsletter, DataTable, type DealFigure, DealSpotlight, DescTag, Divider, type DropdownItem, HeroEyebrow as DynamicGreenBadge, FAQ, type FAQItem, FactGrid, type FactItem, FadeIn, type FaqEntry, Figure, Footer, Form, Glossary, type GlossaryEntry, HeroEyebrow, type IllCard, IllCards, type Inline, type InlineNode, InlineText, KeyValue, Lead, LinkblockCard, type LinkblockCardProps, type LinkblockItem, List, Nav, NavDropdown, PRELOAD_DEVICES_MOTION, PRELOAD_FADE_IN_VIEW_MOTION, PRELOAD_IN_VIEW_MOTION, PageEntry, Paragraph, PhoneField, type PublicationCard, PublicationGrid, Quiz, Quote, RichText, type RichTextBlock, type RichTextDocument, Section as RichTextSection, SearchInput, SearchStroke, SectionHeading, SliderCard, type SourceRow, SourcesTable, type StatusKind, StatusPill, SubHeading, SubscribeBand, type SubscribeCopy, type TableCell, type TableColumn, type TableRow, Tag, type TagSize, type TagVariant, Takeaway, TrendPill };
