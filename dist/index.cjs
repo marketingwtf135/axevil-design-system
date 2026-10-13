@@ -2195,7 +2195,7 @@ function DescTag({ number, label, className = "" }) {
     {
       className: `flex gap-2 items-center font-inter-tight font-medium text-m text-white-400 ${className}`,
       children: [
-        number !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "text-m opacity-50", children: number }),
+        number === "auto" ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "text-m opacity-50 desc-tag-auto" }) : number !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "text-m opacity-50", children: number }),
         /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "text-m opacity-80", children: label })
       ]
     }

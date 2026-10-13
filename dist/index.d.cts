@@ -188,8 +188,13 @@ interface DescTagProps {
      *
      * Optional since 14.09.2026: a section of a numbered document has one, a standalone block of
      * page chrome does not, and inventing a sequence for the latter reads as a broken reference.
+     *
+     * `"auto"` (12.10.2026) — the number is the section's position among the numbered sections
+     * that actually rendered on the page, counted by the `section-number` CSS counter that the
+     * page root starts with `.section-numbering` (packages/tokens/tokens.css). Prefer it to a
+     * typed number: a typed one drifts the moment a section is added, moved or renders nothing.
      */
-    number?: string | number;
+    number?: string | number | 'auto';
     /** The label text — rendered with higher opacity */
     label: string;
     /** Optional alignment class override (e.g. "items-center" for centered headings) */
@@ -454,8 +459,10 @@ type SearchStrokeProps = (BaseProps & {
 declare function SearchStroke(props: SearchStrokeProps): react_jsx_runtime.JSX.Element;
 
 interface SectionHeadingProps {
-    /** Eyebrow number (e.g. "4.0"). Pass with `label` to render DescTag. */
-    number?: string | number;
+    /** Eyebrow number. Pass `"auto"` — the number is then counted from the blocks that actually
+     *  rendered on the page (DescTag `number="auto"` + `.section-numbering` on the page root), never
+     *  typed by hand (owner, 12–13.10.2026). A typed "4.0" is legacy and drifts from the order. */
+    number?: string | number | 'auto';
     /** Eyebrow label (e.g. "Selected Portfolio Companies"). Required with `number`. */
     label?: string;
     /** Section title — rendered as h2 with gradient text. Can be string or JSX (for <br/> support). */

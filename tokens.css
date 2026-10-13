@@ -325,3 +325,16 @@
   --color-bg-card:        var(--black-300);
   --color-border-default: var(--black-500);
 }
+
+/* -- Section eyebrow numbers: derived, never typed --
+   `<DescTag number="auto">` prints the next value of this counter, and the page root carries
+   `.section-numbering` to start it. The count is taken from what actually RENDERED: a section
+   that returns null (no data for this company) or sits in a display:none variant takes no
+   number, so the sequence never shows a hole (client 12.10.2026 — /company/<slug> read 2.0,
+   then 6.0, because the missing blocks still held their numbers). Hardcoded "N.0" strings
+   drifted from the render order every time a section was added, moved or emptied.
+   A page whose first numbered block is not 1.0 sets `counterReset: 'section-number N'` on the
+   root inline, where N = its first number minus one. */
+.section-numbering { counter-reset: section-number; }
+.desc-tag-auto { counter-increment: section-number; }
+.desc-tag-auto::before { content: counter(section-number) ".0"; }
