@@ -701,6 +701,7 @@ type RichTextBlock =
     type: 'sources';
     rows: SourceRow[];
     wide?: boolean;
+    headers?: readonly [string, string, string, string];
 } | {
     type: 'table';
     columns: TableColumn[];
@@ -722,6 +723,7 @@ type RichTextBlock =
  | {
     type: 'takeaway';
     content: Inline;
+    label?: string;
 } | {
     type: 'callout';
     tone?: 'note' | 'warning' | 'danger';
@@ -788,8 +790,10 @@ interface ScreenShot {
 interface RichTextSection {
     /** Anchor id — the chapter navigation and scroll-spy key on it. */
     id: string;
-    /** "1.0", "2.0" — the DescTag number. */
-    number: string;
+    /** @deprecated Ignored since 12.10.2026 — RichText numbers a section by its position
+     *  (`sectionNumber`), so a typed value can no longer drift from the order. Kept optional so the
+     *  existing data files still type-check. */
+    number?: string;
     /** The DescTag label, e.g. "The structure". */
     label: string;
     /** Section h2. The opening "short answer" section has none, as in the macro. */
@@ -845,8 +849,9 @@ interface RichTextProps {
     after?: ReactNode;
 }
 declare function RichText({ document, renderers, after }: RichTextProps): react_jsx_runtime.JSX.Element;
-declare function Section({ section, renderers }: {
+declare function Section({ section, index, renderers }: {
     section: RichTextSection;
+    index: number;
     renderers?: RichTextProps['renderers'];
 }): react_jsx_runtime.JSX.Element;
 
@@ -978,8 +983,9 @@ declare function Glossary({ entries, anchors, }: {
     anchors?: boolean;
 }): react_jsx_runtime.JSX.Element;
 
-declare function SourcesTable({ rows }: {
+declare function SourcesTable({ rows, headers }: {
     rows: SourceRow[];
+    headers?: readonly [string, string, string, string];
 }): react_jsx_runtime.JSX.Element;
 
 /**
@@ -1075,8 +1081,9 @@ declare function PublicationGrid({ items, variant, }: {
  * filled surface or one hairline — no strokes around wide content, the rule the rest follow.
  */
 /** The one sentence a section is really about — Figma "KeyStatement" (3649:6156). */
-declare function Takeaway({ content }: {
+declare function Takeaway({ content, label }: {
     content: Inline;
+    label?: string;
 }): react_jsx_runtime.JSX.Element;
 /** A note beside the prose — where to look (note), a caveat not to skip (warning), a hard stop (danger). */
 declare function Callout({ tone, title, content }: {

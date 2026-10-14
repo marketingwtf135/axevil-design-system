@@ -3922,7 +3922,8 @@ var COLS = "3rem minmax(9rem, 12.5rem) minmax(0, 1fr) 7.5rem";
 function Publisher({ s }) {
   return /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("a", { href: s.url, target: "_blank", rel: "noopener noreferrer", className: "hover:text-white transition-colors underline decoration-white/20 hover:decoration-white", children: s.publisher });
 }
-function SourcesTable({ rows }) {
+var DEFAULT_HEADERS = ["\u2116", "Source", "What it supports", "Date"];
+function SourcesTable({ rows, headers = DEFAULT_HEADERS }) {
   return /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { className: "w-full", children: [
     /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { className: "hidden md:block divide-y divide-border-subtle", children: [
       /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)(
@@ -3931,10 +3932,10 @@ function SourcesTable({ rows }) {
           className: "grid font-inter-tight text-white",
           style: { ...ROW_HEAD, gridTemplateColumns: COLS, columnGap: "1rem", paddingBlock: "0.75rem" },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: "\u2116" }),
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: "Source" }),
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: "What it supports" }),
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: "Date" })
+            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: headers[0] }),
+            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: headers[1] }),
+            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: headers[2] }),
+            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("span", { children: headers[3] })
           ]
         }
       ),
@@ -4044,9 +4045,9 @@ var isTitledItem = (item) => !Array.isArray(item) && typeof item === "object" &&
 
 // design-system/src/components/rich-text/blocks/Extras.tsx
 var import_jsx_runtime37 = require("react/jsx-runtime");
-function Takeaway({ content }) {
+function Takeaway({ content, label = "Key point" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime37.jsxs)("div", { className: "flex flex-col w-full bg-white rounded-1", style: { padding: "1.5rem", gap: "0.75rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("span", { className: "font-inter-tight text-white-400", style: EYEBROW, children: "Key point" }),
+    /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("span", { className: "font-inter-tight text-black-100", style: { ...EYEBROW, opacity: 0.55 }, children: label }),
     /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("p", { className: "font-inter-tight text-black", style: { ...KEY_STATEMENT, margin: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(InlineText, { content }) })
   ] });
 }
@@ -4163,13 +4164,16 @@ function RichText({ document: document2, renderers, after }) {
       className: "w-full bg-page-bg ps-t6-b12 flex flex-col items-center",
       style: { paddingInline: "var(--padding-global)", gap: "clamp(3rem, 6vw, 5rem)" },
       children: [
-        document2.sections.map((s) => /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(Section, { section: s, renderers }, s.id)),
+        document2.sections.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(Section, { section: s, index: i, renderers }, s.id)),
         after && /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("div", { className: "w-full mx-auto", style: { maxWidth: ARTICLE_MEASURE }, children: after })
       ]
     }
   );
 }
-function Section({ section, renderers }) {
+function sectionNumber(index) {
+  return `${index + 1}.0`;
+}
+function Section({ section, index, renderers }) {
   return /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)(
     "section",
     {
@@ -4178,7 +4182,7 @@ function Section({ section, renderers }) {
       style: { maxWidth: ARTICLE_MEASURE, scrollMarginTop: SCROLL_MARGIN },
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("div", { className: "flex flex-col w-full", style: { gap: "1.5rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(DescTag, { number: section.number, label: section.label }),
+          /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(DescTag, { number: sectionNumber(index), label: section.label }),
           section.title && /* The template's own h2 (36/600/120%/−0.02em), not `text-h3` — see ./typography.ts. */
           /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { className: "font-inter-tight text-white w-full", style: { ...H2, margin: 0 }, children: section.title })
         ] }),
@@ -4246,7 +4250,7 @@ function Block({ block, renderers }) {
     case "glossary":
       return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(Glossary, { entries: block.entries });
     case "sources":
-      return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(SourcesTable, { rows: block.rows });
+      return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(SourcesTable, { rows: block.rows, headers: block.headers });
     case "table":
       return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(
         DataTable,
@@ -4262,7 +4266,7 @@ function Block({ block, renderers }) {
     case "faq":
       return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(FAQ, { items: block.items, variant: "article" });
     case "takeaway":
-      return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(Takeaway, { content: block.content });
+      return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(Takeaway, { content: block.content, label: block.label });
     case "callout":
       return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(Callout, { tone: block.tone, title: block.title, content: block.content });
     case "list":
