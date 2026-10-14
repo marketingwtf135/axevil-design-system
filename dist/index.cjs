@@ -4629,6 +4629,8 @@ function PublicationGrid({
                   "img",
                   {
                     src: it.cover.src,
+                    srcSet: it.cover.srcSet,
+                    sizes: it.cover.sizes,
                     alt: it.cover.alt,
                     width: it.cover.width,
                     height: it.cover.height,

@@ -1029,6 +1029,8 @@ interface PublicationCard {
     summary: string;
     cover?: {
         src: string;
+        srcSet?: string;
+        sizes?: string;
         alt: string;
         width: number;
         height: number;
